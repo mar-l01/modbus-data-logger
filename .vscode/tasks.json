@@ -6,14 +6,13 @@
         {
             "label": "Build Native",
             "type": "shell",
-            "command": "/usr/bin/g++",
-            "args": ["-g", "${file}", "-o", "${fileDirname}/${fileBasenameNoExtension}"],
+            "command": "scripts/build_native.sh",
             "problemMatcher": ["$gcc"],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            
+
         }
     ]
 }
