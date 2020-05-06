@@ -9,3 +9,7 @@ RUN apt-get update && \
     # clean up
     apt-get autoremove -y && \
     apt-get clean -y
+
+COPY "entrypoint.sh" "/entrypoint.sh"
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
