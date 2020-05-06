@@ -1,0 +1,22 @@
+{
+	"name": "Debian C++ Development",
+	"dockerFile": "Dockerfile",
+	"containerUser": "docker",
+
+	"extensions": [
+		"ms-vscode.cpptools",
+		"eamodio.gitlens",
+		"twxs.cmake",
+		"xaver.clang-format"
+	],
+
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash",
+		"editor.defaultFormatter": "xaver.clang-format",
+		"clang-format.executable": "/usr/bin/clang-format",
+		"editor.formatOnSave":true,
+		"files.trimTrailingWhitespace": true,
+		"files.insertFinalNewline": true,
+		"files.eol": "\n"
+	}
+}

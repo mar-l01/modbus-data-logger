@@ -1,0 +1,57 @@
+---
+Checks:          '-*,
+                  google-readability-todo,
+                  google-explicit-constructor,
+                  google-build-using-namespace,
+                  google-default-arguments,
+                  google-readability-avoid-underscore-in-googletest-name,
+                  misc-unused-parameters,
+                  misc-definitions-in-headers,
+                  modernize-avoid--bind,
+                  modernize-make-shared,
+                  modernize-make-unique,
+                  modernize-use-override,
+                  modernize-use-nullptr,
+                  modernize-use-emplace,
+                  readability-braces-around-statements,
+                  readability-container-size-empty,
+                  readability-redundant-function-ptr-dereference
+                  readability-container-size-empty,
+                  readability-delete-null-pointer,
+                  readability-identifier-naming,
+                  readability-magic-numbers,
+                  readability-non-const-parameter,
+                  readability-redundant-smartptr-get'
+WarningsAsErrors: 'true'
+HeaderFilterRegex: ''
+AnalyzeTemporaryDtors: false
+FormatStyle:     none
+CheckOptions:
+  - key:             modernize-use-nullptr.NullMacros
+    value:           'NULL'
+  - key:             readability-identifier-naming.ClassCase
+    value:           'CamelCase'
+  - key:             readability-identifier-naming.ConstantCase
+    value:           'camelBack'
+  - key:             readability-identifier-naming.ConstantMemberCase
+    value:           'camelBack'
+  - key:             readability-identifier-naming.ConstantMemberPrefix
+    value:           'm_'
+  - key:             readability-identifier-naming.ConstantParameterCase
+    value:           'camelBack'
+  - key:             readability-identifier-naming.EnumConstant
+    value:           'UPPER_CASE'
+  - key:             readability-identifier-naming.GlobalConstant
+    value:           'UPPER_CASE'
+  - key:             readability-identifier-naming.FunctionCase
+    value:           'camelBack'
+  - key:             readability-identifier-naming.MemberCase
+    value:           'camelBack'
+  - key:             readability-identifier-naming.MemberCase
+    value:           'CamelCase'
+  - key:             readability-identifier-naming.PrivateMemberPrefix
+    value:           'm_'
+  - key:             readability-identifier-naming.ProtectedMemberPrefix
+    value:           'm_'
+...
+
