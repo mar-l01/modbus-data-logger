@@ -15,7 +15,7 @@ jobs:
     steps:
     # checkout repository
     - name: Checkout
-      uses: modbus-data-logger/checkout@v2
+      uses: actions/checkout@v2
 
     # use our docker container
     - name: Build
