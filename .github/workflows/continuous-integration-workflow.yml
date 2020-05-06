@@ -19,5 +19,5 @@ jobs:
 
     # use our docker container
     - name: Docker
-      uses: .github/workflows/
-        with: scripts/build_native.sh
+      uses: .ci/
+      run: $GITHUB_WORKSPACE/scripts/build_native.sh
