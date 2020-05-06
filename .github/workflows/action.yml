@@ -1,0 +1,6 @@
+name: 'Docker build'
+description: 'Build our docker container'
+
+runs:
+  using: 'docker'
+  image: '.devcontainer/Dockerfile'

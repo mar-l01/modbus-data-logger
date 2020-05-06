@@ -14,12 +14,10 @@ jobs:
 
     steps:
     # checkout repository
+    - name: Checkout
     - uses: actions/checkout@v2
 
-    # build custom docker image (name: ci-container)
-    - name: Build docker image
-      run: docker build -t ci-container .ci/
-
-    # build native code
-    - name: Build project (native)
-      run: docker run -v $PWD:/$GITHUB_WORKSPACE ci-container $GITHUB_WORKSPACE/scripts/build_native.sh
+    # use our docker container
+    - name: Docker
+      uses: .github/workflows/
+        with: scripts/build_native.sh
