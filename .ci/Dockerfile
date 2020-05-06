@@ -1,7 +1,6 @@
 FROM debian:buster
 
 RUN apt-get update && \
-    apt-get install -y apt-utils && \
     # required for compiling, building and debugging
     apt-get install -y build-essential gdb cmake ninja-build && \
     # code formatting

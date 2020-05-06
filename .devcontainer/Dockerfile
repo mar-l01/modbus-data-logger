@@ -1,7 +1,6 @@
 FROM debian:buster
 
 RUN apt-get update && \
-    apt-get install -y apt-utils && \
     # git integration
     apt install -y git && \
     # nano editor
