@@ -20,5 +20,3 @@ jobs:
     # use our docker container
     - name: Build
       uses: ./.github/actions
-        with:
-          script: .ci/build_project.sh
