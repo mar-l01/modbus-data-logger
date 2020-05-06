@@ -19,4 +19,4 @@ jobs:
 
     # use our docker container
     - name: Build
-      uses: ./.github/actions/
+      uses: ./.github/actions
