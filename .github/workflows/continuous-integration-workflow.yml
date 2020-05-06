@@ -1,0 +1,22 @@
+name: Continuous Integration
+
+# trigger action on push or pull-request to master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    steps:
+    # checkout repository
+    - uses: actions/checkout@v2
+
+    # build custom docker image (name: ci-container)
+    - name: Build docker image
+      run: docker build -t ci-container < .devcontainer/Dockerfile
+
+    # build native code
+    - name: Build project (native)
+      run: docker run -it -v $PWD:/$GITHUB_WORKSPACE ci-container $GITHUB_WORKSPACE/scripts/build_native.sh
