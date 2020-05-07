@@ -1,6 +1,8 @@
 # modbus-data-logger
 Application software which can be used to monitor data during a Modbus TCP communication. This software is located between both communication partners (master and slave) and provides a gateway to forward messages from master to slave and vice versa. This way, the transferred data can be accessed and logged.
 
+![Continuous Integration](https://github.com/Markus2101/modbus-data-logger/workflows/Continuous%20Integration/badge.svg?branch=master)
+
 ## Getting started
 Following instructions help you in setting up the project locally on your computer.
 
@@ -45,3 +47,8 @@ In order to also save your changed remotely, perform following three steps insid
 
 ### Creating a Pull Request
 Once you have finished your feature, create a pull request. Therefore, go to the GitHub repository, select your feature-branch and click __Create Pull-Request__. Here you can find an article about how to create a Pull-Request: https://help.github.com/en/desktop/contributing-to-projects/creating-an-issue-or-pull-request
+
+### Merging into master
+A pull request shall only be merged into the master branch if:  
+- all checks have passed successfully
+- at least one approval is present
