@@ -3,6 +3,10 @@
 # stop execution upon errors
 set -e
 
+echo $PWD
+echo $GITHUB_WORKSPACE
+echo `realpath $0`
+
 # obtain scriptname
 SCRIPT=$1
 
