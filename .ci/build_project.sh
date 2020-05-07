@@ -13,6 +13,11 @@ cd ${BUILD_DIR}
 #
 
 # execute build native version
-BUILD_SCRIPT='build_native.sh'
+BUILD_SCRIPT="build_native.sh"
 chmod 755 "${BUILD_SCRIPT}"
 ./${BUILD_SCRIPT}
+
+# execute clang-tidy checks
+CLANG_TIDY_SCRIPT="run_clang_tidy.sh"
+chmod 755 "${CLANG_TIDY_SCRIPT}"
+./${CLANG_TIDY_SCRIPT}
