@@ -13,7 +13,7 @@ if [ -z "${SCRIPT_NAME}" ]; then
 fi
 
 # adapt path to script to github-workspace directory
-SCRIPT="${GITHUB_WORKSPACE}/${SCRIPT}"
+SCRIPT="${GITHUB_WORKSPACE}/${SCRIPT_NAME}"
 
 # check if script exists
 if [ ! -e "${SCRIPT}" ]; then
