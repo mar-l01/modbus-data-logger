@@ -4,14 +4,17 @@
 set -e
 
 # obtain scriptname
-SCRIPT=$1
+SCRIPT_NAME=$1
 
 # do not allow an empty scriptname
-if [ -z "${SCRIPT}" ]; then
+if [ -z "${SCRIPT_NAME}" ]; then
     echo "A script to execute needs to be provided.."
     exit 1
 fi
-echo "Current path: '${PWD}'"
+
+# adapt path to script to github-workspace directory
+SCRIPT = "${GITHUB_WORKSPACE}/${SCRIPT}"
+
 # check if script exists
 if [ ! -e "${SCRIPT}" ]; then
     echo "The provided script '${SCRIPT}' does not exist.."
