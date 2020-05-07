@@ -6,7 +6,7 @@ set -e
 # obtain scriptname
 SCRIPT=$1
 
-# build absolute path
+# build absolute path to script
 SCRIPT_PATH="${GITHUB_WORKSPACE}/${SCRIPT}"
 
 # do not allow an empty scriptname
