@@ -3,7 +3,7 @@ name: Continuous Integration
 # trigger action on push or pull-request to master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ master, improvement/move_dev_image_to_DockerHub ]
   pull_request:
     branches: [ master ]
 
@@ -11,12 +11,12 @@ jobs:
   build:
     name: Build project
     runs-on: ubuntu-latest
+    container: markus2101/mbdl-dev:latest
 
     steps:
     # checkout repository
-    - name: Checkout
-      uses: actions/checkout@v2
-
-    # use our docker container
+    - uses: actions/checkout@v2
+      with:
+        ref: improvement/move_dev_image_to_DockerHub
     - name: Build
-      uses: ./.github/actions
+      run: scripts/build_native.sh
