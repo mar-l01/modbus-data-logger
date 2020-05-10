@@ -1,25 +1,23 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 14)
 
-project(modbus-data-logger)
+project(modbus-data-logger-project)
 
-# build library target
-add_library(hellomodbus
-    domain/dummy/include/HelloModbus.hpp
-    domain/dummy/src/HelloModbus.cpp
-)
-
-# files in 'include' should be used whenever library is used
-target_include_directories(
-  hellomodbus
-  PUBLIC
-    "domain/dummy/include"
+# all sources files
+file(GLOB SOURCES
+  "${PROJECT_SOURCE_DIR}/domain/framework/sources/*.cpp"
+  "${PROJECT_SOURCE_DIR}/domain/gateway/datatypes/sources/*.cpp"
+  "${PROJECT_SOURCE_DIR}/domain/gateway/sources/*.cpp"
+  "${PROJECT_SOURCE_DIR}/domain/application/*.cpp"
 )
 
 # build executable target
-add_executable(modbus_data_logger
-  domain/dummy/src/main.cpp
+add_executable(modbus_data_logger ${SOURCES})
+
+target_include_directories(modbus_data_logger
+  PRIVATE
+    "${PROJECT_SOURCE_DIR}"
 )
 
-# executable depends on library
-target_link_libraries(modbus_data_logger hellomodbus)
+# link libmodbus library
+target_link_libraries(modbus_data_logger /usr/local/lib/libmodbus.so)
