@@ -5,20 +5,20 @@ project(modbus-data-logger)
 
 # build library target
 add_library(hellomodbus
-    domain/include/HelloModbus.hpp
-    domain/src/HelloModbus.cpp
+    domain/dummy/include/HelloModbus.hpp
+    domain/dummy/src/HelloModbus.cpp
 )
 
 # files in 'include' should be used whenever library is used
 target_include_directories(
   hellomodbus
   PUBLIC
-    "domain/include"
+    "domain/dummy/include"
 )
 
 # build executable target
 add_executable(modbus_data_logger
-  domain/src/main.cpp
+  domain/dummy/src/main.cpp
 )
 
 # executable depends on library
