@@ -5,6 +5,7 @@
 namespace Gateway {
 class ModbusSlave
 {
+public:
     virtual void setupModbusContext(const std::string& ipAddr, const int port) = 0;
     virtual void setupModbusMapping(const Gateway::ModbusDataMapping& mbMapping) = 0;
     virtual void listenAndAcceptIncomingConnection() = 0;
