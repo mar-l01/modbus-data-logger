@@ -3,7 +3,7 @@ name: Continuous Integration
 # trigger action on push or pull-request to master branch
 on:
   push:
-    branches: [ master, improvement/move_dev_image_to_DockerHub ]
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -16,11 +16,15 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-      with:
-        ref: improvement/move_dev_image_to_DockerHub
 
     - name: Make build-script executable
       run: chmod +x scripts/build_native.sh
 
     - name: Build
       run: scripts/build_native.sh
+
+    - name: Make clang-tidy script executable
+      run: chmod +x scripts/run_clang_tidy.sh
+
+    - name: Run clang-tidy analyzer
+      run: scripts/run_clang_tidy.sh
