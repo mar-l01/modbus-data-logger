@@ -14,9 +14,13 @@ jobs:
     container: markus2101/mbdl-dev:latest
 
     steps:
-    # checkout repository
-    - uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2
       with:
         ref: improvement/move_dev_image_to_DockerHub
+
+    - name: Make build-script executable
+      run: chmod +x scripts/build_native.sh
+
     - name: Build
       run: scripts/build_native.sh
