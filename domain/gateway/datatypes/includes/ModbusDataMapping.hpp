@@ -16,6 +16,7 @@ public:
     uint nbHoldingRegisters;
     uint nbInputRegisters;
 
+    friend bool operator==(const ModbusDataMapping& mbMappingA, const ModbusDataMapping& mbMappingB);
     friend std::ostream& operator<<(std::ostream& os, const ModbusDataMapping& mbMapping);
 };
 

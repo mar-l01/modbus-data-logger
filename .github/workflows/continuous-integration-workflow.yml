@@ -3,7 +3,7 @@ name: Continuous Integration
 # trigger action on push or pull-request to master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ master, feature/first_modbus_communication_without_gateway ]
   pull_request:
     branches: [ master ]
 
@@ -16,6 +16,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      with:
+        ref: feature/first_modbus_communication_without_gateway
 
     - name: Make build-script executable
       run: chmod +x scripts/build_native.sh
@@ -28,3 +30,9 @@ jobs:
 
     - name: Run clang-tidy analyzer
       run: scripts/run_clang_tidy.sh
+
+    - name: Make unittests script executable
+      run: chmod +x scripts/run_unittests.sh
+
+    - name: Run unittests
+      run: scripts/run_unittests.sh
