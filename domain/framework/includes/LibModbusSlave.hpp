@@ -17,16 +17,18 @@ class LibModbusSlave : public Gateway::ModbusSlave
 public:
     LibModbusSlave();
 
-    bool init(const std::string& ipAddr, const int port, const Gateway::ModbusDataMapping& mbMapping) override;
-    void run() override;
+    void setModbusDataMapping(const Gateway::ModbusDataMapping& mbMapping) override;
+    void bind(const std::string& ipAddr, const int port) override;
+    int listen(const int nbConns) override;
+    void accept(int& socket) override;
+    int receive(std::vector<uint8_t>& request) override;
+    int reply(std::vector<uint8_t>& request) override;
+    void close() override;
 
 private:
     std::unique_ptr<modbus_t, std::function<void(modbus_t*)>> m_modbusContext;
     std::unique_ptr<modbus_mapping_t, std::function<void(modbus_mapping_t*)>> m_modbusMapping;
-    int m_slaveSocket;
-
-    void initModbusContext(const std::string& ipAddr, const int port);
-    void initModbusMapping(const Gateway::ModbusDataMapping& mbMapping);
+    int m_requestLength;
 };
 
 }

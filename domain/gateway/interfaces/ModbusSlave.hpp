@@ -1,14 +1,22 @@
 #pragma once
 
-#include "domain/gateway/datatypes/includes/ModbusDataMapping.hpp"
+#include "domain/gateway/includes/ModbusDataMapping.hpp"
+
+#include <cstdint>
+#include <vector>
 
 namespace Gateway {
 
 class ModbusSlave
 {
 public:
-    virtual bool init(const std::string& ipAddr, const int port, const Gateway::ModbusDataMapping& mbMapping) = 0;
-    virtual void run() = 0;
+    virtual void setModbusDataMapping(const Gateway::ModbusDataMapping& mbMapping) = 0;
+    virtual void bind(const std::string& ipAddr, const int port) = 0;
+    virtual int listen(const int nbConns) = 0;
+    virtual void accept(int& socket) = 0;
+    virtual int receive(std::vector<uint8_t>& request) = 0;
+    virtual int reply(std::vector<uint8_t>& request) = 0;
+    virtual void close() = 0;
 };
 
 }

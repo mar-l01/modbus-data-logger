@@ -1,4 +1,4 @@
-#include "domain/gateway/datatypes/includes/ModbusDataMapping.hpp"
+#include "domain/gateway/includes/ModbusDataMapping.hpp"
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"

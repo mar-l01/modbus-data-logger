@@ -1,4 +1,4 @@
-#include "domain/gateway/datatypes/includes/ModbusDataMapping.hpp"
+#include "domain/gateway/includes/ModbusDataMapping.hpp"
 
 namespace Gateway {
 
