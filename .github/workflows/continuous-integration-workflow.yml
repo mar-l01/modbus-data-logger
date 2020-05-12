@@ -11,12 +11,20 @@ jobs:
   build:
     name: Build project
     runs-on: ubuntu-latest
+    container: markus2101/mbdl-dev:latest
 
     steps:
-    # checkout repository
-    - name: Checkout
+    - name: Checkout repository
       uses: actions/checkout@v2
 
-    # use our docker container
+    - name: Make build-script executable
+      run: chmod +x scripts/build_native.sh
+
     - name: Build
-      uses: ./.github/actions
+      run: scripts/build_native.sh
+
+    - name: Make clang-tidy script executable
+      run: chmod +x scripts/run_clang_tidy.sh
+
+    - name: Run clang-tidy analyzer
+      run: scripts/run_clang_tidy.sh

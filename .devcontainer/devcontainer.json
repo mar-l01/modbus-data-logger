@@ -1,6 +1,6 @@
 {
 	"name": "Debian C++ Development",
-	"dockerFile": "Dockerfile",
+	"image": "markus2101/mbdl-dev:latest",
 	"containerUser": "docker",
 
 	"extensions": [
