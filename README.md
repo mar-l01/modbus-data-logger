@@ -1,5 +1,5 @@
 # modbus-data-logger
-Application software which can be used to monitor data during a Modbus TCP communication. This software is located between both communication partners (master and slave) and provides a gateway to forward messages from master to slave and vice versa. This way, the transferred data can be accessed and logged.
+An application software which can be used to monitor data during a Modbus TCP communication. This software is located between both communication partners (master and slave) and provides a gateway to forward messages from master to slave and vice versa. This way, the transferred data can be accessed and logged.
 
 ![Continuous Integration](https://github.com/Markus2101/modbus-data-logger/workflows/Continuous%20Integration/badge.svg?branch=master)
 
@@ -12,6 +12,9 @@ In order to be able to work in a Linux-based environment on a Windows operating 
 #### Install Docker on Windows
 Download and install __Docker__ from https://hub.docker.com/editions/community/docker-ce-desktop-windows.  
 Once installed, right-click on the Docker taskbar item and navigate to __Resources > File Sharing__. Here, select the local drive, which should be available in the container (e.g. the local drive this repository gets cloned to).
+
+#### Docker image
+The Docker image which is used during development is fetched from DockerHub (https://hub.docker.com/r/markus2101/mbdl-dev). It contains the necessary software components (libraries, frameworks, etc.) required for implementing the application. The Dockerfile can be changed here: https://github.com/Markus2101/mbdl-dev-docker-image
 
 ### Visual Studio Code
 VS Code has a good integration for starting a Docker container and opening the project within.
