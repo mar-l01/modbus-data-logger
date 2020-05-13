@@ -4,6 +4,7 @@
 
 #include <memory>
 
+
 namespace Gateway {
 
 enum class ModbusSlaveFramework
@@ -15,7 +16,7 @@ enum class ModbusSlaveFramework
 class ModbusSlaveFactory
 {
 public:
-    static std::unique_ptr<ModbusSlave> createModbusSlave(ModbusSlaveFramework mbSlaveFramework);
+    static std::shared_ptr<ModbusSlave> createModbusSlave(ModbusSlaveFramework mbSlaveFramework);
 };
 
 }

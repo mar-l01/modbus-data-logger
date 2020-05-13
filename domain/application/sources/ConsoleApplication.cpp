@@ -16,7 +16,7 @@ int main()
     auto mbSlave = ModbusSlaveFactory::createModbusSlave(ModbusSlaveFramework::LIBMODBUS);
 
     std::unique_ptr<ModbusSlaveController> mbSlaveController =
-      std::make_unique<ModbusSlaveController>(std::move(mbSlave), mbDataMapping, ipAddr, port);
+      std::make_unique<ModbusSlaveController>(mbSlave, mbDataMapping, ipAddr, port);
 
     mbSlaveController->connect();
     mbSlaveController->run();

@@ -2,15 +2,16 @@
 
 #include "domain/framework/includes/LibModbusSlave.hpp"
 
+
 namespace Gateway {
 
-std::unique_ptr<ModbusSlave> ModbusSlaveFactory::createModbusSlave(ModbusSlaveFramework mbSlaveFramework)
+std::shared_ptr<ModbusSlave> ModbusSlaveFactory::createModbusSlave(ModbusSlaveFramework mbSlaveFramework)
 {
-    std::unique_ptr<ModbusSlave> modbusSlaveInstance;
+    std::shared_ptr<ModbusSlave> modbusSlaveInstance;
 
     switch (mbSlaveFramework) {
         case ModbusSlaveFramework::LIBMODBUS:
-            modbusSlaveInstance = std::make_unique<Framework::LibModbusSlave>();
+            modbusSlaveInstance = std::make_shared<Framework::LibModbusSlave>();
             break;
         case ModbusSlaveFramework::OTHER_MODBUS_FRAMEWORK:
             std::cerr << "[ModbusSlaveFactory] Failed to create Modbus slave instance (framework not supported)\n";
@@ -18,7 +19,7 @@ std::unique_ptr<ModbusSlave> ModbusSlaveFactory::createModbusSlave(ModbusSlaveFr
             break;
     }
 
-    return std::move(modbusSlaveInstance);
+    return modbusSlaveInstance;
 }
 
 }

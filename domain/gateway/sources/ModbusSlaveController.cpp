@@ -2,12 +2,13 @@
 
 #include <vector>
 
+
 namespace Gateway {
 
-ModbusSlaveController::ModbusSlaveController(std::unique_ptr<ModbusSlave> mbSlave,
+ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,
                                              const ModbusDataMapping& mbDataMapping, const std::string& ipAddr,
                                              const int port)
-    : m_modbusSlave(std::move(mbSlave))
+    : m_modbusSlave(mbSlave)
     , m_modbusDataMapping(mbDataMapping)
     , m_ipAddress(ipAddr)
     , m_port(port)
