@@ -17,7 +17,4 @@ return_code = subprocess.call(build_dir + "/framework_test")
 return_code = subprocess.call(build_dir + "/gateway_test")
 
 # exit script depending on test-result with error or not
-if return_code == 1:
-    exit(1)
-else:
-    exit(0)
+exit(return_code)
