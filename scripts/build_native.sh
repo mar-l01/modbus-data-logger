@@ -42,7 +42,7 @@ fi
 cd ${BUILD_DIR}
 
 # set up ninja building for cmake (with or without unittests)
-cmake -G Ninja -DCMAKE_ENABLE_TESTING=${UNITTESTS_ENABLED} ../..
+cmake -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_ENABLE_TESTING=${UNITTESTS_ENABLED} ../..
 
 # build project using ninja
 cd ${BUILD_DIR}
