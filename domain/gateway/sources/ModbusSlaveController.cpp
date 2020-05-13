@@ -1,11 +1,12 @@
-#include "domain/gateway/includes/ModbusSlaveHandler.hpp"
+#include "domain/gateway/includes/ModbusSlaveController.hpp"
 
 #include <vector>
 
 namespace Gateway {
 
-ModbusSlaveHandler::ModbusSlaveHandler(std::unique_ptr<ModbusSlave> mbSlave, const ModbusDataMapping& mbDataMapping,
-                                       const std::string& ipAddr, const int port)
+ModbusSlaveController::ModbusSlaveController(std::unique_ptr<ModbusSlave> mbSlave,
+                                             const ModbusDataMapping& mbDataMapping, const std::string& ipAddr,
+                                             const int port)
     : m_modbusSlave(std::move(mbSlave))
     , m_modbusDataMapping(mbDataMapping)
     , m_ipAddress(ipAddr)
@@ -16,7 +17,7 @@ ModbusSlaveHandler::ModbusSlaveHandler(std::unique_ptr<ModbusSlave> mbSlave, con
     m_modbusSlave->setModbusDataMapping(m_modbusDataMapping);
 }
 
-void ModbusSlaveHandler::connect()
+void ModbusSlaveController::connect()
 {
     // set up Modbus slave connection
     m_modbusSlave->bind(m_ipAddress, m_port);
@@ -24,7 +25,7 @@ void ModbusSlaveHandler::connect()
     m_modbusSlave->accept(m_socket);
 }
 
-void ModbusSlaveHandler::run()
+void ModbusSlaveController::run()
 {
     int reqLen = 0;
     auto modbusRequest = std::vector<uint8_t>(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
@@ -42,8 +43,10 @@ void ModbusSlaveHandler::run()
         }
 
         // TODO(Markus2101, 10.05.2020): forward request to ModbusGateway here;
-        //                               for now, request is simply returned
-        reqLen = m_modbusSlave->reply(modbusRequest);
+        //      for now, use dummy response
+        auto modbusResponse = std::vector<uint8_t>(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
+
+        reqLen = m_modbusSlave->reply(modbusResponse);
         if (reqLen == -1) {
             std::cerr << "[ModbusSlaveHandler] Failed to return response\n";
             break;
@@ -51,7 +54,7 @@ void ModbusSlaveHandler::run()
     }
 }
 
-void ModbusSlaveHandler::closeConnection()
+void ModbusSlaveController::closeConnection()
 {
     m_modbusSlave->close();
 }

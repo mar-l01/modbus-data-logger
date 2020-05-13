@@ -1,5 +1,5 @@
+#include "domain/gateway/includes/ModbusSlaveController.hpp"
 #include "domain/gateway/includes/ModbusSlaveFactory.hpp"
-#include "domain/gateway/includes/ModbusSlaveHandler.hpp"
 
 #include <iostream>
 
@@ -14,10 +14,10 @@ int main()
     // get Modbus slave instance from factory and set up listening
     auto mbSlave = ModbusSlaveFactory::createModbusSlave(ModbusSlaveFramework::LIBMODBUS);
 
-    std::unique_ptr<ModbusSlaveHandler> mbSlaveHandler =
-      std::make_unique<ModbusSlaveHandler>(std::move(mbSlave), mbDataMapping, ipAddr, port);
+    std::unique_ptr<ModbusSlaveController> mbSlaveController =
+      std::make_unique<ModbusSlaveController>(std::move(mbSlave), mbDataMapping, ipAddr, port);
 
-    mbSlaveHandler->connect();
-    mbSlaveHandler->run();
-    mbSlaveHandler->closeConnection();
+    mbSlaveController->connect();
+    mbSlaveController->run();
+    mbSlaveController->closeConnection();
 }

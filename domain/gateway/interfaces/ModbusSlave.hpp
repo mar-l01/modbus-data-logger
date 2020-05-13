@@ -15,7 +15,7 @@ public:
     virtual int listen(const int nbConns) = 0;
     virtual void accept(int& socket) = 0;
     virtual int receive(std::vector<uint8_t>& request) = 0;
-    virtual int reply(std::vector<uint8_t>& request) = 0;
+    virtual int reply(std::vector<uint8_t>& response) = 0;
     virtual void close() = 0;
 };
 
