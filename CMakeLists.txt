@@ -101,6 +101,7 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_gateway>
     "domain/gateway/testing/TestModbusDataMapping.cpp"
     "domain/gateway/testing/TestModbusSlaveFactory.cpp"
+    "domain/gateway/testing/TestModbusSlaveController.cpp"
   )
   target_include_directories(gateway_test PRIVATE "${PROJECT_SOURCE_DIR}")
   target_sources(gateway_test
