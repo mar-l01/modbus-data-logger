@@ -12,6 +12,16 @@
                 "kind": "build",
                 "isDefault": true
             },
+        },
+        {
+            "label": "Build Native & Unittests",
+            "type": "shell",
+            "command": "scripts/build_native.sh -t",
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
 
         }
     ]

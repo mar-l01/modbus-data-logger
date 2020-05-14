@@ -2,6 +2,7 @@
 	"name": "Debian C++ Development",
 	"image": "markus2101/mbdl-dev:latest",
 	"containerUser": "docker",
+	"forwardPorts": [5002],
 
 	"extensions": [
 		"ms-vscode.cpptools",
