@@ -2,7 +2,6 @@
 
 #include "domain/framework/includes/LibModbusSlave.hpp"
 
-
 namespace Gateway {
 
 std::shared_ptr<ModbusSlave> ModbusSlaveFactory::createModbusSlave(ModbusSlaveFramework mbSlaveFramework)

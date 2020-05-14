@@ -56,17 +56,13 @@ DerivePointerAlignment: false
 DisableFormat:   false
 ExperimentalAutoDetectBinPacking: false
 FixNamespaceComments: false
-ForEachMacros:   
-  - foreach
-  - Q_FOREACH
-  - BOOST_FOREACH
 IncludeBlocks:   Regroup
-IncludeCategories: 
-  - Regex:           '^"(llvm|llvm-c|clang|clang-c)/'
+IncludeCategories:
+  - Regex:           '^"modbus/' # all '#include "modbus/..."' (libmodbus) follow domain includes
     Priority:        2
-  - Regex:           '^(<|"(gtest|gmock|isl|json)/)'
+  - Regex:           '^"(gtest|gmock)/'
     Priority:        3
-  - Regex:           '.*'
+  - Regex:           '^"domain/' # all '#include "domain/..."' on top
     Priority:        1
 IncludeIsMainRegex: '(Test)?$'
 IndentCaseLabels: true
