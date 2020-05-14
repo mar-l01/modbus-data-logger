@@ -2,7 +2,6 @@
 
 #include <vector>
 
-
 namespace Gateway {
 
 ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,

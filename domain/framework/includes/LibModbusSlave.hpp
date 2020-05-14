@@ -1,6 +1,7 @@
 #pragma once
 
 #include "domain/gateway/interfaces/ModbusSlave.hpp"
+
 #include "modbus/modbus.h"
 
 #include <functional>
