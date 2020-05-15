@@ -117,4 +117,26 @@ if (${CMAKE_ENABLE_TESTING})
   )
 
   add_test(NAME gateway_test COMMAND $<TARGET_FILE:gateway_test>)
+
+   # build integrationtest
+  add_executable(integrationtest
+    $<TARGET_OBJECTS:mdl_framework>
+    $<TARGET_OBJECTS:mdl_gateway>
+    "integrationtests/TestModbusSlaveCommunication.cpp"
+  )
+  target_include_directories(integrationtest PRIVATE "${PROJECT_SOURCE_DIR}")
+  target_sources(integrationtest
+    PRIVATE
+      "integrationtests/fixtures/sources/FixtureModbusSlaveController.cpp"
+      "integrationtests/fixtures/sources/FixtureExternalModbusMaster.cpp"
+)
+  target_link_libraries(integrationtest
+    PRIVATE
+      /usr/local/lib/libmodbus.so
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME integrationtest COMMAND $<TARGET_FILE:integrationtest>)
 endif ()
