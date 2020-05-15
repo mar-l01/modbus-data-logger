@@ -1,6 +1,9 @@
 # Build directory
 builds/
 
+# Local settings file
+.vscode/settings.json
+
 # Prerequisites
 *.d
 

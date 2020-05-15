@@ -31,3 +31,6 @@ jobs:
 
     - name: Run unittests
       run: python scripts/run_unittests.py
+
+    - name: Run integrationtests
+      run: python scripts/run_integrationtests.py
