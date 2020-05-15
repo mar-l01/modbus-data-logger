@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+
 namespace Framework {
 
 LibModbusSlave::LibModbusSlave()
@@ -41,14 +42,16 @@ void LibModbusSlave::bind(const std::string& ipAddr, const int port)
         }));
     // clang-format on
 
+#ifdef DEBUG
     // error handling
     if (m_modbusContext == nullptr) {
-#ifdef DEBUG
         std::cerr << "[LibModbusSlave] Unable to allocate libmodbus context\n";
         std::cerr << "[LibModbusSlave] - IP: " << ipAddr << '\n';
         std::cerr << "[LibModbusSlave] - Port: " << port << '\n';
-#endif
+    } else {
+        modbus_set_debug(m_modbusContext.get(), true);
     }
+#endif
 }
 
 int LibModbusSlave::listen(const int nbConns)

@@ -62,7 +62,7 @@ IncludeCategories:
     Priority:        2
   - Regex:           '^"(gtest|gmock)/'
     Priority:        3
-  - Regex:           '^"domain/' # all '#include "domain/..."' on top
+  - Regex:           '^"(domain|integrationtests)/' # all '#include "domain/..."' on top
     Priority:        1
 IncludeIsMainRegex: '(Test)?$'
 IndentCaseLabels: true
