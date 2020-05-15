@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-
 namespace Framework {
 
 LibModbusSlave::LibModbusSlave()
@@ -74,7 +73,7 @@ void LibModbusSlave::accept(int& socket)
 #endif
 }
 
-int LibModbusSlave::receive(std::vector<uint8_t>& request)
+int LibModbusSlave::receive(Gateway::ModbusMessageFrame& request)
 {
     m_messageLength = modbus_receive(m_modbusContext.get(), request.data());
 
@@ -84,7 +83,7 @@ int LibModbusSlave::receive(std::vector<uint8_t>& request)
     return m_messageLength;
 }
 
-int LibModbusSlave::reply(std::vector<uint8_t>& response)
+int LibModbusSlave::reply(Gateway::ModbusMessageFrame& response)
 {
     // TOOD(Markus2101, 13.05.2020): use response data from external slave and change
     //      mapping accordingly

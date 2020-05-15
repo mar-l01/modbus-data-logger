@@ -5,9 +5,11 @@
 namespace Gateway {
 
 ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,
+                                             const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
                                              const ModbusDataMapping& mbDataMapping, const std::string& ipAddr,
                                              const int port)
     : m_modbusSlave(mbSlave)
+    , m_modbusRequestController(mbReqCtrl)
     , m_modbusDataMapping(mbDataMapping)
     , m_ipAddress(ipAddr)
     , m_port(port)
@@ -17,7 +19,7 @@ ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>&
     m_modbusSlave->setModbusDataMapping(m_modbusDataMapping);
 }
 
-void ModbusSlaveController::connect()
+void ModbusSlaveController::waitForIncomingConnection()
 {
     // set up Modbus slave connection
     m_modbusSlave->bind(m_ipAddress, m_port);
@@ -28,7 +30,7 @@ void ModbusSlaveController::connect()
 void ModbusSlaveController::run()
 {
     int reqLen = 0;
-    auto modbusRequest = std::vector<uint8_t>(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
+    auto modbusRequest = ModbusMessageFrame(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
 
     // infinite request loop
     for (;;) {
@@ -42,11 +44,12 @@ void ModbusSlaveController::run()
             break;
         }
 
-        // TODO(Markus2101, 10.05.2020): forward request to ModbusGateway here;
-        //      for now, use dummy response
-        auto modbusResponse = std::vector<uint8_t>(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
+        // forward Modbus request via gateway to external Modbus slave and receive response
+        auto modbusResponse = m_modbusRequestController->forwardModbusRequestAndWaitForResponse(modbusRequest);
 
         reqLen = m_modbusSlave->reply(modbusResponse);
+
+        // error in replying response
         if (reqLen == -1) {
             std::cerr << "[ModbusSlaveHandler] Failed to return response\n";
             break;
