@@ -1,3 +1,5 @@
+#pragma once
+
 #include "domain/gateway/includes/ModbusDataMapping.hpp"
 
 namespace FixtureTestConstants {

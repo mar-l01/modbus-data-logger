@@ -1,3 +1,5 @@
+#pragma once
+
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
 #include "domain/gateway/interfaces/ModbusSlave.hpp"
 

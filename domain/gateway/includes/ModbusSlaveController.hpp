@@ -1,6 +1,9 @@
+#pragma once
+
 #include "domain/gateway/interfaces/ModbusSlave.hpp"
 
 #include <memory>
+
 
 namespace Gateway {
 
