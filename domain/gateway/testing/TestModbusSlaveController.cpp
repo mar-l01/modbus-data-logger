@@ -1,4 +1,5 @@
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/gateway/testing/gmock/MockModbusRequestController.hpp"
 #include "domain/gateway/testing/gmock/MockModbusSlave.hpp"
 
 #include "gmock/gmock.h"
@@ -14,6 +15,7 @@ class TestModbusSlaveController : public ::testing::Test
 protected:
     TestModbusSlaveController()
         : m_modbusSlaveMock(std::make_shared<MockModbusSlave>())
+        , m_modbusRequestControllerMock(std::make_shared<MockModbusRequestController>())
         , m_modbusDataMapping({0, 0, 0, 0, 1, 2, 3, 4})
         , m_ipAddr("127.0.0.1")
         , m_port(502)
@@ -22,13 +24,14 @@ protected:
     std::shared_ptr<ModbusSlaveController> createTestObject()
     {
         EXPECT_CALL(*m_modbusSlaveMock, setModbusDataMapping(_)).Times(1);
-        auto testObj =
-          std::make_shared<ModbusSlaveController>(m_modbusSlaveMock, m_modbusDataMapping, m_ipAddr, m_port);
+        auto testObj = std::make_shared<ModbusSlaveController>(m_modbusSlaveMock, m_modbusRequestControllerMock,
+                                                               m_modbusDataMapping, m_ipAddr, m_port);
 
         return testObj;
     }
 
     std::shared_ptr<MockModbusSlave> m_modbusSlaveMock;
+    std::shared_ptr<MockModbusRequestController> m_modbusRequestControllerMock;
     ModbusDataMapping m_modbusDataMapping;
     std::string m_ipAddr;
     int m_port;
@@ -47,7 +50,7 @@ TEST_F(TestModbusSlaveController, connect)
     EXPECT_CALL(*m_modbusSlaveMock, bind(m_ipAddr, m_port)).Times(1);
     EXPECT_CALL(*m_modbusSlaveMock, listen(1)).WillOnce(Return(modbusSocket));
     EXPECT_CALL(*m_modbusSlaveMock, accept(modbusSocket)).Times(1);
-    testObj->connect();
+    testObj->waitForIncomingConnection();
 }
 
 TEST_F(TestModbusSlaveController, runOneFullLoop)
@@ -56,6 +59,7 @@ TEST_F(TestModbusSlaveController, runOneFullLoop)
 
     Sequence seq;
     EXPECT_CALL(*m_modbusSlaveMock, receive(_)).InSequence(seq).WillOnce(Return(1));
+    EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).InSequence(seq);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).InSequence(seq).WillOnce(Return(1));
     EXPECT_CALL(*m_modbusSlaveMock, receive(_)).InSequence(seq).WillOnce(Return(-1)); // break loop
     testObj->run();
@@ -78,6 +82,7 @@ TEST_F(TestModbusSlaveController, runFailedReceive)
     auto testObj = createTestObject();
 
     EXPECT_CALL(*m_modbusSlaveMock, receive(_)).WillOnce(Return(-1));
+    EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).Times(0);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).Times(0);
     testObj->run();
 }
@@ -88,6 +93,7 @@ TEST_F(TestModbusSlaveController, runFailedReply)
 
     Sequence seq;
     EXPECT_CALL(*m_modbusSlaveMock, receive(_)).InSequence(seq).WillOnce(Return(1));
+    EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).InSequence(seq);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).InSequence(seq).WillOnce(Return(-1));
     testObj->run();
 }

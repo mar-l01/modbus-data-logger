@@ -1,3 +1,6 @@
+#pragma once
+
+#include "domain/gateway/interfaces/ModbusRequestController.hpp"
 #include "domain/gateway/interfaces/ModbusSlave.hpp"
 
 #include <memory>
@@ -12,15 +15,17 @@ constexpr const int MODBUS_TCP_REQUEST_LENGTH_MAX = 260;
 class ModbusSlaveController
 {
 public:
-    ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave, const ModbusDataMapping& mbDataMapping,
-                          const std::string& ipAddr, const int port);
+    ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,
+                          const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
+                          const ModbusDataMapping& mbDataMapping, const std::string& ipAddr, const int port);
 
-    void connect();
+    void waitForIncomingConnection();
     void run();
     void closeConnection();
 
 private:
     std::shared_ptr<ModbusSlave> m_modbusSlave;
+    std::shared_ptr<ModbusRequestController> m_modbusRequestController;
     ModbusDataMapping m_modbusDataMapping;
     std::string m_ipAddress;
     int m_port;

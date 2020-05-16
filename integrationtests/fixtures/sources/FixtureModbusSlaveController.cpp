@@ -36,7 +36,7 @@ void FixtureModbusSlaveController::setUp(const int nbIter)
 void FixtureModbusSlaveController::runRequestResponseLoop(const int nbIter)
 {
     int reqLen = 0;
-    auto modbusRequest = std::vector<uint8_t>(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
+    auto modbusRequest = Gateway::ModbusMessageFrame(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
 
     // infinite request loop
     for (int i = 0; i < nbIter; ++i) {
@@ -51,7 +51,7 @@ void FixtureModbusSlaveController::runRequestResponseLoop(const int nbIter)
         }
 
         // TODO(Markus2101, 14.05.2020): currently reply() argument is not required
-        auto modbusResponse = std::vector<uint8_t>(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
+        auto modbusResponse = Gateway::ModbusMessageFrame(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
         reqLen = m_modbusSlave->reply(modbusResponse);
         if (reqLen == -1) {
             FAIL();
