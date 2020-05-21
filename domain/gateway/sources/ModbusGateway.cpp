@@ -4,9 +4,9 @@ namespace Gateway {
 
 ModbusGateway::ModbusGateway() {}
 
-ModbusMessageFrame ModbusGateway::forwardModbusRequestAndWaitForResponse(const ModbusMessageFrame& mbRequest)
+ModbusTcpMessageFrame ModbusGateway::forwardModbusRequestAndWaitForResponse(const ModbusTcpMessageFrame& mbRequest)
 {
-    return ModbusMessageFrame();
+    return ModbusTcpMessageFrame();
 }
 
 }
