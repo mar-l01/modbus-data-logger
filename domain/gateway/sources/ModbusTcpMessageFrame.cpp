@@ -1,5 +1,7 @@
 #include "domain/gateway/includes/ModbusTcpMessageFrame.hpp"
 
+#include <iomanip>
+
 namespace Gateway {
 
 ModbusTcpMessageFrame::ModbusTcpMessageFrame() {}
@@ -28,14 +30,15 @@ ModbusTcpMessageFrame ModbusTcpMessageFrame::fromByteVector(const std::vector<ui
 {
     ModbusTcpMessageFrame mbMsgFrame;
 
-    mbMsgFrame.transactionIdentifier = (byteVector[0] << 8) + byteVector[1];
-    mbMsgFrame.protocolIdentifier = (byteVector[2] << 8) + byteVector[3];
-    mbMsgFrame.lengthField = (byteVector[4] << 8) + byteVector[5];
+    mbMsgFrame.transactionIdentifier = static_cast<uint16_t>(byteVector[0] << 8) + byteVector[1];
+    mbMsgFrame.protocolIdentifier = static_cast<uint16_t>(byteVector[2] << 8) + byteVector[3];
+    mbMsgFrame.lengthField = static_cast<uint16_t>(byteVector[4] << 8) + byteVector[5];
     mbMsgFrame.unitIdentifier = byteVector[6];
-    mbMsgFrame.unitIdentifier = byteVector[7];
+    mbMsgFrame.functionCode = byteVector[7];
 
-    for (int i = 8; i < byteVector.size(); ++i) {
-        mbMsgFrame.dataBytes[i - 8] = byteVector[i];
+    // only use the required data-bytes specified by the length field (-2 := unit-id and fc)
+    for (int i = 0; i < static_cast<int>(mbMsgFrame.lengthField) - 2; ++i) {
+        mbMsgFrame.dataBytes.emplace_back(byteVector[i + 8]);
     }
 
     return mbMsgFrame;
@@ -44,15 +47,19 @@ ModbusTcpMessageFrame ModbusTcpMessageFrame::fromByteVector(const std::vector<ui
 std::ostream& operator<<(std::ostream& os, const ModbusTcpMessageFrame& mbMsgFrame)
 {
     os << "ModbusTcpMessageFrame: "
-       << "[Transaction Identifier] 0x" << std::hex << mbMsgFrame.transactionIdentifier << '\n'
-       << "[Protocol Identifier] 0x" << std::hex << mbMsgFrame.protocolIdentifier << '\n'
-       << "[Length Field] 0x" << std::hex << mbMsgFrame.lengthField << '\n'
-       << "[Unit Identifier] 0x" << std::hex << mbMsgFrame.unitIdentifier << '\n'
-       << "[Function Code] 0x" << std::hex << mbMsgFrame.functionCode << '\n'
+       << "[Transaction Identifier] 0x" << std::hex << std::setw(4) << std::setfill('0')
+       << mbMsgFrame.transactionIdentifier << '\n'
+       << "[Protocol Identifier] 0x" << std::hex << std::setw(4) << std::setfill('0') << mbMsgFrame.protocolIdentifier
+       << '\n'
+       << "[Length Field] 0x" << std::hex << std::setw(4) << std::setfill('0') << mbMsgFrame.lengthField << '\n'
+       << "[Unit Identifier] 0x" << std::hex << std::setw(2) << std::setfill('0')
+       << static_cast<int>(mbMsgFrame.unitIdentifier) << '\n'
+       << "[Function Code] 0x" << std::hex << std::setw(2) << std::setfill('0')
+       << static_cast<int>(mbMsgFrame.functionCode) << '\n'
        << "[Data Bytes] ";
 
     for (const auto& dataByte : mbMsgFrame.dataBytes) {
-        os << "0x" << std::hex << dataByte << " | ";
+        os << "0x" << std::hex << std::setw(4) << std::setfill('0') << static_cast<int>(dataByte) << " | ";
     }
 
     return os;

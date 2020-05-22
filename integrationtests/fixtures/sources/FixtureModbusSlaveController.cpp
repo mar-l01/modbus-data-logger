@@ -51,7 +51,7 @@ void FixtureModbusSlaveController::runRequestResponseLoop(const int nbIter)
         }
 
         // TODO(Markus2101, 14.05.2020): currently reply() argument is not required
-        Gateway::ModbusTcpMessageFrame modbusResponse;
+        ModbusTcpMessageFrame modbusResponse;
         reqLen = m_modbusSlave->reply(modbusResponse);
         if (reqLen == -1) {
             FAIL();

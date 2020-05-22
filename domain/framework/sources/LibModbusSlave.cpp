@@ -75,7 +75,7 @@ void LibModbusSlave::accept(int& socket)
 
 int LibModbusSlave::receive(Gateway::ModbusTcpMessageFrame& request)
 {
-    std::vector<uint8_t> mbRequest;
+    auto mbRequest = std::vector<uint8_t>(MODBUS_TCP_MAX_ADU_LENGTH);
 
     m_messageLength = modbus_receive(m_modbusContext.get(), mbRequest.data());
 

@@ -17,6 +17,7 @@ public:
     std::vector<uint8_t> dataBytes;
 
     std::vector<uint8_t> asByteVector();
+
     friend std::ostream& operator<<(std::ostream& os, const ModbusTcpMessageFrame& mbMsgFrame);
 
     static ModbusTcpMessageFrame fromByteVector(const std::vector<uint8_t>& byteVector);
