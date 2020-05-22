@@ -30,7 +30,7 @@ void ModbusSlaveController::waitForIncomingConnection()
 void ModbusSlaveController::run()
 {
     int reqLen = 0;
-    auto modbusRequest = ModbusMessageFrame(ModbusConstants::MODBUS_TCP_REQUEST_LENGTH_MAX);
+    ModbusTcpMessageFrame modbusRequest;
 
     // infinite request loop
     for (;;) {
@@ -40,7 +40,7 @@ void ModbusSlaveController::run()
 
         // error in receiving request
         if (reqLen == -1) {
-            std::cerr << "[ModbusSlaveHandler] Failed to receive incoming request\n";
+            std::cerr << "[ModbusSlaveController] Failed to receive incoming request\n";
             break;
         }
 
@@ -51,7 +51,7 @@ void ModbusSlaveController::run()
 
         // error in replying response
         if (reqLen == -1) {
-            std::cerr << "[ModbusSlaveHandler] Failed to return response\n";
+            std::cerr << "[ModbusSlaveController] Failed to return response\n";
             break;
         }
     }
