@@ -9,7 +9,7 @@ namespace Gateway {
 class ModbusRequestController
 {
 public:
-    virtual ModbusTcpMessageFrame forwardModbusRequestAndWaitForResponse(const ModbusTcpMessageFrame& mbRequest) = 0;
+    virtual ModbusTcpResponse forwardModbusRequestAndWaitForResponse(const ModbusTcpRequest& mbRequest) = 0;
 };
 
 }

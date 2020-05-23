@@ -7,6 +7,6 @@
 class MockModbusRequestController : public Gateway::ModbusRequestController
 {
 public:
-    MOCK_METHOD(Gateway::ModbusTcpMessageFrame, forwardModbusRequestAndWaitForResponse,
-                (const Gateway::ModbusTcpMessageFrame&), (override));
+    MOCK_METHOD(Gateway::ModbusTcpResponse, forwardModbusRequestAndWaitForResponse, (const Gateway::ModbusTcpRequest&),
+                (override));
 };

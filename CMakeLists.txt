@@ -27,6 +27,8 @@ add_library(mdl_gateway OBJECT
   "domain/gateway/includes/ModbusSlaveController.hpp"
   "domain/gateway/includes/ModbusGateway.hpp"
   "domain/gateway/includes/ModbusTcpMessageFrame.hpp"
+  "domain/gateway/includes/ModbusTcpRequest.hpp"
+  "domain/gateway/includes/ModbusTcpResponse.hpp"
   "domain/gateway/interfaces/ModbusSlave.hpp"
   "domain/gateway/interfaces/ModbusRequestController.hpp"
 
@@ -36,6 +38,8 @@ add_library(mdl_gateway OBJECT
   "domain/gateway/sources/ModbusSlaveController.cpp"
   "domain/gateway/sources/ModbusGateway.cpp"
   "domain/gateway/sources/ModbusTcpMessageFrame.cpp"
+  "domain/gateway/sources/ModbusTcpRequest.cpp"
+  "domain/gateway/sources/ModbusTcpResponse.cpp"
 )
 target_compile_options(mdl_gateway PUBLIC -Wall -Wextra)
 target_include_directories(mdl_gateway PRIVATE "${PROJECT_SOURCE_DIR}")
@@ -107,6 +111,9 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/gateway/testing/TestModbusDataMapping.cpp"
     "domain/gateway/testing/TestModbusSlaveFactory.cpp"
     "domain/gateway/testing/TestModbusSlaveController.cpp"
+    "domain/gateway/testing/TestModbusTcpMessageFrame.cpp"
+    "domain/gateway/testing/TestModbusTcpRequest.cpp"
+    "domain/gateway/testing/TestModbusTcpResponse.cpp"
   )
   target_include_directories(gateway_test PRIVATE "${PROJECT_SOURCE_DIR}")
   target_sources(gateway_test
