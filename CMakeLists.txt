@@ -22,32 +22,42 @@ target_link_libraries(mdl_framework PRIVATE /usr/local/lib/libmodbus.so)
 # build gateway object-library
 add_library(mdl_gateway OBJECT
   # header files
-  "domain/gateway/includes/ModbusDataMapping.hpp"
   "domain/gateway/includes/ModbusSlaveFactory.hpp"
   "domain/gateway/includes/ModbusSlaveController.hpp"
   "domain/gateway/includes/ModbusGateway.hpp"
-  "domain/gateway/includes/ModbusTcpMessageFrame.hpp"
-  "domain/gateway/includes/ModbusTcpRequest.hpp"
-  "domain/gateway/includes/ModbusTcpResponse.hpp"
   "domain/gateway/interfaces/ModbusSlave.hpp"
   "domain/gateway/interfaces/ModbusRequestController.hpp"
 
   # source files
-  "domain/gateway/sources/ModbusDataMapping.cpp"
   "domain/gateway/sources/ModbusSlaveFactory.cpp"
   "domain/gateway/sources/ModbusSlaveController.cpp"
   "domain/gateway/sources/ModbusGateway.cpp"
-  "domain/gateway/sources/ModbusTcpMessageFrame.cpp"
-  "domain/gateway/sources/ModbusTcpRequest.cpp"
-  "domain/gateway/sources/ModbusTcpResponse.cpp"
 )
 target_compile_options(mdl_gateway PUBLIC -Wall -Wextra)
 target_include_directories(mdl_gateway PRIVATE "${PROJECT_SOURCE_DIR}")
+
+# build entity object-library
+add_library(mdl_entity OBJECT
+  # header files
+  "domain/entity/includes/ModbusDataMapping.hpp"
+  "domain/entity/includes/ModbusTcpMessageFrame.hpp"
+  "domain/entity/includes/ModbusTcpRequest.hpp"
+  "domain/entity/includes/ModbusTcpResponse.hpp"
+
+  # source files
+  "domain/entity/sources/ModbusDataMapping.cpp"
+  "domain/entity/sources/ModbusTcpMessageFrame.cpp"
+  "domain/entity/sources/ModbusTcpRequest.cpp"
+  "domain/entity/sources/ModbusTcpResponse.cpp"
+)
+target_compile_options(mdl_entity PUBLIC -Wall -Wextra)
+target_include_directories(mdl_entity PRIVATE "${PROJECT_SOURCE_DIR}")
 
 # build executable target
 add_executable(modbus_data_logger
   $<TARGET_OBJECTS:mdl_framework>
   $<TARGET_OBJECTS:mdl_gateway>
+  $<TARGET_OBJECTS:mdl_entity>
   "domain/application/sources/ConsoleApplication.cpp"
 )
 target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra)
@@ -91,6 +101,7 @@ if (${CMAKE_ENABLE_TESTING})
   add_executable(framework_test
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
+    $<TARGET_OBJECTS:mdl_entity>
     "domain/framework/testing/TestLibModbusSlave.cpp"
   )
   target_include_directories(framework_test PRIVATE "${PROJECT_SOURCE_DIR}")
@@ -108,12 +119,9 @@ if (${CMAKE_ENABLE_TESTING})
   add_executable(gateway_test
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
-    "domain/gateway/testing/TestModbusDataMapping.cpp"
+    $<TARGET_OBJECTS:mdl_entity>
     "domain/gateway/testing/TestModbusSlaveFactory.cpp"
     "domain/gateway/testing/TestModbusSlaveController.cpp"
-    "domain/gateway/testing/TestModbusTcpMessageFrame.cpp"
-    "domain/gateway/testing/TestModbusTcpRequest.cpp"
-    "domain/gateway/testing/TestModbusTcpResponse.cpp"
   )
   target_include_directories(gateway_test PRIVATE "${PROJECT_SOURCE_DIR}")
   target_sources(gateway_test
@@ -131,10 +139,28 @@ if (${CMAKE_ENABLE_TESTING})
 
   add_test(NAME gateway_test COMMAND $<TARGET_FILE:gateway_test>)
 
+  # build entity unittests
+  add_executable(entity_test
+    $<TARGET_OBJECTS:mdl_entity>
+    "domain/entity/testing/TestModbusDataMapping.cpp"
+    "domain/entity/testing/TestModbusTcpMessageFrame.cpp"
+    "domain/entity/testing/TestModbusTcpRequest.cpp"
+    "domain/entity/testing/TestModbusTcpResponse.cpp"
+  )
+  target_include_directories(entity_test PRIVATE "${PROJECT_SOURCE_DIR}")
+  target_link_libraries(entity_test
+    PRIVATE
+      gtest
+      gtest_main
+  )
+
+  add_test(NAME entity_test COMMAND $<TARGET_FILE:entity_test>)
+
    # build integrationtest
   add_executable(integrationtest
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
+    $<TARGET_OBJECTS:mdl_entity>
     "integrationtests/TestModbusSlaveCommunication.cpp"
   )
   target_include_directories(integrationtest PRIVATE "${PROJECT_SOURCE_DIR}")

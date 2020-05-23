@@ -1,10 +1,10 @@
-#include "domain/gateway/includes/ModbusTcpMessageFrame.hpp"
+#include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
 
 #include "gtest/gtest.h"
 
 namespace {
 
-using namespace Gateway;
+using namespace Entity;
 
 class TestModbusTcpMessageFrame : public ::testing::Test
 {

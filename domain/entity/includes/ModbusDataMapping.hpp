@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace Gateway {
+namespace Entity {
 class ModbusDataMapping
 {
 public:

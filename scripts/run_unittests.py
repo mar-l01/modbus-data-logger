@@ -15,6 +15,7 @@ if not os.path.isdir(build_dir):
 # run unittests
 return_code = subprocess.call(build_dir + "/framework_test")
 return_code = subprocess.call(build_dir + "/gateway_test")
+return_code = subprocess.call(build_dir + "/entity_test")
 
 # exit script depending on test-result with error or not
 exit(return_code)

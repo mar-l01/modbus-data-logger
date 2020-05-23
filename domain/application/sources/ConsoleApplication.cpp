@@ -10,7 +10,7 @@ int main()
 
     const std::string ipAddr = "127.0.0.1";
     const int port = 5002; // no private port use (Modbus default := 502)
-    const ModbusDataMapping mbDataMapping = {0, 0, 0, 0, 10, 10, 10, 10};
+    const Entity::ModbusDataMapping mbDataMapping = {0, 0, 0, 0, 10, 10, 10, 10};
 
     // get Modbus slave instance from factory and set up listening
     auto mbSlave = ModbusSlaveFactory::createModbusSlave(ModbusSlaveFramework::LIBMODBUS);

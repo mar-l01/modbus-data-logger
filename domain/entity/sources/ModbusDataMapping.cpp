@@ -1,6 +1,6 @@
-#include "domain/gateway/includes/ModbusDataMapping.hpp"
+#include "domain/entity/includes/ModbusDataMapping.hpp"
 
-namespace Gateway {
+namespace Entity {
 
 bool operator==(const ModbusDataMapping& mbMappingA, const ModbusDataMapping& mbMappingB)
 {

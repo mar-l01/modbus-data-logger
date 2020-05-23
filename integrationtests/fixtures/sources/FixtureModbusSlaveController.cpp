@@ -36,7 +36,7 @@ void FixtureModbusSlaveController::setUp(const int nbIter)
 void FixtureModbusSlaveController::runRequestResponseLoop(const int nbIter)
 {
     int reqLen = 0;
-    auto modbusRequest = std::make_shared<ModbusTcpRequest>();
+    auto modbusRequest = std::make_shared<Entity::ModbusTcpRequest>();
 
     // infinite request loop
     for (int i = 0; i < nbIter; ++i) {
@@ -51,7 +51,7 @@ void FixtureModbusSlaveController::runRequestResponseLoop(const int nbIter)
         }
 
         // TODO(Markus2101, 14.05.2020): currently reply() argument is not required
-        auto modbusResponse = std::make_shared<ModbusTcpResponse>();
+        auto modbusResponse = std::make_shared<Entity::ModbusTcpResponse>();
         reqLen = m_modbusSlave->reply(modbusResponse);
         if (reqLen == -1) {
             FAIL();

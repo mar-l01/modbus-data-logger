@@ -1,10 +1,10 @@
 #pragma once
 
-#include "domain/gateway/includes/ModbusTcpMessageFrame.hpp"
+#include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
 
 #include <memory>
 
-namespace Gateway {
+namespace Entity {
 
 class ModbusTcpRequest : public ModbusTcpMessageFrame
 {
