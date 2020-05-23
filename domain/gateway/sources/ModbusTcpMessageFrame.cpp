@@ -137,12 +137,14 @@ std::vector<uint8_t> ModbusTcpMessageFrame::extractBitValues(int startByte) cons
     int currentByte = startByte;
 
     for (int i = 0; i < nbBitValues; ++i) {
-        bitValues.emplace_back(((dataBytes[currentByte] >> currentBit) & 1) == 1 ? 1 : 0);
+        bitValues.emplace_back((dataBytes[currentByte] >> currentBit) & 1);
 
-        // jump to next byte and reset bit counter
+        // jump to next byte and reset bit counter or move to next bit
         if (currentBit == 7) {
             currentBit = 0;
             ++currentByte;
+        } else {
+            ++currentBit;
         }
     }
 
@@ -157,7 +159,7 @@ std::vector<uint16_t> ModbusTcpMessageFrame::extractRegisterValues(int startByte
     auto nbRegisterValues = getNumberOfValuesToReadOrWrite();
 
     // each 2-bytes represent a single register
-    for (int i = 0; i < nbRegisterValues; ++i) {
+    for (int i = 0; i < nbRegisterValues * 2; i += 2) {
         registerValues.emplace_back(static_cast<uint16_t>(dataBytes[startByte + i] << 8) +
                                     dataBytes[startByte + i + 1]);
     }

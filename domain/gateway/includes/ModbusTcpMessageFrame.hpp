@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 
-
 namespace Gateway {
 
 namespace ModbusByteOffset {
