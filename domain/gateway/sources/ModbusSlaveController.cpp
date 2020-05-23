@@ -30,7 +30,7 @@ void ModbusSlaveController::waitForIncomingConnection()
 void ModbusSlaveController::run()
 {
     int reqLen = 0;
-    ModbusTcpMessageFrame modbusRequest;
+    ModbusTcpRequest modbusRequest;
 
     // infinite request loop
     for (;;) {

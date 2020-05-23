@@ -22,8 +22,8 @@ public:
     void bind(const std::string& ipAddr, const int port) override;
     int listen(const int nbConns) override;
     void accept(int& socket) override;
-    int receive(Gateway::ModbusTcpMessageFrame& request) override;
-    int reply(Gateway::ModbusTcpMessageFrame& response) override;
+    int receive(Gateway::ModbusTcpRequest& request) override;
+    int reply(Gateway::ModbusTcpResponse& response) override;
     void close() override;
 
 private:

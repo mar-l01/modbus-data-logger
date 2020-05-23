@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cstdint>
 #include <iostream>
 #include <vector>
@@ -14,6 +16,7 @@ class ModbusTcpMessageFrame
 public:
     ModbusTcpMessageFrame();
 
+    // Modbus request/response header values and dynamic data bytes array
     uint16_t transactionIdentifier;
     uint16_t protocolIdentifier;
     uint16_t lengthField;
@@ -21,25 +24,18 @@ public:
     uint8_t functionCode;
     std::vector<uint8_t> dataBytes;
 
-    uint16_t getStartAddress() const;                              // w, req/res and r, req
-    uint16_t getNumberOfValuesToReadOrWrite() const;               // r/w, req/res
-    uint16_t getSingleValueToWrite() const;                        // w, req/res
-    uint8_t getNumberOfBytesOfValuesToWrite() const;               // w, req
-    uint8_t getNumberOfBytesOfReadValues() const;                  // r, res
-    std::vector<uint8_t> getCoilValuesToWrite() const;             // w, req
-    std::vector<uint16_t> getHoldingRegisterValuesToWrite() const; // w, req
-    std::vector<uint8_t> getReadBitValues() const;                 // r, res
-    std::vector<uint16_t> getReadRegisterValues() const;           // r, res
+    // common parts (request and response) of dynamic data bytes
+    uint16_t getStartAddress() const;                // w, req/res and r, req
+    uint16_t getNumberOfValuesToReadOrWrite() const; // r/w, req/res
+    uint16_t getSingleValueToWrite() const;          // w, req/res
 
+    std::vector<uint8_t> extractBitValues(int startByte, int nbBitValues) const;
+    std::vector<uint16_t> extractRegisterValues(int startByte, int nbRegisterValues) const;
     std::vector<uint8_t> asByteVector();
+    void initFromByteVector(const std::vector<uint8_t>& byteVector);
 
+    friend bool operator==(const ModbusTcpMessageFrame& mbMsgFrameA, const ModbusTcpMessageFrame& mbMsgFrameB);
     friend std::ostream& operator<<(std::ostream& os, const ModbusTcpMessageFrame& mbMsgFrame);
-
-    static ModbusTcpMessageFrame fromByteVector(const std::vector<uint8_t>& byteVector);
-
-private:
-    std::vector<uint8_t> extractBitValues(int startByte) const;
-    std::vector<uint16_t> extractRegisterValues(int startByte) const;
 };
 
 }

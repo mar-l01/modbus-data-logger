@@ -4,11 +4,11 @@ namespace Gateway {
 
 ModbusGateway::ModbusGateway() {}
 
-ModbusTcpMessageFrame ModbusGateway::forwardModbusRequestAndWaitForResponse(const ModbusTcpMessageFrame& mbRequest)
+ModbusTcpResponse ModbusGateway::forwardModbusRequestAndWaitForResponse(const ModbusTcpRequest& mbRequest)
 {
     // TODO(loipfingerm, 23.05.2020): use provided request to be able to extract correct numbers of read
     //      values from response
-    return ModbusTcpMessageFrame();
+    return ModbusTcpResponse();
 }
 
 }

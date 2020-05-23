@@ -12,6 +12,8 @@ protected:
     std::unique_ptr<ModbusTcpMessageFrame> createTestObject()
     {
         auto testObj = std::make_unique<ModbusTcpMessageFrame>();
+
+        // create test object with dummy values
         testObj->transactionIdentifier = 0x0001;
         testObj->protocolIdentifier = 0x0000;
         testObj->lengthField = 0x0006;
@@ -58,7 +60,54 @@ TEST_F(TestModbusTcpMessageFrame, getSingleValueToWrite)
     EXPECT_EQ(valToWrite, 0x5678);
 }
 
-TEST_F(TestModbusTcpMessageFrame, getNumberOfBytesOfValuesToWrite)
+TEST_F(TestModbusTcpMessageFrame, extractBitValues)
+{
+    auto testObj = createTestObject();
+
+    // set bit values to rextract
+    testObj->dataBytes = {0b10001100, 0b00011010};
+
+    auto bitValues = testObj->extractBitValues(0, 0xd);
+    std::vector<uint8_t> expectedBitValues = {0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1};
+    EXPECT_EQ(bitValues, expectedBitValues);
+}
+
+TEST_F(TestModbusTcpMessageFrame, extractRegisterValues)
+{
+    auto testObj = createTestObject();
+
+    // set 8 bytes of register values which represent 4 register
+    testObj->dataBytes = {0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
+
+    auto registerValues = testObj->extractRegisterValues(0, 4);
+    std::vector<uint16_t> expectedRegisterValues = {0x1122, 0x3344, 0x5566, 0x7788};
+    EXPECT_EQ(registerValues, expectedRegisterValues);
+}
+
+TEST_F(TestModbusTcpMessageFrame, asByteVector)
+{
+    auto testObj = createTestObject();
+    testObj->dataBytes = {0x01, 0x02, 0x03, 0x04};
+
+    auto testObjAsVector = testObj->asByteVector();
+    std::vector<uint8_t> expectedVector = {0x00, 0x01, 0x00, 0x00, 0x00, 0x06, 0xff, 0x03, 0x01, 0x02, 0x03, 0x04};
+
+    EXPECT_EQ(testObjAsVector, expectedVector);
+}
+
+TEST_F(TestModbusTcpMessageFrame, initFromByteVector)
+{
+    std::vector<uint8_t> testObjVector = {0x00, 0x01, 0x00, 0x00, 0x00, 0x06, 0xff, 0x03, 0x01, 0x02, 0x03, 0x04};
+    auto testObj = ModbusTcpMessageFrame();
+    testObj.initFromByteVector(testObjVector);
+
+    auto expectedObj = createTestObject();
+    expectedObj->dataBytes = {0x01, 0x02, 0x03, 0x04};
+
+    EXPECT_EQ(testObj, *expectedObj);
+}
+
+/*TEST_F(TestModbusTcpMessageFrame, getNumberOfBytesOfValuesToWrite)
 {
     auto testObj = createTestObject();
 
@@ -78,31 +127,7 @@ TEST_F(TestModbusTcpMessageFrame, getNumberOfBytesOfReadValues)
 
     auto bytesOfReadVals = testObj->getNumberOfBytesOfReadValues();
     EXPECT_EQ(bytesOfReadVals, 0x04);
-}
-
-TEST_F(TestModbusTcpMessageFrame, getCoilValuesToWrite)
-{
-    auto testObj = createTestObject();
-
-    // set 2 bytes of coil values (1 bit represents a single coil)
-    testObj->dataBytes = {0x12, 0x34, 0x00, 0x0d, 0x02, 0b10001100, 0b00011010};
-
-    auto writtenCoilValues = testObj->getCoilValuesToWrite();
-    std::vector<uint8_t> expectedWrittenCoilValues = {0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1};
-    EXPECT_EQ(writtenCoilValues, expectedWrittenCoilValues);
-}
-
-TEST_F(TestModbusTcpMessageFrame, getHoldingRegisterValuesToWrite)
-{
-    auto testObj = createTestObject();
-
-    // set 8 bytes of register values which represent 4 register
-    testObj->dataBytes = {0x12, 0x34, 0x00, 0x04, 0x08, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88};
-
-    auto writtenRegisterValues = testObj->getHoldingRegisterValuesToWrite();
-    std::vector<uint16_t> expectedWrittenRegisterValues = {0x1122, 0x3344, 0x5566, 0x7788};
-    EXPECT_EQ(writtenRegisterValues, expectedWrittenRegisterValues);
-}
+}*/
 
 /*TEST_F(TestModbusTcpMessageFrame, getReadBitValues)
 {

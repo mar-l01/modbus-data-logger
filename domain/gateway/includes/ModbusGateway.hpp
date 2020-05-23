@@ -8,7 +8,7 @@ class ModbusGateway : public ModbusRequestController
 {
 public:
     ModbusGateway();
-    ModbusTcpMessageFrame forwardModbusRequestAndWaitForResponse(const ModbusTcpMessageFrame& mbRequest) override;
+    ModbusTcpResponse forwardModbusRequestAndWaitForResponse(const ModbusTcpRequest& mbRequest) override;
 };
 
 }
