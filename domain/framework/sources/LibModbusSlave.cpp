@@ -73,7 +73,7 @@ void LibModbusSlave::accept(int& socket)
 #endif
 }
 
-int LibModbusSlave::receive(Gateway::ModbusTcpRequest& request)
+int LibModbusSlave::receive(std::shared_ptr<Gateway::ModbusTcpRequest>& request)
 {
     auto mbRequest = std::vector<uint8_t>(MODBUS_TCP_MAX_ADU_LENGTH);
 
@@ -83,12 +83,12 @@ int LibModbusSlave::receive(Gateway::ModbusTcpRequest& request)
     m_lastRequest = mbRequest;
 
     // convert byte vector into transferable object
-    request = Gateway::ModbusTcpRequest(mbRequest);
+    request = std::make_shared<Gateway::ModbusTcpRequest>(mbRequest);
 
     return m_messageLength;
 }
 
-int LibModbusSlave::reply(Gateway::ModbusTcpResponse& response)
+int LibModbusSlave::reply(std::shared_ptr<Gateway::ModbusTcpResponse>& response)
 {
     // TOOD(Markus2101, 13.05.2020): use response data from external slave and change
     //      mapping accordingly

@@ -4,11 +4,12 @@ namespace Gateway {
 
 ModbusGateway::ModbusGateway() {}
 
-ModbusTcpResponse ModbusGateway::forwardModbusRequestAndWaitForResponse(const ModbusTcpRequest& mbRequest)
+std::shared_ptr<ModbusTcpResponse> ModbusGateway::forwardModbusRequestAndWaitForResponse(
+  std::shared_ptr<ModbusTcpRequest>& mbRequest)
 {
     // TODO(loipfingerm, 23.05.2020): use provided request to be able to extract correct numbers of read
     //      values from response
-    return ModbusTcpResponse();
+    return std::make_shared<ModbusTcpResponse>();
 }
 
 }

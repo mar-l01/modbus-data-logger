@@ -30,7 +30,7 @@ void ModbusSlaveController::waitForIncomingConnection()
 void ModbusSlaveController::run()
 {
     int reqLen = 0;
-    ModbusTcpRequest modbusRequest;
+    auto modbusRequest = std::make_shared<ModbusTcpRequest>();
 
     // infinite request loop
     for (;;) {

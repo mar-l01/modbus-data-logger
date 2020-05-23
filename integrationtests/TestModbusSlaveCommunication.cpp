@@ -10,7 +10,7 @@ namespace {
 
 using namespace Fixture;
 
-TEST(TestModbusSlaveCommunication, checkReadWriteSingleRegister)
+TEST(TestModbusSlaveCommunication, checkWriteReadSingleRegister)
 {
     FixtureModbusSlaveController mbSlaveController;
     FixtureExternalModbusMaster mbTestMaster;
