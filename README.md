@@ -37,6 +37,11 @@ This section gives you a basic overview about the desired development process. M
 ### Opening the project in VS Code
 Open VS Code and click on the green-button on the bottom left corner. In the opening command palette select __Remote Containers: Open folder in container__ and select the root of your cloned repository (e.g. modbus-data-logger).
 
+### Project structure
+- __domain__: contains the actual source code separated into different subfolders. These folders represent various namespaces used to structure the project. Within each folder a _includes_, _sources_, (_interfaces_) and _testing_ subfolder is present which contain header files (.hpp), source files (.cpp), (abstract classes acting as interfaces (.hpp)) and unittests. The latter might contain a _gmock_ folder holding mocked objects.  
+- __integrationtests__: contains all files necessary to set up integrationtests. It further holds a _fixtures_ subfolder where required fixture-classes are placed.  
+- __scripts__: contains several scripts used for building the project or running some checks or test-scripts.  
+
 ### Working on a new feature
 Create a branch from the current _origin/master_ with a meaningful name describing the feature you start working. Working on a feature called _feature/my_first_feature_ requries following console commands, the first getting the current master version, the second creating the actual local feature branch:  
 `$ git fetch origin`  
