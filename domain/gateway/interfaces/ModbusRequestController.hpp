@@ -9,7 +9,8 @@ namespace Gateway {
 class ModbusRequestController
 {
 public:
-    virtual ModbusTcpResponse forwardModbusRequestAndWaitForResponse(const ModbusTcpRequest& mbRequest) = 0;
+    virtual std::shared_ptr<ModbusTcpResponse> forwardModbusRequestAndWaitForResponse(
+      std::shared_ptr<ModbusTcpRequest>& mbRequest) = 0;
 };
 
 }
