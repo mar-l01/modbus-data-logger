@@ -7,6 +7,6 @@
 class MockModbusRequestController : public Gateway::ModbusRequestController
 {
 public:
-    MOCK_METHOD(std::shared_ptr<Gateway::ModbusTcpResponse>, forwardModbusRequestAndWaitForResponse,
-                (std::shared_ptr<Gateway::ModbusTcpRequest>&), (override));
+    MOCK_METHOD(std::shared_ptr<Entity::ModbusTcpResponse>, forwardModbusRequestAndWaitForResponse,
+                (std::shared_ptr<Entity::ModbusTcpRequest>&), (override));
 };

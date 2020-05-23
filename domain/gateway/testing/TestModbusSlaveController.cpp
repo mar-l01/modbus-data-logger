@@ -9,6 +9,7 @@ namespace {
 
 using namespace ::testing;
 using namespace Gateway;
+using namespace Entity;
 
 class TestModbusSlaveController : public ::testing::Test
 {

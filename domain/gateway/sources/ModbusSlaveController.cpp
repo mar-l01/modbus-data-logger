@@ -6,7 +6,7 @@ namespace Gateway {
 
 ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,
                                              const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
-                                             const ModbusDataMapping& mbDataMapping, const std::string& ipAddr,
+                                             const Entity::ModbusDataMapping& mbDataMapping, const std::string& ipAddr,
                                              const int port)
     : m_modbusSlave(mbSlave)
     , m_modbusRequestController(mbReqCtrl)
@@ -30,7 +30,7 @@ void ModbusSlaveController::waitForIncomingConnection()
 void ModbusSlaveController::run()
 {
     int reqLen = 0;
-    auto modbusRequest = std::make_shared<ModbusTcpRequest>();
+    auto modbusRequest = std::make_shared<Entity::ModbusTcpRequest>();
 
     // infinite request loop
     for (;;) {

@@ -1,11 +1,10 @@
-#include "domain/gateway/includes/ModbusDataMapping.hpp"
+#include "domain/entity/includes/ModbusDataMapping.hpp"
 
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 namespace {
 
-using namespace Gateway;
+using namespace Entity;
 
 TEST(TestModbusDataMapping, mappingsAreEqual)
 {

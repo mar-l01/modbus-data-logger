@@ -1,11 +1,11 @@
-#include "domain/gateway/includes/ModbusTcpRequest.hpp"
-#include "domain/gateway/includes/ModbusTcpResponse.hpp"
+#include "domain/entity/includes/ModbusTcpRequest.hpp"
+#include "domain/entity/includes/ModbusTcpResponse.hpp"
 
 #include "gtest/gtest.h"
 
 namespace {
 
-using namespace Gateway;
+using namespace Entity;
 
 class TestModbusTcpResponse : public ::testing::Test
 {

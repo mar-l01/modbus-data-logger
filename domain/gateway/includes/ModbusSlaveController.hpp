@@ -17,7 +17,7 @@ class ModbusSlaveController
 public:
     ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,
                           const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
-                          const ModbusDataMapping& mbDataMapping, const std::string& ipAddr, const int port);
+                          const Entity::ModbusDataMapping& mbDataMapping, const std::string& ipAddr, const int port);
 
     void waitForIncomingConnection();
     void run();
@@ -26,7 +26,7 @@ public:
 private:
     std::shared_ptr<ModbusSlave> m_modbusSlave;
     std::shared_ptr<ModbusRequestController> m_modbusRequestController;
-    ModbusDataMapping m_modbusDataMapping;
+    Entity::ModbusDataMapping m_modbusDataMapping;
     std::string m_ipAddress;
     int m_port;
     int m_socket;

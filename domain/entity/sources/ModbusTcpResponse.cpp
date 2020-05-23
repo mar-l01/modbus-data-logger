@@ -1,8 +1,8 @@
-#include "domain/gateway/includes/ModbusTcpResponse.hpp"
+#include "domain/entity/includes/ModbusTcpResponse.hpp"
 
-#include "domain/gateway/includes/ModbusTcpRequest.hpp"
+#include "domain/entity/includes/ModbusTcpRequest.hpp"
 
-namespace Gateway {
+namespace Entity {
 
 ModbusTcpResponse::ModbusTcpResponse() {}
 

@@ -18,12 +18,12 @@ class LibModbusSlave : public Gateway::ModbusSlave
 public:
     LibModbusSlave();
 
-    void setModbusDataMapping(const Gateway::ModbusDataMapping& mbMapping) override;
+    void setModbusDataMapping(const Entity::ModbusDataMapping& mbMapping) override;
     void bind(const std::string& ipAddr, const int port) override;
     int listen(const int nbConns) override;
     void accept(int& socket) override;
-    int receive(std::shared_ptr<Gateway::ModbusTcpRequest>& request) override;
-    int reply(std::shared_ptr<Gateway::ModbusTcpResponse>& response) override;
+    int receive(std::shared_ptr<Entity::ModbusTcpRequest>& request) override;
+    int reply(std::shared_ptr<Entity::ModbusTcpResponse>& response) override;
     void close() override;
 
 private:

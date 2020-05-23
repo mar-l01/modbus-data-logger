@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-namespace Gateway {
+namespace Entity {
 
 namespace ModbusByteOffset {
 constexpr const int START_BYTE_READ_VALUES = 1;

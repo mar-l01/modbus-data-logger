@@ -1,6 +1,6 @@
-#include "domain/gateway/includes/ModbusTcpRequest.hpp"
+#include "domain/entity/includes/ModbusTcpRequest.hpp"
 
-namespace Gateway {
+namespace Entity {
 
 ModbusTcpRequest::ModbusTcpRequest() {}
 

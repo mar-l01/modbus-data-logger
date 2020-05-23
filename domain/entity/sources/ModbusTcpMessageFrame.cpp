@@ -1,8 +1,8 @@
-#include "domain/gateway/includes/ModbusTcpMessageFrame.hpp"
+#include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
 
 #include <iomanip>
 
-namespace Gateway {
+namespace Entity {
 
 ModbusTcpMessageFrame::ModbusTcpMessageFrame() {}
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "domain/gateway/includes/ModbusDataMapping.hpp"
+#include "domain/entity/includes/ModbusDataMapping.hpp"
 
 namespace FixtureTestConstants {
 
@@ -16,13 +16,13 @@ constexpr const int MODBUS_NUMBER_DISCRETE_INPUTS = 10;
 constexpr const int MODBUS_NUMBER_HOLDING_REGISTERS = 10;
 constexpr const int MODBUS_NUMBER_INPUT_REGISTERS = 10;
 
-constexpr Gateway::ModbusDataMapping MODBUS_DATA_MAPPING = {MODBUS_START_ADDRESS_COILS,
-                                                            MODBUS_START_ADDRESS_DISCRETE_INPUTS,
-                                                            MODBUS_START_ADDRESS_HOLDING_REGISTERS,
-                                                            MODBUS_START_ADDRESS_INPUT_REGISTERS,
-                                                            MODBUS_NUMBER_COILS,
-                                                            MODBUS_NUMBER_DISCRETE_INPUTS,
-                                                            MODBUS_NUMBER_HOLDING_REGISTERS,
-                                                            MODBUS_NUMBER_INPUT_REGISTERS};
+constexpr Entity::ModbusDataMapping MODBUS_DATA_MAPPING = {MODBUS_START_ADDRESS_COILS,
+                                                           MODBUS_START_ADDRESS_DISCRETE_INPUTS,
+                                                           MODBUS_START_ADDRESS_HOLDING_REGISTERS,
+                                                           MODBUS_START_ADDRESS_INPUT_REGISTERS,
+                                                           MODBUS_NUMBER_COILS,
+                                                           MODBUS_NUMBER_DISCRETE_INPUTS,
+                                                           MODBUS_NUMBER_HOLDING_REGISTERS,
+                                                           MODBUS_NUMBER_INPUT_REGISTERS};
 
 }
