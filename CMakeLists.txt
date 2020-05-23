@@ -112,6 +112,8 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/gateway/testing/TestModbusSlaveFactory.cpp"
     "domain/gateway/testing/TestModbusSlaveController.cpp"
     "domain/gateway/testing/TestModbusTcpMessageFrame.cpp"
+    "domain/gateway/testing/TestModbusTcpRequest.cpp"
+    #"domain/gateway/testing/TestModbusTcpResponse.cpp"
   )
   target_include_directories(gateway_test PRIVATE "${PROJECT_SOURCE_DIR}")
   target_sources(gateway_test
