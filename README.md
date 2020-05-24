@@ -39,7 +39,12 @@ Open VS Code and click on the green-button on the bottom left corner. In the ope
 
 ### Project structure
 - __domain__: contains the actual source code separated into different subfolders. These folders represent various namespaces used to structure the project. Within each folder a _includes_, _sources_, (_interfaces_) and _testing_ subfolder is present which contain header files (.hpp), source files (.cpp), (abstract classes acting as interfaces (.hpp)) and unittests. The latter might contain a _gmock_ folder holding mocked objects.  
-- __integrationtests__: contains all files necessary to set up integrationtests. It further holds a _fixtures_ subfolder where required fixture-classes are placed.  
+    - __application__: holds the main() method to start-up the application (currently only a console application)  
+    - __entity__: holds all core business data related components, e.g. data structures of Modbus data  
+    - __framework__: holds all framework-dependent components, e.g. files including 'libmodbus' library  
+    - __gateway__: holds all controllers and gateway related components, e.g. object used to set up the basic Modbus gateway communication  
+- __integrationtests__: contains all files necessary to set up integrationtests.  
+    - __fixtures__: holds all fixture classes for running the integrationtests
 - __scripts__: contains several scripts used for building the project or running some checks or test-scripts.  
 
 ### Working on a new feature
