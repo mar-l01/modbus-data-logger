@@ -11,9 +11,11 @@ project(modbus-data-logger-project)
 add_library(mdl_framework OBJECT
   # header files
   "domain/framework/includes/LibModbusSlave.hpp"
+  "domain/framework/includes/LibModbusMaster.hpp"
 
   # source files
   "domain/framework/sources/LibModbusSlave.cpp"
+  "domain/framework/sources/LibModbusMaster.cpp"
 )
 target_compile_options(mdl_framework PUBLIC -Wall -Wextra)
 target_include_directories(mdl_framework PRIVATE "${PROJECT_SOURCE_DIR}")
@@ -26,6 +28,7 @@ add_library(mdl_gateway OBJECT
   "domain/gateway/includes/ModbusSlaveController.hpp"
   "domain/gateway/includes/ModbusGateway.hpp"
   "domain/gateway/interfaces/ModbusSlave.hpp"
+  "domain/gateway/interfaces/ModbusMaster.hpp"
   "domain/gateway/interfaces/ModbusRequestController.hpp"
 
   # source files
