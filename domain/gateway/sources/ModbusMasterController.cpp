@@ -21,4 +21,9 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::getExternalMo
     return std::make_shared<Entity::ModbusTcpResponse>();
 }
 
+void ModbusMasterController::closeConnection()
+{
+    m_modbusMaster->close();
+}
+
 }

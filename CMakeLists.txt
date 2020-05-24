@@ -109,6 +109,7 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
     "domain/framework/testing/TestLibModbusSlave.cpp"
+    "domain/framework/testing/TestLibModbusMaster.cpp"
   )
   target_include_directories(framework_test PRIVATE "${PROJECT_SOURCE_DIR}")
   target_link_libraries(framework_test
@@ -128,6 +129,7 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_entity>
     "domain/gateway/testing/TestModbusComponentsFactory.cpp"
     "domain/gateway/testing/TestModbusSlaveController.cpp"
+    "domain/gateway/testing/TestModbusMasterController.cpp"
   )
   target_include_directories(gateway_test PRIVATE "${PROJECT_SOURCE_DIR}")
   target_sources(gateway_test

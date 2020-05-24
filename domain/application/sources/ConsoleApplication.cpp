@@ -36,5 +36,8 @@ int main()
       std::make_unique<ModbusSlaveController>(mbSlave, mbGateway, mbDataMapping, ipAddrExtMaster, portExtMaster);
     mbSlaveController->waitForIncomingConnection();
     mbSlaveController->run();
+
+    // close external connection in the end
     mbSlaveController->closeConnection();
+    mbMasterController->closeConnection();
 }
