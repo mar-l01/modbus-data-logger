@@ -5,6 +5,7 @@
 
 #include <memory>
 
+
 namespace Gateway {
 
 class ModbusMasterController : public ModbusResponseController
@@ -16,6 +17,8 @@ public:
 
     std::shared_ptr<Entity::ModbusTcpResponse> getExternalModbusSlaveResponse(
       std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest) override;
+
+    void closeConnection();
 
 private:
     std::shared_ptr<ModbusMaster> m_modbusMaster;
