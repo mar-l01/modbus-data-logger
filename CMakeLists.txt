@@ -26,14 +26,17 @@ add_library(mdl_gateway OBJECT
   # header files
   "domain/gateway/includes/ModbusSlaveFactory.hpp"
   "domain/gateway/includes/ModbusSlaveController.hpp"
+  "domain/gateway/includes/ModbusMasterController.hpp"
   "domain/gateway/includes/ModbusGateway.hpp"
   "domain/gateway/interfaces/ModbusSlave.hpp"
   "domain/gateway/interfaces/ModbusMaster.hpp"
   "domain/gateway/interfaces/ModbusRequestController.hpp"
+  "domain/gateway/interfaces/ModbusResponseController.hpp"
 
   # source files
   "domain/gateway/sources/ModbusSlaveFactory.cpp"
   "domain/gateway/sources/ModbusSlaveController.cpp"
+  "domain/gateway/sources/ModbusMasterController.cpp"
   "domain/gateway/sources/ModbusGateway.cpp"
 )
 target_compile_options(mdl_gateway PUBLIC -Wall -Wextra)
@@ -132,6 +135,7 @@ if (${CMAKE_ENABLE_TESTING})
       "domain/gateway/testing/gmock/MockModbusSlave.hpp"
       "domain/gateway/testing/gmock/MockModbusMaster.hpp"
       "domain/gateway/testing/gmock/MockModbusRequestController.hpp"
+      "domain/gateway/testing/gmock/MockModbusResponseController.hpp"
   )
   target_link_libraries(gateway_test
     PRIVATE

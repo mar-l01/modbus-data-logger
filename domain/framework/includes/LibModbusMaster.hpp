@@ -15,9 +15,10 @@ namespace Framework {
 
 class LibModbusMaster : public Gateway::ModbusMaster
 {
+public:
     LibModbusMaster();
 
-    void connect(const std::string& ipAddr, const int port) = 0;
+    void connect(const std::string& ipAddr, const int port);
 
     // read operations
     Gateway::ModbusReadOperationResult<uint8_t> readCoilValues(int startAddress, int nbValues);
