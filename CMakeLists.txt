@@ -24,7 +24,7 @@ target_link_libraries(mdl_framework PRIVATE /usr/local/lib/libmodbus.so)
 # build gateway object-library
 add_library(mdl_gateway OBJECT
   # header files
-  "domain/gateway/includes/ModbusSlaveFactory.hpp"
+  "domain/gateway/includes/ModbusComponentsFactory.hpp"
   "domain/gateway/includes/ModbusSlaveController.hpp"
   "domain/gateway/includes/ModbusMasterController.hpp"
   "domain/gateway/includes/ModbusGateway.hpp"
@@ -34,7 +34,7 @@ add_library(mdl_gateway OBJECT
   "domain/gateway/interfaces/ModbusResponseController.hpp"
 
   # source files
-  "domain/gateway/sources/ModbusSlaveFactory.cpp"
+  "domain/gateway/sources/ModbusComponentsFactory.cpp"
   "domain/gateway/sources/ModbusSlaveController.cpp"
   "domain/gateway/sources/ModbusMasterController.cpp"
   "domain/gateway/sources/ModbusGateway.cpp"
@@ -126,7 +126,7 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
-    "domain/gateway/testing/TestModbusSlaveFactory.cpp"
+    "domain/gateway/testing/TestModbusComponentsFactory.cpp"
     "domain/gateway/testing/TestModbusSlaveController.cpp"
   )
   target_include_directories(gateway_test PRIVATE "${PROJECT_SOURCE_DIR}")
