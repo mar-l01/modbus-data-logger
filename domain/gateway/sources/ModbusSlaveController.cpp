@@ -36,7 +36,7 @@ void ModbusSlaveController::run()
     for (;;) {
         do {
             reqLen = m_modbusSlave->receive(modbusRequest);
-        } while (reqLen == 0); // 0:= indication request ignored
+        } while (reqLen == 0); // 0 := indication request ignored
 
         // error in receiving request
         if (reqLen == -1) {

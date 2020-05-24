@@ -6,7 +6,6 @@
 
 #include <functional>
 #include <memory>
-#include <string>
 
 // use debug messages for libmodbus library
 #define DEBUG
