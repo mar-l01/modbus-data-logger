@@ -130,6 +130,7 @@ if (${CMAKE_ENABLE_TESTING})
   target_sources(gateway_test
     PRIVATE
       "domain/gateway/testing/gmock/MockModbusSlave.hpp"
+      "domain/gateway/testing/gmock/MockModbusMaster.hpp"
       "domain/gateway/testing/gmock/MockModbusRequestController.hpp"
   )
   target_link_libraries(gateway_test
