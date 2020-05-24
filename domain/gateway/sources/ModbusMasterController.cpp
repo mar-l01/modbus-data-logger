@@ -17,6 +17,7 @@ void ModbusMasterController::connect()
 std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::getExternalModbusSlaveResponse(
   std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest)
 {
+    // TODO(Markus2101, 24.05.2020): call respective method of Modbus master instance to obtain the reply
     return std::make_shared<Entity::ModbusTcpResponse>();
 }
 
