@@ -1,8 +1,7 @@
-#include "domain/framework/includes/LibModbusMaster.hpp"
+#include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
-#include "domain/gateway/includes/ModbusSlaveFactory.hpp"
 
 #include <iostream>
 
@@ -20,10 +19,10 @@ int main()
     const int portExtSlave = 5002;
 
     // get Modbus slave instance from factory and set up listening
-    auto mbSlave = ModbusSlaveFactory::createModbusSlave(ModbusSlaveFramework::LIBMODBUS);
+    auto mbSlave = ModbusComponentsFactory::createModbusSlave(ModbusComponentsFramework::LIBMODBUS);
 
-    // TODO(Markus2101, 24.05.2020): get Modbus master instance from factory
-    std::shared_ptr<ModbusMaster> mbMaster = std::make_shared<Framework::LibModbusMaster>();
+    // get Modbus master instance from factory
+    auto mbMaster = ModbusComponentsFactory::createModbusMaster(ModbusComponentsFramework::LIBMODBUS);
 
     // create Modbus master controller and connect to external Modbusslave
     auto mbMasterController = std::make_shared<ModbusMasterController>(mbMaster, ipAddrExtSlave, portExtSlave);
