@@ -1,24 +1,36 @@
 #pragma once
 
-#include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
-
 #include <memory>
+#include <string>
+#include <utility>
+#include <variant>
+#include <vector>
 
 namespace Entity {
-class ModbusTcpRequest;
 
-class ModbusTcpResponse : public ModbusTcpMessageFrame
+enum class ModbusOperationStatus
+{
+    SUCCESS,
+    FAIL
+};
+
+template<typename T>
+using ModbusReadOperationResult = std::pair<ModbusOperationStatus, std::vector<T>>;
+
+class ModbusTcpResponse
 {
 public:
     ModbusTcpResponse();
-    ModbusTcpResponse(const std::vector<uint8_t>& mbTcpRes, const std::shared_ptr<ModbusTcpRequest>& mbTcpReq);
+    ModbusTcpResponse(const ModbusOperationStatus mbOpStatus);
 
-    uint8_t getNumberOfBytesOfReadValues() const;
     std::vector<uint8_t> getReadBitValues() const;
     std::vector<uint16_t> getReadRegisterValues() const;
 
+    void setReadValues(const std::variant<std::vector<uint8_t>, std::vector<uint16_t>>& vals);
+
 private:
-    std::shared_ptr<ModbusTcpRequest> m_accordingModbusTcpRequest;
+    ModbusOperationStatus m_operationStatus;
+    std::variant<std::vector<uint8_t>, std::vector<uint16_t>> m_readValues; // 1-bit or 16-bit values
 };
 
 }

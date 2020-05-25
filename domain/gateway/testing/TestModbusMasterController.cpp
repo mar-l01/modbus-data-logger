@@ -1,6 +1,5 @@
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/testing/gmock/MockModbusMaster.hpp"
-#include "domain/gateway/testing/gmock/MockModbusResponseController.hpp"
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
@@ -16,7 +15,6 @@ class TestModbusMasterController : public ::testing::Test
 protected:
     TestModbusMasterController()
         : m_modbusMasterMock(std::make_shared<MockModbusMaster>())
-        , m_modbusResponseControllerMock(std::make_shared<MockModbusResponseController>())
         , m_ipAddr("127.0.0.1")
         , m_port(502)
     {}
@@ -29,7 +27,6 @@ protected:
     }
 
     std::shared_ptr<MockModbusMaster> m_modbusMasterMock;
-    std::shared_ptr<MockModbusResponseController> m_modbusResponseControllerMock;
     std::string m_ipAddr;
     int m_port;
 };

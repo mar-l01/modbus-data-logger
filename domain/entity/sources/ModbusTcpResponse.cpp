@@ -1,35 +1,42 @@
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 
-#include "domain/entity/includes/ModbusTcpRequest.hpp"
-
 namespace Entity {
 
 ModbusTcpResponse::ModbusTcpResponse() {}
 
-ModbusTcpResponse::ModbusTcpResponse(const std::vector<uint8_t>& mbTcpRes,
-                                     const std::shared_ptr<ModbusTcpRequest>& mbTcpReq)
-    : m_accordingModbusTcpRequest(mbTcpReq)
-{
-    initFromByteVector(mbTcpRes);
-}
-
-uint8_t ModbusTcpResponse::getNumberOfBytesOfReadValues() const
-{
-    // allowed FCs: 0x01, 0x02, 0x03, 0x04
-    // number of bytes to read (multiple bits or registers) := byte 0 of data-bytes
-    return dataBytes[0];
-}
+ModbusTcpResponse::ModbusTcpResponse(const ModbusOperationStatus mbOpStatus)
+    : m_operationStatus(mbOpStatus)
+{}
 
 std::vector<uint8_t> ModbusTcpResponse::getReadBitValues() const
 {
-    return extractBitValues(ModbusByteOffset::START_BYTE_READ_VALUES,
-                            m_accordingModbusTcpRequest->getNumberOfValuesToReadOrWrite());
+    auto readValues = std::vector<uint8_t>();
+
+    try {
+        readValues = std::get<std::vector<uint8_t>>(m_readValues);
+    } catch (std::bad_variant_access&) {
+        // TODO(Markus2101, 25.05.2020): strategy about error handling
+    }
+
+    return readValues;
 }
 
 std::vector<uint16_t> ModbusTcpResponse::getReadRegisterValues() const
 {
-    return extractRegisterValues(ModbusByteOffset::START_BYTE_READ_VALUES,
-                                 m_accordingModbusTcpRequest->getNumberOfValuesToReadOrWrite());
+    auto readValues = std::vector<uint16_t>();
+
+    try {
+        readValues = std::get<std::vector<uint16_t>>(m_readValues);
+    } catch (std::bad_variant_access&) {
+        // TODO(Markus2101, 25.05.2020): strategy about error handling
+    }
+
+    return readValues;
+}
+
+void ModbusTcpResponse::setReadValues(const std::variant<std::vector<uint8_t>, std::vector<uint16_t>>& vals)
+{
+    m_readValues = vals;
 }
 
 }

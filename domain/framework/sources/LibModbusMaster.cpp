@@ -36,44 +36,43 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 #endif
 }
 
-Gateway::ModbusReadOperationResult<uint8_t> LibModbusMaster::readCoilValues(int startAddress, int nbValues)
+Entity::ModbusReadOperationResult<uint8_t> LibModbusMaster::readCoilValues(int startAddress, int nbValues)
 {
     return readValues<uint8_t>(modbus_read_bits, startAddress, nbValues);
 }
 
-Gateway::ModbusReadOperationResult<uint8_t> LibModbusMaster::readDiscreteInputValues(int startAddress, int nbValues)
+Entity::ModbusReadOperationResult<uint8_t> LibModbusMaster::readDiscreteInputValues(int startAddress, int nbValues)
 {
     return readValues<uint8_t>(modbus_read_input_bits, startAddress, nbValues);
 }
 
-Gateway::ModbusReadOperationResult<uint16_t> LibModbusMaster::readHoldingRegisterValues(int startAddress, int nbValues)
+Entity::ModbusReadOperationResult<uint16_t> LibModbusMaster::readHoldingRegisterValues(int startAddress, int nbValues)
 {
     return readValues<uint16_t>(modbus_read_registers, startAddress, nbValues);
 }
 
-Gateway::ModbusReadOperationResult<uint16_t> LibModbusMaster::readInputRegisterValues(int startAddress, int nbValues)
+Entity::ModbusReadOperationResult<uint16_t> LibModbusMaster::readInputRegisterValues(int startAddress, int nbValues)
 {
     return readValues<uint16_t>(modbus_read_input_registers, startAddress, nbValues);
 }
 
-Gateway::ModbusOperationStatus LibModbusMaster::writeSingleCoilValue(int startAddress, uint8_t coilValue)
+Entity::ModbusOperationStatus LibModbusMaster::writeSingleCoilValue(int startAddress, uint8_t coilValue)
 {
     return writeSingleValue<int>(modbus_write_bit, startAddress, static_cast<int>(coilValue));
 }
 
-Gateway::ModbusOperationStatus LibModbusMaster::writeSingleHoldingRegisterValue(int startAddress,
-                                                                                uint16_t registerValue)
+Entity::ModbusOperationStatus LibModbusMaster::writeSingleHoldingRegisterValue(int startAddress, uint16_t registerValue)
 {
     return writeSingleValue<uint16_t>(modbus_write_register, startAddress, registerValue);
 }
 
-Gateway::ModbusOperationStatus LibModbusMaster::writeMultipleCoilValues(int startAddress,
-                                                                        const std::vector<uint8_t>& coilValues)
+Entity::ModbusOperationStatus LibModbusMaster::writeMultipleCoilValues(int startAddress,
+                                                                       const std::vector<uint8_t>& coilValues)
 {
     return writeValues<uint8_t>(modbus_write_bits, startAddress, coilValues);
 }
 
-Gateway::ModbusOperationStatus LibModbusMaster::writeMultipleHoldingRegisterValues(
+Entity::ModbusOperationStatus LibModbusMaster::writeMultipleHoldingRegisterValues(
   int startAddress, const std::vector<uint16_t>& registerValues)
 {
     return writeValues<uint16_t>(modbus_write_registers, startAddress, registerValues);
@@ -85,8 +84,8 @@ void LibModbusMaster::close()
 }
 
 template<typename T>
-Gateway::ModbusReadOperationResult<T> LibModbusMaster::readValues(int (*libmodbusReadFunction)(modbus_t*, int, int, T*),
-                                                                  int sAddr, int nbVals)
+Entity::ModbusReadOperationResult<T> LibModbusMaster::readValues(int (*libmodbusReadFunction)(modbus_t*, int, int, T*),
+                                                                 int sAddr, int nbVals)
 {
     // allocate enough memory for values to be read
     std::vector<T> readValuesVector(nbVals);
@@ -95,32 +94,31 @@ Gateway::ModbusReadOperationResult<T> LibModbusMaster::readValues(int (*libmodbu
     auto rc = libmodbusReadFunction(m_modbusContext.get(), sAddr, nbVals, readValuesVector.data());
 
     // set operation status depending on return code of function above
-    auto operationStatus = (rc == -1) ? Gateway::ModbusOperationStatus::FAIL : Gateway::ModbusOperationStatus::SUCCESS;
+    auto operationStatus = (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
 
-    return Gateway::ModbusReadOperationResult<T>(operationStatus, readValuesVector);
+    return Entity::ModbusReadOperationResult<T>(operationStatus, readValuesVector);
 }
 
 template<typename T>
-Gateway::ModbusOperationStatus LibModbusMaster::writeSingleValue(int (*libmodbusSingleWriteFunction)(modbus_t*, int, T),
-                                                                 int sAddr, uint16_t value)
+Entity::ModbusOperationStatus LibModbusMaster::writeSingleValue(int (*libmodbusSingleWriteFunction)(modbus_t*, int, T),
+                                                                int sAddr, uint16_t value)
 {
     // execute libmodbus function with respective parameters
     auto rc = libmodbusSingleWriteFunction(m_modbusContext.get(), sAddr, value);
 
     // set operation status depending on return code of function above
-    return (rc == -1) ? Gateway::ModbusOperationStatus::FAIL : Gateway::ModbusOperationStatus::SUCCESS;
+    return (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
 }
 
 template<typename T>
-Gateway::ModbusOperationStatus LibModbusMaster::writeValues(int (*libmodbusWriteFunction)(modbus_t*, int, int,
-                                                                                          const T*),
-                                                            int sAddr, std::vector<T> values)
+Entity::ModbusOperationStatus LibModbusMaster::writeValues(int (*libmodbusWriteFunction)(modbus_t*, int, int, const T*),
+                                                           int sAddr, std::vector<T> values)
 {
     // execute libmodbus function with respective parameters (number of values to write is required := size of vector)
     auto rc = libmodbusWriteFunction(m_modbusContext.get(), sAddr, values.size(), values.data());
 
     // set operation status depending on return code of function above
-    return (rc == -1) ? Gateway::ModbusOperationStatus::FAIL : Gateway::ModbusOperationStatus::SUCCESS;
+    return (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
 }
 
 }
