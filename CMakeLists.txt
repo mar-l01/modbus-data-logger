@@ -130,6 +130,7 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/gateway/testing/TestModbusComponentsFactory.cpp"
     "domain/gateway/testing/TestModbusSlaveController.cpp"
     "domain/gateway/testing/TestModbusMasterController.cpp"
+    "domain/gateway/testing/TestModbusGateway.cpp"
   )
   target_include_directories(gateway_test PRIVATE "${PROJECT_SOURCE_DIR}")
   target_sources(gateway_test

@@ -11,7 +11,7 @@ ModbusGateway::ModbusGateway(const std::shared_ptr<ModbusResponseController>& mb
 std::shared_ptr<Entity::ModbusTcpResponse> ModbusGateway::forwardModbusRequestAndWaitForResponse(
   std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest)
 {
-    // TODO(loipfingerm, 23.05.2020): use provided request to be able to extract correct numbers of read
+    // TODO(Markus2101, 23.05.2020): use provided request to be able to extract correct numbers of read
     //      values from response
 
     // forward Modbus request to controller which executes this request on external Modbus slave
