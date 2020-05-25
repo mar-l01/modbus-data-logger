@@ -31,53 +31,92 @@ void ModbusMasterController::closeConnection()
 std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMasterMethod(
   std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest)
 {
+    std::shared_ptr<Entity::ModbusTcpResponse> mbTcpResponse;
+
     switch (mbRequest->functionCode) {
         case static_cast<uint8_t>(ModbusFunctionCode::READ_COIL_VALUES): {
             auto mbResponse =
               m_modbusMaster->readCoilValues(mbRequest->getStartAddress(), mbRequest->getNumberOfValuesToReadOrWrite());
+
+            // create response object with operation state and read values
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse.first);
+            mbTcpResponse->setReadValues(mbResponse.second);
+
             break;
         }
         case static_cast<uint8_t>(ModbusFunctionCode::READ_DISCRETE_INPUT_VALUES): {
             auto mbResponse = m_modbusMaster->readDiscreteInputValues(mbRequest->getStartAddress(),
                                                                       mbRequest->getNumberOfValuesToReadOrWrite());
+
+            // create response object with operation state and read values
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse.first);
+            mbTcpResponse->setReadValues(mbResponse.second);
+
             break;
         }
         case static_cast<uint8_t>(ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES): {
             auto mbResponse = m_modbusMaster->readHoldingRegisterValues(mbRequest->getStartAddress(),
                                                                         mbRequest->getNumberOfValuesToReadOrWrite());
+
+            // create response object with operation state and read values
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse.first);
+            mbTcpResponse->setReadValues(mbResponse.second);
+
             break;
         }
         case static_cast<uint8_t>(ModbusFunctionCode::READ_INPUT_REGISTER_VALUES): {
             auto mbResponse = m_modbusMaster->readInputRegisterValues(mbRequest->getStartAddress(),
                                                                       mbRequest->getNumberOfValuesToReadOrWrite());
+
+            // create response object with operation state and read values
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse.first);
+            mbTcpResponse->setReadValues(mbResponse.second);
+
             break;
         }
         case static_cast<uint8_t>(ModbusFunctionCode::WRITE_SINGLE_COIL_VALUE): {
             auto mbResponse =
               m_modbusMaster->writeSingleCoilValue(mbRequest->getStartAddress(), mbRequest->getSingleValueToWrite());
+
+            // create response object with operation state only
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse);
+
             break;
         }
         case static_cast<uint8_t>(ModbusFunctionCode::WRITE_SINGLE_HOLDING_REGISTER_VALUE): {
             auto mbResponse = m_modbusMaster->writeSingleHoldingRegisterValue(mbRequest->getStartAddress(),
                                                                               mbRequest->getSingleValueToWrite());
+
+            // create response object with operation state only
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse);
+
             break;
         }
         case static_cast<uint8_t>(ModbusFunctionCode::WRITE_MULTIPLE_COIL_VALUES): {
             auto mbResponse =
               m_modbusMaster->writeMultipleCoilValues(mbRequest->getStartAddress(), mbRequest->getCoilValuesToWrite());
+
+            // create response object with operation state only
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse);
+
             break;
         }
         case static_cast<uint8_t>(ModbusFunctionCode::WRITE_MULTIPLE_HOLDING_REGISTER_VALUES): {
             auto mbResponse = m_modbusMaster->writeMultipleHoldingRegisterValues(
               mbRequest->getStartAddress(), mbRequest->getHoldingRegisterValuesToWrite());
+
+            // create response object with operation state only
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse);
+
             break;
         }
         default:
             // currently nothing to be done if FC is not supported
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(Entity::ModbusOperationStatus::FAIL);
             break;
     }
-}
 
-// TODO(Markus2101, 24.05.2020): add status to ModbusTcpResponse, to easily return it and handle errors
+    return mbTcpResponse;
+}
 
 }
