@@ -3,9 +3,19 @@
 #include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
 
 #include <memory>
+#include <utility>
 
 namespace Entity {
 class ModbusTcpRequest;
+
+enum class ModbusOperationStatus
+{
+    SUCCESS,
+    FAIL
+};
+
+template<typename T>
+using ModbusReadOperationResult = std::pair<ModbusOperationStatus, std::vector<T>>;
 
 class ModbusTcpResponse : public ModbusTcpMessageFrame
 {

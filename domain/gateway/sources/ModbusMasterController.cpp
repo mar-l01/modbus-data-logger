@@ -78,4 +78,6 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
     }
 }
 
+// TODO(Markus2101, 24.05.2020): add status to ModbusTcpResponse, to easily return it and handle errors
+
 }
