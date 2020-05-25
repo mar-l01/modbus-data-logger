@@ -1,14 +1,12 @@
 #pragma once
 
-#include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
-
 #include <memory>
 #include <string>
 #include <utility>
 #include <variant>
+#include <vector>
 
 namespace Entity {
-class ModbusTcpRequest;
 
 enum class ModbusOperationStatus
 {
@@ -19,13 +17,12 @@ enum class ModbusOperationStatus
 template<typename T>
 using ModbusReadOperationResult = std::pair<ModbusOperationStatus, std::vector<T>>;
 
-class ModbusTcpResponse : public ModbusTcpMessageFrame
+class ModbusTcpResponse
 {
 public:
     ModbusTcpResponse();
     ModbusTcpResponse(const ModbusOperationStatus mbOpStatus);
 
-    uint8_t getNumberOfBytesOfReadValues() const;
     std::vector<uint8_t> getReadBitValues() const;
     std::vector<uint16_t> getReadRegisterValues() const;
 

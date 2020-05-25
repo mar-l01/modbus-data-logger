@@ -13,30 +13,9 @@ protected:
     {
         auto testObj = std::make_unique<ModbusTcpResponse>();
 
-        // create test object with dummy values
-        testObj->transactionIdentifier = 0x0001;
-        testObj->protocolIdentifier = 0x0000;
-        testObj->lengthField = 0x0006;
-        testObj->unitIdentifier = 0xff;
-        testObj->functionCode = 0x03;
-
-        // data bytes will be set within each test case
-        testObj->dataBytes = {};
-
         return std::move(testObj);
     }
 };
-
-TEST_F(TestModbusTcpResponse, getNumberOfBytesOfReadValues)
-{
-    auto testObj = createTestObject();
-
-    // set number of bytes of read values
-    testObj->dataBytes = {0x04};
-
-    auto bytesOfReadVals = testObj->getNumberOfBytesOfReadValues();
-    EXPECT_EQ(bytesOfReadVals, 0x04);
-}
 
 TEST_F(TestModbusTcpResponse, getReadBitValues)
 {
@@ -61,4 +40,25 @@ TEST_F(TestModbusTcpResponse, getReadRegisterValues)
     auto readRegisterValues = testObj->getReadRegisterValues();
     EXPECT_EQ(readRegisterValues, expectedReadRegisterValues);
 }
+
+TEST_F(TestModbusTcpResponse, getReadBitValuesEmpty)
+{
+    auto testObj = createTestObject();
+
+    auto expectedEmptyBitVector = std::vector<uint8_t>();
+
+    auto readBitValues = testObj->getReadBitValues();
+    EXPECT_EQ(readBitValues, expectedEmptyBitVector);
+}
+
+TEST_F(TestModbusTcpResponse, getReadRegisterValuesEmpty)
+{
+    auto testObj = createTestObject();
+
+    auto expectedEmptyRegisterVector = std::vector<uint16_t>();
+
+    auto readRegisterValues = testObj->getReadRegisterValues();
+    EXPECT_EQ(readRegisterValues, expectedEmptyRegisterVector);
+}
+
 }
