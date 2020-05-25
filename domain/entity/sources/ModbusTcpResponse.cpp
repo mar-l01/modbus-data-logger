@@ -6,12 +6,9 @@ namespace Entity {
 
 ModbusTcpResponse::ModbusTcpResponse() {}
 
-ModbusTcpResponse::ModbusTcpResponse(const std::vector<uint8_t>& mbTcpRes,
-                                     const std::shared_ptr<ModbusTcpRequest>& mbTcpReq)
-    : m_accordingModbusTcpRequest(mbTcpReq)
-{
-    initFromByteVector(mbTcpRes);
-}
+ModbusTcpResponse::ModbusTcpResponse(const ModbusOperationStatus mbOpStatus)
+    : m_operationStatus(mbOpStatus)
+{}
 
 uint8_t ModbusTcpResponse::getNumberOfBytesOfReadValues() const
 {
@@ -22,14 +19,17 @@ uint8_t ModbusTcpResponse::getNumberOfBytesOfReadValues() const
 
 std::vector<uint8_t> ModbusTcpResponse::getReadBitValues() const
 {
-    return extractBitValues(ModbusByteOffset::START_BYTE_READ_VALUES,
-                            m_accordingModbusTcpRequest->getNumberOfValuesToReadOrWrite());
+    return std::get<std::vector<uint8_t>>(m_readValues);
 }
 
 std::vector<uint16_t> ModbusTcpResponse::getReadRegisterValues() const
 {
-    return extractRegisterValues(ModbusByteOffset::START_BYTE_READ_VALUES,
-                                 m_accordingModbusTcpRequest->getNumberOfValuesToReadOrWrite());
+    return std::get<std::vector<uint16_t>>(m_readValues);
+}
+
+void ModbusTcpResponse::setReadValues(const std::variant<std::vector<uint8_t>, std::vector<uint16_t>>& vals)
+{
+    m_readValues = vals;
 }
 
 }

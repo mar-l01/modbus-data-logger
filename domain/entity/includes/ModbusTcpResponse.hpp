@@ -3,7 +3,9 @@
 #include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
 
 #include <memory>
+#include <string>
 #include <utility>
+#include <variant>
 
 namespace Entity {
 class ModbusTcpRequest;
@@ -21,14 +23,17 @@ class ModbusTcpResponse : public ModbusTcpMessageFrame
 {
 public:
     ModbusTcpResponse();
-    ModbusTcpResponse(const std::vector<uint8_t>& mbTcpRes, const std::shared_ptr<ModbusTcpRequest>& mbTcpReq);
+    ModbusTcpResponse(const ModbusOperationStatus mbOpStatus);
 
     uint8_t getNumberOfBytesOfReadValues() const;
     std::vector<uint8_t> getReadBitValues() const;
     std::vector<uint16_t> getReadRegisterValues() const;
 
+    void setReadValues(const std::variant<std::vector<uint8_t>, std::vector<uint16_t>>& vals);
+
 private:
-    std::shared_ptr<ModbusTcpRequest> m_accordingModbusTcpRequest;
+    ModbusOperationStatus m_operationStatus;
+    std::variant<std::vector<uint8_t>, std::vector<uint16_t>> m_readValues; // 1-bit or 16-bit values
 };
 
 }
