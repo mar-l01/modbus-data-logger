@@ -4,8 +4,10 @@
 
 namespace FixtureTestConstants {
 
-constexpr const char* MODBUS_IP_ADDRESS = "127.0.0.1";
-constexpr const int MODBUS_PORT = 5002;
+constexpr const char* MODBUS_IP_ADDRESS_INTERNAL_SLAVE = "127.0.0.1";
+constexpr const int MODBUS_PORT_INTERNAL_SLAVE = 5002;
+constexpr const char* MODBUS_IP_ADDRESS_EXTERNAL_SLAVE = "127.0.0.1";
+constexpr const int MODBUS_PORT_EXTERNAL_SLAVE = 5003;
 
 constexpr const int MODBUS_START_ADDRESS_COILS = 0;
 constexpr const int MODBUS_START_ADDRESS_DISCRETE_INPUTS = 0;

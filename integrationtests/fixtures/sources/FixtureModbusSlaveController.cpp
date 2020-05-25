@@ -5,6 +5,7 @@
 
 #include "gtest/gtest.h"
 
+
 namespace Fixture {
 
 using namespace Gateway;
@@ -21,7 +22,8 @@ void FixtureModbusSlaveController::setUp(const int nbIter)
     m_modbusSlave->setModbusDataMapping(FixtureTestConstants::MODBUS_DATA_MAPPING);
 
     // let slave run on localhost:5002 accepting one connection
-    m_modbusSlave->bind(FixtureTestConstants::MODBUS_IP_ADDRESS, FixtureTestConstants::MODBUS_PORT);
+    m_modbusSlave->bind(FixtureTestConstants::MODBUS_IP_ADDRESS_INTERNAL_SLAVE,
+                        FixtureTestConstants::MODBUS_PORT_INTERNAL_SLAVE);
     m_socket = m_modbusSlave->listen(1);
     ASSERT_NE(m_socket, -1);
     m_modbusSlave->accept(m_socket);
