@@ -30,6 +30,14 @@ private:
     std::unique_ptr<modbus_mapping_t, std::function<void(modbus_mapping_t*)>> m_modbusMapping;
     int m_messageLength;
     std::vector<uint8_t> m_lastRequest;
+
+    void updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusTcpResponse>& response);
+    uint8_t getFunctionCode() const;
+    uint16_t getStartAddress() const;
+    void updateCoilValues(const std::vector<uint8_t>& values);
+    void updateDiscreteInputValues(const std::vector<uint8_t>& values);
+    void updateHoldingRegisterValues(const std::vector<uint16_t>& values);
+    void updateInputRegisterValues(const std::vector<uint16_t>& values);
 };
 
 }

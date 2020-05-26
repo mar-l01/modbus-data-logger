@@ -1,5 +1,7 @@
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 
+#include "domain/entity/includes/ModbusTcpConstants.hpp"
+
 namespace Gateway {
 
 ModbusMasterController::ModbusMasterController(const std::shared_ptr<ModbusMaster>& mbMaster, const std::string& ipAddr,
@@ -34,7 +36,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
     std::shared_ptr<Entity::ModbusTcpResponse> mbTcpResponse;
 
     switch (mbRequest->functionCode) {
-        case static_cast<uint8_t>(ModbusFunctionCode::READ_COIL_VALUES): {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_COIL_VALUES): {
             auto mbResponse =
               m_modbusMaster->readCoilValues(mbRequest->getStartAddress(), mbRequest->getNumberOfValuesToReadOrWrite());
 
@@ -44,7 +46,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
 
             break;
         }
-        case static_cast<uint8_t>(ModbusFunctionCode::READ_DISCRETE_INPUT_VALUES): {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_DISCRETE_INPUT_VALUES): {
             auto mbResponse = m_modbusMaster->readDiscreteInputValues(mbRequest->getStartAddress(),
                                                                       mbRequest->getNumberOfValuesToReadOrWrite());
 
@@ -54,7 +56,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
 
             break;
         }
-        case static_cast<uint8_t>(ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES): {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES): {
             auto mbResponse = m_modbusMaster->readHoldingRegisterValues(mbRequest->getStartAddress(),
                                                                         mbRequest->getNumberOfValuesToReadOrWrite());
 
@@ -64,7 +66,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
 
             break;
         }
-        case static_cast<uint8_t>(ModbusFunctionCode::READ_INPUT_REGISTER_VALUES): {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_INPUT_REGISTER_VALUES): {
             auto mbResponse = m_modbusMaster->readInputRegisterValues(mbRequest->getStartAddress(),
                                                                       mbRequest->getNumberOfValuesToReadOrWrite());
 
@@ -74,7 +76,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
 
             break;
         }
-        case static_cast<uint8_t>(ModbusFunctionCode::WRITE_SINGLE_COIL_VALUE): {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::WRITE_SINGLE_COIL_VALUE): {
             auto mbResponse =
               m_modbusMaster->writeSingleCoilValue(mbRequest->getStartAddress(), mbRequest->getSingleValueToWrite());
 
@@ -83,7 +85,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
 
             break;
         }
-        case static_cast<uint8_t>(ModbusFunctionCode::WRITE_SINGLE_HOLDING_REGISTER_VALUE): {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::WRITE_SINGLE_HOLDING_REGISTER_VALUE): {
             auto mbResponse = m_modbusMaster->writeSingleHoldingRegisterValue(mbRequest->getStartAddress(),
                                                                               mbRequest->getSingleValueToWrite());
 
@@ -92,7 +94,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
 
             break;
         }
-        case static_cast<uint8_t>(ModbusFunctionCode::WRITE_MULTIPLE_COIL_VALUES): {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::WRITE_MULTIPLE_COIL_VALUES): {
             auto mbResponse =
               m_modbusMaster->writeMultipleCoilValues(mbRequest->getStartAddress(), mbRequest->getCoilValuesToWrite());
 
@@ -101,7 +103,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
 
             break;
         }
-        case static_cast<uint8_t>(ModbusFunctionCode::WRITE_MULTIPLE_HOLDING_REGISTER_VALUES): {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::WRITE_MULTIPLE_HOLDING_REGISTER_VALUES): {
             auto mbResponse = m_modbusMaster->writeMultipleHoldingRegisterValues(
               mbRequest->getStartAddress(), mbRequest->getHoldingRegisterValuesToWrite());
 

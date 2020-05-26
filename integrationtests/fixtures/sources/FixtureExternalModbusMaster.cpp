@@ -44,8 +44,13 @@ void FixtureExternalModbusMaster::checkWriteReadModbusRequest()
                                readHoldingRegisters.data());
     EXPECT_EQ(rc, 1);
 
+    std::cout << "[ExternalModbusMaster] read value " << rc << '\n';
+
     // test for equality
     EXPECT_EQ(readHoldingRegisters[FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS], 0x1234);
+
+    std::cout << "[ExternalModbusMaster] after reading value: 0x" << std::hex
+              << readHoldingRegisters[FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS] << '\n';
 }
 
 void FixtureExternalModbusMaster::tearDown()

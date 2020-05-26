@@ -1,5 +1,7 @@
 #include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
 
+#include "domain/entity/includes/ModbusTcpConstants.hpp"
+
 #include <iomanip>
 
 namespace Entity {
@@ -10,21 +12,24 @@ uint16_t ModbusTcpMessageFrame::getStartAddress() const
 {
     // allowed FCs: all
     // start address := bytes 0 and 1 of data-bytes
-    return static_cast<uint16_t>(dataBytes[0] << 8) + dataBytes[1];
+    return static_cast<uint16_t>(dataBytes[ModbusDataByteOffset::START_ADDRESS] << 8) +
+           dataBytes[ModbusDataByteOffset::START_ADDRESS + 1];
 }
 
 uint16_t ModbusTcpMessageFrame::getNumberOfValuesToReadOrWrite() const
 {
     // allowed FCs: 0x01, 0x02, 0x03, 0x04, 0x0f, 0x10
     // number of values to read/write := bytes 2 and 3 of data-bytes
-    return static_cast<uint16_t>(dataBytes[2] << 8) + dataBytes[3];
+    return static_cast<uint16_t>(dataBytes[ModbusDataByteOffset::NUMBER_OF_VALUES_TO_READ_OR_WRITE] << 8) +
+           dataBytes[ModbusDataByteOffset::NUMBER_OF_VALUES_TO_READ_OR_WRITE + 1];
 }
 
 uint16_t ModbusTcpMessageFrame::getSingleValueToWrite() const
 {
     // allowed FCs: 0x05, 0x06
     // single value to write (coil or holding register) := bytes 2 and 3 of data-bytes
-    return static_cast<uint16_t>(dataBytes[2] << 8) + dataBytes[3];
+    return static_cast<uint16_t>(dataBytes[ModbusDataByteOffset::SINGLE_VALUE_TO_WRITE] << 8) +
+           dataBytes[ModbusDataByteOffset::SINGLE_VALUE_TO_WRITE + 1];
 }
 
 std::vector<uint8_t> ModbusTcpMessageFrame::extractBitValues(int startByte, int nbBitValues) const
@@ -86,11 +91,14 @@ std::vector<uint8_t> ModbusTcpMessageFrame::asByteVector()
 
 void ModbusTcpMessageFrame::initFromByteVector(const std::vector<uint8_t>& byteVector)
 {
-    transactionIdentifier = static_cast<uint16_t>(byteVector[0] << 8) + byteVector[1];
-    protocolIdentifier = static_cast<uint16_t>(byteVector[2] << 8) + byteVector[3];
-    lengthField = static_cast<uint16_t>(byteVector[4] << 8) + byteVector[5];
-    unitIdentifier = byteVector[6];
-    functionCode = byteVector[7];
+    transactionIdentifier = static_cast<uint16_t>(byteVector[ModbusMessageFrameByte::TRANSACTION_ID] << 8) +
+                            byteVector[ModbusMessageFrameByte::TRANSACTION_ID + 1];
+    protocolIdentifier = static_cast<uint16_t>(byteVector[ModbusMessageFrameByte::PROTOCOL_ID] << 8) +
+                         byteVector[ModbusMessageFrameByte::PROTOCOL_ID + 1];
+    lengthField = static_cast<uint16_t>(byteVector[ModbusMessageFrameByte::LENGTH_FIELD] << 8) +
+                  byteVector[ModbusMessageFrameByte::LENGTH_FIELD + 1];
+    unitIdentifier = byteVector[ModbusMessageFrameByte::UNIT_ID];
+    functionCode = byteVector[ModbusMessageFrameByte::FUNCTION_CODE];
 
     // only use the required data-bytes specified by the length field (-2 := unit-id and fc)
     for (int i = 0; i < static_cast<int>(lengthField) - 2; ++i) {

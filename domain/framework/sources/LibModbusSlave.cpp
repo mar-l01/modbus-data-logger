@@ -1,5 +1,7 @@
 #include "domain/framework/includes/LibModbusSlave.hpp"
 
+#include "domain/entity/includes/ModbusTcpConstants.hpp"
+
 #include <iostream>
 
 namespace Framework {
@@ -90,8 +92,8 @@ int LibModbusSlave::receive(std::shared_ptr<Entity::ModbusTcpRequest>& request)
 
 int LibModbusSlave::reply(std::shared_ptr<Entity::ModbusTcpResponse>& response)
 {
-    // TOOD(Markus2101, 13.05.2020): use response data from external slave and change
-    //      mapping accordingly
+    // if request wants to read values, update internal mapping accordingly
+    updateMappingIfNeeded(response);
 
     m_messageLength = modbus_reply(m_modbusContext.get(), m_lastRequest.data(), m_messageLength, m_modbusMapping.get());
 
@@ -101,6 +103,84 @@ int LibModbusSlave::reply(std::shared_ptr<Entity::ModbusTcpResponse>& response)
 void LibModbusSlave::close()
 {
     modbus_close(m_modbusContext.get());
+}
+
+void LibModbusSlave::updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusTcpResponse>& response)
+{
+    // extract function code
+    auto fc = getFunctionCode();
+    std::cout << "[LibModbusSlave] Function Code: " << static_cast<int>(fc) << '\n';
+    // update mapping if a read operation took place (0x01, 0x02, 0x03, 0x04)
+    switch (fc) {
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_COIL_VALUES):
+            updateCoilValues(response->getReadBitValues());
+            break;
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_DISCRETE_INPUT_VALUES):
+            updateDiscreteInputValues(response->getReadBitValues());
+            break;
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES):
+            std::cout << "[LibModbusSlave] Read holding register value: \n";
+            std::cout << response->getReadRegisterValues()[0] << '\n';
+            updateHoldingRegisterValues(response->getReadRegisterValues());
+            break;
+        case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_INPUT_REGISTER_VALUES):
+            updateInputRegisterValues(response->getReadRegisterValues());
+            break;
+#ifdef DEBUG
+        default:
+            std::cout << "[LibModbusSlave] No read operation took place\n";
+            break;
+#endif
+    }
+}
+
+uint8_t LibModbusSlave::getFunctionCode() const
+{
+    return m_lastRequest[Entity::ModbusMessageFrameByte::FUNCTION_CODE];
+}
+
+uint16_t LibModbusSlave::getStartAddress() const
+{
+    auto startAddr = static_cast<uint16_t>(m_lastRequest[Entity::ModbusMessageFrameByte::DATA_BYTES] << 8) +
+                     m_lastRequest[Entity::ModbusMessageFrameByte::DATA_BYTES + 1];
+
+    return startAddr;
+}
+
+void LibModbusSlave::updateCoilValues(const std::vector<uint8_t>& values)
+{
+    auto startAddr = getStartAddress();
+
+    for (int i = 0; i < m_modbusMapping->nb_bits; ++i) {
+        m_modbusMapping->tab_bits[startAddr - m_modbusMapping->start_bits + i] = values[i];
+    }
+}
+
+void LibModbusSlave::updateDiscreteInputValues(const std::vector<uint8_t>& values)
+{
+    auto startAddr = getStartAddress();
+
+    for (int i = 0; i < m_modbusMapping->nb_input_bits; ++i) {
+        m_modbusMapping->tab_input_bits[startAddr - m_modbusMapping->start_input_bits + i] = values[i];
+    }
+}
+
+void LibModbusSlave::updateHoldingRegisterValues(const std::vector<uint16_t>& values)
+{
+    auto startAddr = getStartAddress();
+
+    for (int i = 0; i < m_modbusMapping->nb_registers; ++i) {
+        m_modbusMapping->tab_registers[startAddr - m_modbusMapping->start_registers + i] = values[i];
+    }
+}
+
+void LibModbusSlave::updateInputRegisterValues(const std::vector<uint16_t>& values)
+{
+    auto startAddr = getStartAddress();
+
+    for (int i = 0; i < m_modbusMapping->nb_input_registers; ++i) {
+        m_modbusMapping->tab_input_registers[startAddr - m_modbusMapping->start_input_registers + i] = values[i];
+    }
 }
 
 }

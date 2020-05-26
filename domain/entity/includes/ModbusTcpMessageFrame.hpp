@@ -6,11 +6,6 @@
 
 namespace Entity {
 
-namespace ModbusByteOffset {
-constexpr const int START_BYTE_READ_VALUES = 1;
-constexpr const int START_BYTE_WRITE_VALUES = 5;
-}
-
 class ModbusTcpMessageFrame
 {
 public:

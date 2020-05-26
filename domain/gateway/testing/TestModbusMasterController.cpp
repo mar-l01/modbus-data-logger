@@ -1,3 +1,4 @@
+#include "domain/entity/includes/ModbusTcpConstants.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/testing/gmock/MockModbusMaster.hpp"
 

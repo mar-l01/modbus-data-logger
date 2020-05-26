@@ -17,6 +17,8 @@ enum class ModbusOperationStatus
 template<typename T>
 using ModbusReadOperationResult = std::pair<ModbusOperationStatus, std::vector<T>>;
 
+using ModbusReadValues = std::variant<std::vector<uint8_t>, std::vector<uint16_t>>;
+
 class ModbusTcpResponse
 {
 public:
@@ -26,11 +28,11 @@ public:
     std::vector<uint8_t> getReadBitValues() const;
     std::vector<uint16_t> getReadRegisterValues() const;
 
-    void setReadValues(const std::variant<std::vector<uint8_t>, std::vector<uint16_t>>& vals);
+    void setReadValues(const ModbusReadValues& vals);
 
 private:
     ModbusOperationStatus m_operationStatus;
-    std::variant<std::vector<uint8_t>, std::vector<uint16_t>> m_readValues; // 1-bit or 16-bit values
+    ModbusReadValues m_readValues; // 1-bit or 16-bit values
 };
 
 }

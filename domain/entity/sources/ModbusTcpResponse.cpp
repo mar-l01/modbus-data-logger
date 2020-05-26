@@ -1,5 +1,8 @@
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 
+#include <iostream>
+
+
 namespace Entity {
 
 ModbusTcpResponse::ModbusTcpResponse() {}
@@ -25,18 +28,25 @@ std::vector<uint16_t> ModbusTcpResponse::getReadRegisterValues() const
 {
     auto readValues = std::vector<uint16_t>();
 
+    std::cout << "[vec16] " << std::boolalpha << std::holds_alternative<std::vector<uint16_t>>(m_readValues) << '\n';
+    std::cout << "[vec8] " << std::boolalpha << std::holds_alternative<std::vector<uint8_t>>(m_readValues) << '\n';
+
     try {
         readValues = std::get<std::vector<uint16_t>>(m_readValues);
-    } catch (std::bad_variant_access&) {
+    } catch (std::bad_variant_access& ex) {
         // TODO(Markus2101, 25.05.2020): strategy about error handling
+        std::cout << ex.what() << '\n';
     }
 
     return readValues;
 }
 
-void ModbusTcpResponse::setReadValues(const std::variant<std::vector<uint8_t>, std::vector<uint16_t>>& vals)
+void ModbusTcpResponse::setReadValues(const ModbusReadValues& vals)
 {
     m_readValues = vals;
+
+    std::cout << "[vec16] " << std::boolalpha << std::holds_alternative<std::vector<uint16_t>>(m_readValues) << '\n';
+    std::cout << "[vec8] " << std::boolalpha << std::holds_alternative<std::vector<uint8_t>>(m_readValues) << '\n';
 }
 
 }
