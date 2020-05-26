@@ -12,11 +12,12 @@ void FixtureExternalModbusMaster::setUp()
 {
     // clang-format off
     m_modbusContext = std::move(std::unique_ptr<modbus_t, std::function<void(modbus_t*)>>(
-        modbus_new_tcp(FixtureTestConstants::MODBUS_IP_ADDRESS, FixtureTestConstants::MODBUS_PORT),
-            [this](modbus_t* mbCtx) {
-                // use custom-deleter provided by libmodbus
-                modbus_free(mbCtx);
-            }));
+        modbus_new_tcp(FixtureTestConstants::MODBUS_IP_ADDRESS_INTERNAL_SLAVE,
+            FixtureTestConstants::MODBUS_PORT_INTERNAL_SLAVE),
+                [this](modbus_t* mbCtx) {
+                    // use custom-deleter provided by libmodbus
+                    modbus_free(mbCtx);
+                }));
     // clang-format on
 
     // make sure context is not null
