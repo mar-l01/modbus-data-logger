@@ -2,6 +2,7 @@
 
 #include "domain/entity/includes/ModbusTcpConstants.hpp"
 
+#include <errno.h>
 #include <iostream>
 
 namespace Framework {
@@ -75,7 +76,7 @@ void LibModbusSlave::accept(int& socket)
 #endif
 }
 
-int LibModbusSlave::receive(std::shared_ptr<Entity::ModbusTcpRequest>& request)
+Gateway::ModbusReceiveStatus LibModbusSlave::receive(std::shared_ptr<Entity::ModbusTcpRequest>& request)
 {
     auto mbRequest = std::vector<uint8_t>(MODBUS_TCP_MAX_ADU_LENGTH);
 
@@ -87,22 +88,40 @@ int LibModbusSlave::receive(std::shared_ptr<Entity::ModbusTcpRequest>& request)
     // convert byte vector into transferable object
     request = std::make_shared<Entity::ModbusTcpRequest>(mbRequest);
 
-    return m_messageLength;
+    return getModbusReceiveStatus(m_messageLength);
 }
 
-int LibModbusSlave::reply(std::shared_ptr<Entity::ModbusTcpResponse>& response)
+Gateway::ModbusReceiveStatus LibModbusSlave::reply(std::shared_ptr<Entity::ModbusTcpResponse>& response)
 {
     // if request wants to read values, update internal mapping accordingly
     updateMappingIfNeeded(response);
 
     m_messageLength = modbus_reply(m_modbusContext.get(), m_lastRequest.data(), m_messageLength, m_modbusMapping.get());
 
-    return m_messageLength;
+    return getModbusReceiveStatus(m_messageLength);
 }
 
 void LibModbusSlave::close()
 {
     modbus_close(m_modbusContext.get());
+}
+
+Gateway::ModbusReceiveStatus LibModbusSlave::getModbusReceiveStatus(int requestLength) const
+{
+    Gateway::ModbusReceiveStatus mbRecStatus = Gateway::ModbusReceiveStatus::OK;
+
+    if (requestLength == -1) {
+        // errno indicates a closed connection by Modbus master
+        if (errno == LibModbusConstants::CONNECTION_CLOSED_BY_MASTER) {
+            mbRecStatus = Gateway::ModbusReceiveStatus::CONNECTION_CLOSED_BY_MASTER;
+        } else {
+            mbRecStatus = Gateway::ModbusReceiveStatus::FAILED;
+        }
+    } else if (requestLength == 0) {
+        mbRecStatus = Gateway::ModbusReceiveStatus::IGNORED;
+    } // else everything is fine (> 0)
+
+    return mbRecStatus;
 }
 
 void LibModbusSlave::updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusTcpResponse>& response)
