@@ -29,28 +29,34 @@ void ModbusSlaveController::waitForIncomingConnection()
 
 void ModbusSlaveController::run()
 {
-    int reqLen = 0;
+    ModbusReceiveStatus mbRecStatus = ModbusReceiveStatus::OK;
     auto modbusRequest = std::make_shared<Entity::ModbusTcpRequest>();
 
     // infinite request loop
     for (;;) {
         do {
-            reqLen = m_modbusSlave->receive(modbusRequest);
-        } while (reqLen == 0); // 0 := indication request ignored
+            mbRecStatus = m_modbusSlave->receive(modbusRequest);
+        } while (mbRecStatus == ModbusReceiveStatus::IGNORED);
 
         // error in receiving request
-        if (reqLen == -1) {
+        if (mbRecStatus == ModbusReceiveStatus::FAILED) {
             std::cerr << "[ModbusSlaveController] Failed to receive incoming request\n";
+            break;
+        }
+
+        // Modbus master closed connection
+        if (mbRecStatus == ModbusReceiveStatus::CONNECTION_CLOSED_BY_MASTER) {
+            std::cerr << "[ModbusSlaveController] Modbus master closed connection\n";
             break;
         }
 
         // forward Modbus request via gateway to external Modbus slave and receive response
         auto modbusResponse = m_modbusRequestController->forwardModbusRequestAndWaitForResponse(modbusRequest);
 
-        reqLen = m_modbusSlave->reply(modbusResponse);
+        mbRecStatus = m_modbusSlave->reply(modbusResponse);
 
         // error in replying response
-        if (reqLen == -1) {
+        if (mbRecStatus == ModbusReceiveStatus::FAILED) {
             std::cerr << "[ModbusSlaveController] Failed to return response\n";
             break;
         }

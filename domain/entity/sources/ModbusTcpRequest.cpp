@@ -1,5 +1,7 @@
 #include "domain/entity/includes/ModbusTcpRequest.hpp"
 
+#include "domain/entity/includes/ModbusTcpConstants.hpp"
+
 namespace Entity {
 
 ModbusTcpRequest::ModbusTcpRequest() {}
@@ -19,13 +21,13 @@ uint8_t ModbusTcpRequest::getNumberOfBytesOfValuesToWrite() const
 std::vector<uint8_t> ModbusTcpRequest::getCoilValuesToWrite() const
 {
     // allowed FC: 0x0f (start byte 5)
-    return extractBitValues(ModbusByteOffset::START_BYTE_WRITE_VALUES, getNumberOfValuesToReadOrWrite());
+    return extractBitValues(ModbusDataByteOffset::WRITE_VALUES, getNumberOfValuesToReadOrWrite());
 }
 
 std::vector<uint16_t> ModbusTcpRequest::getHoldingRegisterValuesToWrite() const
 {
     // allowed FC: 0x10 (start byte 5)
-    return extractRegisterValues(ModbusByteOffset::START_BYTE_WRITE_VALUES, getNumberOfValuesToReadOrWrite());
+    return extractRegisterValues(ModbusDataByteOffset::WRITE_VALUES, getNumberOfValuesToReadOrWrite());
 }
 
 }

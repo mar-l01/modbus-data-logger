@@ -172,16 +172,14 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
-    "integrationtests/TestExtMasterIntSlaveCommunication.cpp"
-    "integrationtests/TestIntMasterExtSlaveCommunication.cpp"
+    "integrationtests/TestModbusCommunication.cpp"
   )
   target_include_directories(integrationtest PRIVATE "${PROJECT_SOURCE_DIR}")
   target_sources(integrationtest
     PRIVATE
-      "integrationtests/fixtures/sources/FixtureModbusSlaveController.cpp"
-      "integrationtests/fixtures/sources/FixtureModbusMasterController.cpp"
       "integrationtests/fixtures/sources/FixtureExternalModbusMaster.cpp"
       "integrationtests/fixtures/sources/FixtureExternalModbusSlave.cpp"
+      "integrationtests/fixtures/sources/FixtureModbusGateway.cpp"
 )
   target_link_libraries(integrationtest
     PRIVATE
