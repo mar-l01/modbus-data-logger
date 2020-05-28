@@ -10,7 +10,7 @@ FixtureExternalModbusSlave::FixtureExternalModbusSlave()
     : m_socket(-1)
 {}
 
-void FixtureExternalModbusSlave::setUp(const int nbIter)
+void FixtureExternalModbusSlave::setUp()
 {
     // create Modbus context
     setupModbusContext();
@@ -21,8 +21,8 @@ void FixtureExternalModbusSlave::setUp(const int nbIter)
     // set up listening and wait for incoming connection
     bind();
 
-    // run Modbus loop for given number of iterations
-    run(nbIter);
+    // run Modbus loop
+    run();
 
     // close connection
     modbus_close(m_modbusContext.get());
@@ -56,19 +56,25 @@ void FixtureExternalModbusSlave::bind()
     modbus_tcp_accept(m_modbusContext.get(), &m_socket);
 }
 
-void FixtureExternalModbusSlave::run(const int nbIter)
+void FixtureExternalModbusSlave::run()
 {
     int reqLen = 0;
     auto modbusRequest = std::vector<uint8_t>(MODBUS_TCP_MAX_ADU_LENGTH);
 
     // infinite request loop
-    for (int i = 0; i < nbIter; ++i) {
+    for (;;) {
         do {
             reqLen = modbus_receive(m_modbusContext.get(), modbusRequest.data());
         } while (reqLen == 0); // 0:= indication request ignored
 
         // error in receiving request
         if (reqLen == -1) {
+            // Modbus master closed connection (no error)
+            if (errno == 104) {
+                break;
+            }
+
+            // else failing error
             FAIL();
             break;
         }

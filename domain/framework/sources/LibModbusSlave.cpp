@@ -138,7 +138,6 @@ void LibModbusSlave::updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusT
             updateDiscreteInputValues(response->getReadBitValues());
             break;
         case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES):
-            std::cout << response->getReadRegisterValues()[0] << '\n';
             updateHoldingRegisterValues(response->getReadRegisterValues());
             break;
         case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_INPUT_REGISTER_VALUES):

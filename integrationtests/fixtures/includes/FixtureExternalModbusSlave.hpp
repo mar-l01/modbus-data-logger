@@ -14,7 +14,7 @@ class FixtureExternalModbusSlave
 public:
     FixtureExternalModbusSlave();
 
-    void setUp(const int nbIter);
+    void setUp();
 
 private:
     std::unique_ptr<modbus_t, std::function<void(modbus_t*)>> m_modbusContext;
@@ -23,7 +23,7 @@ private:
 
     void setupModbusContext();
     void bind();
-    void run(const int nbIter);
+    void run();
     void setupAndFillModbusMapping();
 };
 

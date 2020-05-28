@@ -31,7 +31,6 @@ std::vector<uint16_t> ModbusTcpResponse::getReadRegisterValues() const
         readValues = std::get<std::vector<uint16_t>>(m_readValues);
     } catch (std::bad_variant_access& ex) {
         // TODO(Markus2101, 25.05.2020): strategy about error handling
-        std::cout << ex.what() << '\n';
     }
 
     return readValues;

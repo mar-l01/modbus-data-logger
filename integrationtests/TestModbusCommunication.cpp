@@ -16,10 +16,9 @@ TEST(TestModbusCommunication, checkWriteReadOperation)
     // create external test fixtures
     FixtureExternalModbusMaster mbExtMaster;
     FixtureExternalModbusSlave mbExtSlave;
-    const int nbReqLoopIter = 2; // receive-response | receive-response
 
     // run external Modbus slave in extra thread
-    std::thread mbExtSlaveThread(&FixtureExternalModbusSlave::setUp, &mbExtSlave, nbReqLoopIter);
+    std::thread mbExtSlaveThread(&FixtureExternalModbusSlave::setUp, &mbExtSlave);
 
     // wait some ms to make sure external slave is up and running
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
