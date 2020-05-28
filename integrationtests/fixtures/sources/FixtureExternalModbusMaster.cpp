@@ -30,27 +30,57 @@ void FixtureExternalModbusMaster::setUp()
     ASSERT_NE(ec, -1);
 }
 
-void FixtureExternalModbusMaster::checkWriteReadModbusRequest()
-{
-    std::vector<uint16_t> readHoldingRegisters(FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS);
-
-    // send Modbus request writing a single holding register...
-    auto rc = modbus_write_register(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS,
-                                    0x1234);
-    EXPECT_EQ(rc, 1);
-
-    // ...which is again read now
-    rc = modbus_read_registers(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS, 1,
-                               readHoldingRegisters.data());
-    EXPECT_EQ(rc, 1);
-
-    // test for equality
-    EXPECT_EQ(readHoldingRegisters[FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS], 0x1234);
-}
-
 void FixtureExternalModbusMaster::tearDown()
 {
     modbus_close(m_modbusContext.get());
+}
+
+void FixtureExternalModbusMaster::checkWriteReadRequestBits()
+{
+    std::vector<uint8_t> readBits(FixtureTestConstants::MODBUS_NUMBER_COILS);
+
+    std::vector<uint8_t> bitsToWrite{0, 1, 0, 1, 1, 1, 0, 1, 1};
+    int nbBits = static_cast<int>(bitsToWrite.size());
+
+    // send Modbus request writing several coils...
+    auto rc = modbus_write_bits(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_COILS, nbBits,
+                                bitsToWrite.data());
+    EXPECT_EQ(rc, nbBits);
+
+    // ...which are read again now
+    rc = modbus_read_bits(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_COILS, nbBits,
+                          readBits.data());
+    EXPECT_EQ(rc, nbBits);
+
+    // test for equality
+    for (int i = 0; i < nbBits; ++i) {
+        EXPECT_EQ(readBits[FixtureTestConstants::MODBUS_START_ADDRESS_COILS + i], bitsToWrite[i]);
+    }
+}
+
+void FixtureExternalModbusMaster::checkWriteReadRequestRegisters()
+{
+    std::vector<uint16_t> readHoldingRegisters(FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS);
+
+    std::vector<uint16_t> registersToWrite{0x1234, 0x5678, 0x9abc};
+    int nbRegisters = static_cast<int>(registersToWrite.size());
+
+    // send Modbus request writing several holding register...
+    auto rc =
+      modbus_write_registers(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS,
+                             nbRegisters, registersToWrite.data());
+    EXPECT_EQ(rc, nbRegisters);
+
+    // ...which are read again now
+    rc = modbus_read_registers(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS,
+                               nbRegisters, readHoldingRegisters.data());
+    EXPECT_EQ(rc, nbRegisters);
+
+    // test for equality
+    for (int i = 0; i < nbRegisters; ++i) {
+        EXPECT_EQ(readHoldingRegisters[FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS + i],
+                  registersToWrite[i]);
+    }
 }
 
 }
