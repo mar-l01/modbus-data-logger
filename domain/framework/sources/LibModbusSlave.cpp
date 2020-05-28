@@ -109,7 +109,7 @@ void LibModbusSlave::updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusT
 {
     // extract function code
     auto fc = getFunctionCode();
-    std::cout << "[LibModbusSlave] Function Code: " << static_cast<int>(fc) << '\n';
+
     // update mapping if a read operation took place (0x01, 0x02, 0x03, 0x04)
     switch (fc) {
         case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_COIL_VALUES):
@@ -119,7 +119,6 @@ void LibModbusSlave::updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusT
             updateDiscreteInputValues(response->getReadBitValues());
             break;
         case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES):
-            std::cout << "[LibModbusSlave] Read holding register value: \n";
             std::cout << response->getReadRegisterValues()[0] << '\n';
             updateHoldingRegisterValues(response->getReadRegisterValues());
             break;

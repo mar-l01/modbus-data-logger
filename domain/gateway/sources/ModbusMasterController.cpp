@@ -22,7 +22,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::getExternalMo
     // call respective method of Modbus master instance to obtain the reply
     auto modbusTcpResponse = callModbusMasterMethod(mbRequest);
 
-    return std::make_shared<Entity::ModbusTcpResponse>();
+    return modbusTcpResponse;
 }
 
 void ModbusMasterController::closeConnection()
