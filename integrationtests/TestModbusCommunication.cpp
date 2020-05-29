@@ -35,8 +35,9 @@ TEST(TestModbusCommunication, checkWriteReadOperation)
     // connect to internal Modbus slave
     mbExtMaster.setUp();
 
-    // write and read a single register
-    mbExtMaster.checkWriteReadModbusRequest();
+    // write and read values
+    mbExtMaster.checkWriteReadRequestBits();
+    mbExtMaster.checkWriteReadRequestRegisters();
 
     // wait some ms to make sure internal slave is up and running
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
