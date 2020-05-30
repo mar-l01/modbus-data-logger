@@ -83,4 +83,20 @@ void FixtureExternalModbusMaster::checkWriteReadRequestRegisters()
     }
 }
 
+void FixtureExternalModbusMaster::checkUnsupportedFunctionCode()
+{
+    std::vector<uint16_t> readHoldingRegisters(FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS);
+
+    std::vector<uint16_t> registersToWrite{0x1234, 0x5678};
+    int nbRegisters = static_cast<int>(registersToWrite.size());
+
+    // unsupported function code (0x17 := write & read holding registers)
+    auto rc = modbus_write_and_read_registers(
+      m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS, nbRegisters,
+      registersToWrite.data(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS, nbRegisters,
+      readHoldingRegisters.data());
+
+    EXPECT_EQ(rc, -1);
+}
+
 }
