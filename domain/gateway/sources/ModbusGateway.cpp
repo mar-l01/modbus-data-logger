@@ -2,7 +2,6 @@
 
 #include "domain/gateway/interfaces/ModbusResponseController.hpp"
 
-
 namespace Gateway {
 
 ModbusGateway::ModbusGateway(const std::shared_ptr<ModbusResponseController>& mbResponseController)
