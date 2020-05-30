@@ -60,6 +60,25 @@ TEST_F(TestModbusTcpMessageFrame, getSingleValueToWrite)
     EXPECT_EQ(valToWrite, 0x5678);
 }
 
+TEST_F(TestModbusTcpMessageFrame, isFunctionCodeSupportedTrue)
+{
+    auto testObj = createTestObject();
+
+    auto fcSupported = testObj->isFunctionCodeSupported();
+    EXPECT_TRUE(fcSupported);
+}
+
+TEST_F(TestModbusTcpMessageFrame, isFunctionCodeSupportedFalse)
+{
+    auto testObj = createTestObject();
+
+    // set unsupported function code
+    testObj->functionCode = 0x17;
+
+    auto fcSupported = testObj->isFunctionCodeSupported();
+    EXPECT_FALSE(fcSupported);
+}
+
 TEST_F(TestModbusTcpMessageFrame, extractBitValues)
 {
     auto testObj = createTestObject();

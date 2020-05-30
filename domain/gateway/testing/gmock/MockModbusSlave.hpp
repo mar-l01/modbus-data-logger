@@ -13,5 +13,7 @@ public:
     MOCK_METHOD(void, accept, (int&), (override));
     MOCK_METHOD(Gateway::ModbusReceiveStatus, receive, (std::shared_ptr<Entity::ModbusTcpRequest>&), (override));
     MOCK_METHOD(Gateway::ModbusReceiveStatus, reply, (std::shared_ptr<Entity::ModbusTcpResponse>&), (override));
+    MOCK_METHOD(Gateway::ModbusReceiveStatus, replyException, (Entity::ModbusExceptionCode mbExceptionCode),
+                (override));
     MOCK_METHOD(void, close, (), (override));
 };

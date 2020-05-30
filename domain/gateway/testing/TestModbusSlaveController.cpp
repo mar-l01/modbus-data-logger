@@ -17,22 +17,26 @@ protected:
     TestModbusSlaveController()
         : m_modbusSlaveMock(std::make_shared<MockModbusSlave>())
         , m_modbusRequestControllerMock(std::make_shared<MockModbusRequestController>())
+        , m_modbusTcpRequest(std::make_shared<ModbusTcpRequest>())
         , m_modbusDataMapping({0, 0, 0, 0, 1, 2, 3, 4})
         , m_ipAddr("127.0.0.1")
         , m_port(502)
-    {}
+    {
+        // set function code of received request (by mock) to be supported
+        m_modbusTcpRequest->functionCode = Entity::ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES;
+    }
 
     std::shared_ptr<ModbusSlaveController> createTestObject()
     {
         EXPECT_CALL(*m_modbusSlaveMock, setModbusDataMapping(_)).Times(1);
         auto testObj = std::make_shared<ModbusSlaveController>(m_modbusSlaveMock, m_modbusRequestControllerMock,
                                                                m_modbusDataMapping, m_ipAddr, m_port);
-
         return testObj;
     }
 
     std::shared_ptr<MockModbusSlave> m_modbusSlaveMock;
     std::shared_ptr<MockModbusRequestController> m_modbusRequestControllerMock;
+    std::shared_ptr<ModbusTcpRequest> m_modbusTcpRequest;
     ModbusDataMapping m_modbusDataMapping;
     std::string m_ipAddr;
     int m_port;
@@ -59,11 +63,15 @@ TEST_F(TestModbusSlaveController, runOneFullLoop)
     auto testObj = createTestObject();
 
     Sequence seq;
-    EXPECT_CALL(*m_modbusSlaveMock, receive(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
+    EXPECT_CALL(*m_modbusSlaveMock, receive(_))
+      .InSequence(seq)
+      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
+      .WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).InSequence(seq);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
+      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
       .WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED)); // break loop
     testObj->run();
 }
@@ -74,10 +82,17 @@ TEST_F(TestModbusSlaveController, runReceiveLoop)
 
     Sequence seq;
     // 0 invokes the do-while loop again
-    EXPECT_CALL(*m_modbusSlaveMock, receive(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::IGNORED));
-    EXPECT_CALL(*m_modbusSlaveMock, receive(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::IGNORED));
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
+      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
+      .WillOnce(Return(Gateway::ModbusReceiveStatus::IGNORED));
+    EXPECT_CALL(*m_modbusSlaveMock, receive(_))
+      .InSequence(seq)
+      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
+      .WillOnce(Return(Gateway::ModbusReceiveStatus::IGNORED));
+    EXPECT_CALL(*m_modbusSlaveMock, receive(_))
+      .InSequence(seq)
+      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
       .WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED)); // break loop
     testObj->run();
 }
@@ -86,7 +101,9 @@ TEST_F(TestModbusSlaveController, runFailedReceive)
 {
     auto testObj = createTestObject();
 
-    EXPECT_CALL(*m_modbusSlaveMock, receive(_)).WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED));
+    EXPECT_CALL(*m_modbusSlaveMock, receive(_))
+      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
+      .WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED));
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).Times(0);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).Times(0);
     testObj->run();
@@ -97,7 +114,10 @@ TEST_F(TestModbusSlaveController, runFailedReply)
     auto testObj = createTestObject();
 
     Sequence seq;
-    EXPECT_CALL(*m_modbusSlaveMock, receive(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
+    EXPECT_CALL(*m_modbusSlaveMock, receive(_))
+      .InSequence(seq)
+      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
+      .WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).InSequence(seq);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED));
     testObj->run();
