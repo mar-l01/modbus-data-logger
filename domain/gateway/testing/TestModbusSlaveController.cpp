@@ -65,14 +65,13 @@ TEST_F(TestModbusSlaveController, runOneFullLoop)
     Sequence seq;
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
-      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
-      .WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
+      .WillOnce(DoAll(testing::SetArgReferee<0>(m_modbusTcpRequest), Return(Gateway::ModbusReceiveStatus::OK)));
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).InSequence(seq);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
-      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
-      .WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED)); // break loop
+      .WillOnce(DoAll(testing::SetArgReferee<0>(m_modbusTcpRequest),
+                      Return(Gateway::ModbusReceiveStatus::FAILED))); // break loop
     testObj->run();
 }
 
@@ -84,16 +83,14 @@ TEST_F(TestModbusSlaveController, runReceiveLoop)
     // 0 invokes the do-while loop again
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
-      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
-      .WillOnce(Return(Gateway::ModbusReceiveStatus::IGNORED));
+      .WillOnce(DoAll(testing::SetArgReferee<0>(m_modbusTcpRequest), Return(Gateway::ModbusReceiveStatus::IGNORED)));
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
-      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
-      .WillOnce(Return(Gateway::ModbusReceiveStatus::IGNORED));
+      .WillOnce(DoAll(testing::SetArgReferee<0>(m_modbusTcpRequest), Return(Gateway::ModbusReceiveStatus::IGNORED)));
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
-      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
-      .WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED)); // break loop
+      .WillOnce(DoAll(testing::SetArgReferee<0>(m_modbusTcpRequest),
+                      Return(Gateway::ModbusReceiveStatus::FAILED))); // break loop
     testObj->run();
 }
 
@@ -102,8 +99,7 @@ TEST_F(TestModbusSlaveController, runFailedReceive)
     auto testObj = createTestObject();
 
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
-      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
-      .WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED));
+      .WillOnce(DoAll(testing::SetArgReferee<0>(m_modbusTcpRequest), Return(Gateway::ModbusReceiveStatus::FAILED)));
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).Times(0);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).Times(0);
     testObj->run();
@@ -119,8 +115,7 @@ TEST_F(TestModbusSlaveController, runWithUnsupportedFunctionCode)
     Sequence seq;
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
-      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
-      .WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
+      .WillOnce(DoAll(testing::SetArgReferee<0>(m_modbusTcpRequest), Return(Gateway::ModbusReceiveStatus::OK)));
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).Times(0);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).Times(0);
     EXPECT_CALL(*m_modbusSlaveMock, replyException(+Entity::ModbusExceptionCode::ILLEGAL_FUNCTION))
@@ -136,8 +131,7 @@ TEST_F(TestModbusSlaveController, runFailedReply)
     Sequence seq;
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
-      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
-      .WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
+      .WillOnce(DoAll(testing::SetArgReferee<0>(m_modbusTcpRequest), Return(Gateway::ModbusReceiveStatus::OK)));
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).InSequence(seq);
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED));
     testObj->run();
