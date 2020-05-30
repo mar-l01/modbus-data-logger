@@ -1,3 +1,5 @@
+#include <enum.h>
+
 namespace Entity {
 
 // bytes of respective field inside a Modbus message frame
@@ -20,8 +22,8 @@ constexpr const int WRITE_VALUES = 5;
 }
 
 // currently available Modbus function codes
-enum class ModbusFunctionCode : unsigned char
-{
+// clang-format off
+BETTER_ENUM(ModbusFunctionCode, unsigned char,
     // read FCs
     READ_COIL_VALUES = 0x01,
     READ_DISCRETE_INPUT_VALUES,
@@ -33,6 +35,7 @@ enum class ModbusFunctionCode : unsigned char
     WRITE_SINGLE_HOLDING_REGISTER_VALUE,
     WRITE_MULTIPLE_COIL_VALUES = 0x0f,
     WRITE_MULTIPLE_HOLDING_REGISTER_VALUES
-};
+)
+// clang-format on
 
 }
