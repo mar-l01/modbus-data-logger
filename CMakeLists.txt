@@ -18,7 +18,10 @@ add_library(mdl_framework OBJECT
   "domain/framework/sources/LibModbusMaster.cpp"
 )
 target_compile_options(mdl_framework PUBLIC -Wall -Wextra)
-target_include_directories(mdl_framework PRIVATE "${PROJECT_SOURCE_DIR}")
+target_include_directories(mdl_framework PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+  "/home/docker/better-enums/"
+)
 target_link_libraries(mdl_framework PRIVATE /usr/local/lib/libmodbus.so)
 
 # build gateway object-library
@@ -40,7 +43,10 @@ add_library(mdl_gateway OBJECT
   "domain/gateway/sources/ModbusGateway.cpp"
 )
 target_compile_options(mdl_gateway PUBLIC -Wall -Wextra)
-target_include_directories(mdl_gateway PRIVATE "${PROJECT_SOURCE_DIR}")
+target_include_directories(mdl_gateway PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+  "/home/docker/better-enums/"
+)
 
 # build entity object-library
 add_library(mdl_entity OBJECT
@@ -49,6 +55,7 @@ add_library(mdl_entity OBJECT
   "domain/entity/includes/ModbusTcpMessageFrame.hpp"
   "domain/entity/includes/ModbusTcpRequest.hpp"
   "domain/entity/includes/ModbusTcpResponse.hpp"
+  "domain/entity/includes/ModbusTcpConstants.hpp"
 
   # source files
   "domain/entity/sources/ModbusDataMapping.cpp"
@@ -57,7 +64,10 @@ add_library(mdl_entity OBJECT
   "domain/entity/sources/ModbusTcpResponse.cpp"
 )
 target_compile_options(mdl_entity PUBLIC -Wall -Wextra)
-target_include_directories(mdl_entity PRIVATE "${PROJECT_SOURCE_DIR}")
+target_include_directories(mdl_entity PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+  "/home/docker/better-enums/"
+)
 
 # build executable target
 add_executable(modbus_data_logger
@@ -67,7 +77,10 @@ add_executable(modbus_data_logger
   "domain/application/sources/ConsoleApplication.cpp"
 )
 target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra)
-target_include_directories(modbus_data_logger PRIVATE "${PROJECT_SOURCE_DIR}")
+target_include_directories(modbus_data_logger PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+  "/home/docker/better-enums/"
+)
 target_link_libraries(modbus_data_logger PRIVATE /usr/local/lib/libmodbus.so)
 
 ##################################################################
@@ -111,7 +124,10 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/framework/testing/TestLibModbusSlave.cpp"
     "domain/framework/testing/TestLibModbusMaster.cpp"
   )
-  target_include_directories(framework_test PRIVATE "${PROJECT_SOURCE_DIR}")
+  target_include_directories(framework_test PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+    "/home/docker/better-enums/"
+  )
   target_link_libraries(framework_test
     PRIVATE
       /usr/local/lib/libmodbus.so
@@ -132,7 +148,10 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/gateway/testing/TestModbusMasterController.cpp"
     "domain/gateway/testing/TestModbusGateway.cpp"
   )
-  target_include_directories(gateway_test PRIVATE "${PROJECT_SOURCE_DIR}")
+  target_include_directories(gateway_test PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+    "/home/docker/better-enums/"
+  )
   target_sources(gateway_test
     PRIVATE
       "domain/gateway/testing/gmock/MockModbusSlave.hpp"
@@ -158,7 +177,10 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/entity/testing/TestModbusTcpRequest.cpp"
     "domain/entity/testing/TestModbusTcpResponse.cpp"
   )
-  target_include_directories(entity_test PRIVATE "${PROJECT_SOURCE_DIR}")
+  target_include_directories(entity_test PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+    "/home/docker/better-enums/"
+  )
   target_link_libraries(entity_test
     PRIVATE
       gtest
@@ -174,7 +196,10 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_entity>
     "integrationtests/TestModbusCommunication.cpp"
   )
-  target_include_directories(integrationtest PRIVATE "${PROJECT_SOURCE_DIR}")
+  target_include_directories(integrationtest PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+    "/home/docker/better-enums/"
+  )
   target_sources(integrationtest
     PRIVATE
       "integrationtests/fixtures/sources/FixtureExternalModbusMaster.cpp"
