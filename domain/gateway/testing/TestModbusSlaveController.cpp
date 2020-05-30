@@ -109,6 +109,26 @@ TEST_F(TestModbusSlaveController, runFailedReceive)
     testObj->run();
 }
 
+TEST_F(TestModbusSlaveController, runWithUnsupportedFunctionCode)
+{
+    auto testObj = createTestObject();
+
+    // set unsupported function code
+    m_modbusTcpRequest->functionCode = 0x17;
+
+    Sequence seq;
+    EXPECT_CALL(*m_modbusSlaveMock, receive(_))
+      .InSequence(seq)
+      .WillOnce(testing::SetArgReferee<0>(m_modbusTcpRequest))
+      .WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
+    EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_)).Times(0);
+    EXPECT_CALL(*m_modbusSlaveMock, reply(_)).Times(0);
+    EXPECT_CALL(*m_modbusSlaveMock, replyException(+Entity::ModbusExceptionCode::ILLEGAL_FUNCTION))
+      .InSequence(seq)
+      .WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED)); // break loop
+    testObj->run();
+}
+
 TEST_F(TestModbusSlaveController, runFailedReply)
 {
     auto testObj = createTestObject();
