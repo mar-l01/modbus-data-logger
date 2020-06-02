@@ -1,12 +1,14 @@
 #pragma once
 
 #include "domain/entity/includes/ModbusDataMapping.hpp"
+#include "domain/entity/includes/ModbusTcpConstants.hpp"
 #include "domain/entity/includes/ModbusTcpRequest.hpp"
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 
 #include <cstdint>
 #include <memory>
 #include <vector>
+
 
 namespace Gateway {
 
@@ -28,6 +30,7 @@ public:
     virtual void accept(int& socket) = 0;
     virtual Gateway::ModbusReceiveStatus receive(std::shared_ptr<Entity::ModbusTcpRequest>& request) = 0;
     virtual Gateway::ModbusReceiveStatus reply(std::shared_ptr<Entity::ModbusTcpResponse>& response) = 0;
+    virtual Gateway::ModbusReceiveStatus replyException(Entity::ModbusExceptionCode mbExceptionCode) = 0;
     virtual void close() = 0;
 };
 

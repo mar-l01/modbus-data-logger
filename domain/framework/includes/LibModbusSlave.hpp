@@ -7,7 +7,6 @@
 #include <functional>
 #include <memory>
 
-
 // use debug messages for libmodbus library
 #define DEBUG
 
@@ -28,6 +27,7 @@ public:
     void accept(int& socket) override;
     Gateway::ModbusReceiveStatus receive(std::shared_ptr<Entity::ModbusTcpRequest>& request) override;
     Gateway::ModbusReceiveStatus reply(std::shared_ptr<Entity::ModbusTcpResponse>& response) override;
+    Gateway::ModbusReceiveStatus replyException(Entity::ModbusExceptionCode mbExceptionCode) override;
     void close() override;
 
 private:

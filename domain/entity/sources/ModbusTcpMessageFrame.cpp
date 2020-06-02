@@ -2,7 +2,9 @@
 
 #include "domain/entity/includes/ModbusTcpConstants.hpp"
 
+#include <algorithm>
 #include <iomanip>
+
 
 namespace Entity {
 
@@ -30,6 +32,16 @@ uint16_t ModbusTcpMessageFrame::getSingleValueToWrite() const
     // single value to write (coil or holding register) := bytes 2 and 3 of data-bytes
     return static_cast<uint16_t>(dataBytes[ModbusDataByteOffset::SINGLE_VALUE_TO_WRITE] << 8) +
            dataBytes[ModbusDataByteOffset::SINGLE_VALUE_TO_WRITE + 1];
+}
+
+bool ModbusTcpMessageFrame::isFunctionCodeSupported() const
+{
+    auto allSupportedFCs = ModbusFunctionCode::_values();
+    if (std::find(allSupportedFCs.begin(), allSupportedFCs.end(), functionCode) != allSupportedFCs.end()) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 std::vector<uint8_t> ModbusTcpMessageFrame::extractBitValues(int startByte, int nbBitValues) const

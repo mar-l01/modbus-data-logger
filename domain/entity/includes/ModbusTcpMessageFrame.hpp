@@ -24,6 +24,8 @@ public:
     uint16_t getNumberOfValuesToReadOrWrite() const; // r/w, req/res
     uint16_t getSingleValueToWrite() const;          // w, req/res
 
+    bool isFunctionCodeSupported() const;
+
     std::vector<uint8_t> extractBitValues(int startByte, int nbBitValues) const;
     std::vector<uint16_t> extractRegisterValues(int startByte, int nbRegisterValues) const;
     std::vector<uint8_t> asByteVector();

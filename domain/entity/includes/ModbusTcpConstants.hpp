@@ -1,3 +1,5 @@
+#pragma once
+
 #include <enum.h>
 
 namespace Entity {
@@ -21,7 +23,6 @@ constexpr const int SINGLE_VALUE_TO_WRITE = 2;
 constexpr const int WRITE_VALUES = 5;
 }
 
-// currently available Modbus function codes
 // clang-format off
 BETTER_ENUM(ModbusFunctionCode, unsigned char,
     // read FCs
@@ -35,6 +36,22 @@ BETTER_ENUM(ModbusFunctionCode, unsigned char,
     WRITE_SINGLE_HOLDING_REGISTER_VALUE,
     WRITE_MULTIPLE_COIL_VALUES = 0x0f,
     WRITE_MULTIPLE_HOLDING_REGISTER_VALUES
+)
+// clang-format on
+
+// clang-format off
+BETTER_ENUM(ModbusExceptionCode, unsigned char,
+    ILLEGAL_FUNCTION  = 0x01,
+    ILLEGAL_DATA_ADDRESS,
+    ILLEGAL_DATA_VALUE,
+    SLAVE_DEVICE_FAILURE,
+    ACKNOWLEDGE,
+    SLAVE_DEVICE_BUSY,
+    NEGATIVE_ACKNOWLEDGE,
+    MEMORY_PARITY_ERROR,
+    // 9 is not defined
+    GATEWAY_PATH_UNAVAILABLE = 0x0a,
+    GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND
 )
 // clang-format on
 

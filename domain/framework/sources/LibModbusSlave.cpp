@@ -101,6 +101,14 @@ Gateway::ModbusReceiveStatus LibModbusSlave::reply(std::shared_ptr<Entity::Modbu
     return getModbusReceiveStatus(m_messageLength);
 }
 
+Gateway::ModbusReceiveStatus LibModbusSlave::replyException(Entity::ModbusExceptionCode mbExceptionCode)
+{
+    m_messageLength =
+      modbus_reply_exception(m_modbusContext.get(), m_lastRequest.data(), mbExceptionCode._to_integral());
+
+    return getModbusReceiveStatus(m_messageLength);
+}
+
 void LibModbusSlave::close()
 {
     modbus_close(m_modbusContext.get());

@@ -50,10 +50,16 @@ void ModbusSlaveController::run()
             break;
         }
 
-        // forward Modbus request via gateway to external Modbus slave and receive response
-        auto modbusResponse = m_modbusRequestController->forwardModbusRequestAndWaitForResponse(modbusRequest);
+        // check if function code is supported, if so reply with respective exception
+        if (not modbusRequest->isFunctionCodeSupported()) {
+            // TODO (Markus2101, 30.05.2020): return error-code here
+            mbRecStatus = m_modbusSlave->replyException(Entity::ModbusExceptionCode::ILLEGAL_FUNCTION);
+        } else {
+            // forward Modbus request via gateway to external Modbus slave and receive response
+            auto modbusResponse = m_modbusRequestController->forwardModbusRequestAndWaitForResponse(modbusRequest);
 
-        mbRecStatus = m_modbusSlave->reply(modbusResponse);
+            mbRecStatus = m_modbusSlave->reply(modbusResponse);
+        }
 
         // error in replying response
         if (mbRecStatus == ModbusReceiveStatus::FAILED) {
