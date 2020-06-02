@@ -1,7 +1,6 @@
-# modbus-data-logger
-An application software which can be used to monitor data during a Modbus TCP communication. This software is located between both communication partners (master and slave) and provides a gateway to forward messages from master to slave and vice versa. This way, the transferred data can be accessed and logged.
+# modbus-data-logger ![version_in-dev](https://img.shields.io/badge/Version-In%20Development-informational) [![next_milestone](https://img.shields.io/badge/Next%20Milestone-Release%200.1-green)](https://github.com/Markus2101/modbus-data-logger/milestone/1) ![Continuous Integration](https://github.com/Markus2101/modbus-data-logger/workflows/Continuous%20Integration/badge.svg?branch=master)
 
-![Continuous Integration](https://github.com/Markus2101/modbus-data-logger/workflows/Continuous%20Integration/badge.svg?branch=master)
+An application software which can be used to monitor data during a Modbus TCP communication. This software is located between both communication partners (master and slave) and provides a gateway to forward messages from master to slave and vice versa. This way, the transferred data can be accessed and logged.
 
 ## Getting started
 Following instructions help you in setting up the project locally on your computer.
