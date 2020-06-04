@@ -25,9 +25,11 @@ To enable the container integration, the __Remote Development extension pack__ (
 ### Fork git-repository
 Create a fork of this repository (https://help.github.com/en/github/getting-started-with-github/fork-a-repo). Clone your forked repository.  
 Change the name of your remote from _origin_ to any name you like (e.g. your name). Add another remote called _origin_ which references the original respository your forked from. Following commands need to be executed (replace <your-fork-remote> with your name):  
-`$ git remote rename origin <your-fork-remote>`  
-`$ git remote add origin https://github.com/Markus2101/modbus-data-logger.git`  
-`$ git remote set-url --push origin foo`  
+```sh
+$ git remote rename origin <your-fork-remote>
+$ git remote add origin https://github.com/Markus2101/modbus-data-logger.git
+$ git remote set-url --push origin foo
+```
 The last step prevents your from accidentally pushing to the main repository.
 
 ## Contributing & Developing
@@ -48,14 +50,18 @@ Open VS Code and click on the green-button on the bottom left corner. In the ope
 
 ### Working on a new feature
 Create a branch from the current _origin/master_ with a meaningful name describing the feature you start working. Working on a feature called _feature/my_first_feature_ requries following console commands, the first getting the current master version, the second creating the actual local feature branch:  
-`$ git fetch origin`  
-`$ git checkout -b feature/my_first_feature origin/master`  
+```sh
+$ git fetch origin
+$ git checkout -b feature/my_first_feature origin/master
+```
 
 ### Push to remote repository
 In order to also save your changed remotely, perform following three steps inside your repository:  
-`$ git add .`  
-`$ git commit -m "first feature implementation"`  
-`$ git push <your-fork-remote> feature/my_first_feature`  
+```sh
+$ git add . 
+$ git commit -m "first feature implementation"
+$ git push <your-fork-remote> feature/my_first_feature
+```
 
 ### Creating a Pull Request
 Once you have finished your feature, create a pull request. Therefore, go to the GitHub repository, select your feature-branch and click __Create Pull-Request__. Here you can find an article about how to create a Pull-Request: https://help.github.com/en/desktop/contributing-to-projects/creating-an-issue-or-pull-request
@@ -63,4 +69,23 @@ Once you have finished your feature, create a pull request. Therefore, go to the
 ### Merging into master
 A pull request shall only be merged into the master branch if:  
 - all checks have passed successfully
-- at least one approval is present
+- at least one approval is present  
+
+## Building the Application
+The application can either be built by calling _build_native.sh_, which is contained in the _scripts/_ directory, directly or by using VSCodes _Build Task_.
+
+### Command line
+Within VSCodes integrated terminal run following command from within the _scripts/_ directory:  
+```sh
+$ ./build_native
+```
+Add `-t` parameter to additionally build all unit-tests.  
+
+### VSCode Build Task
+Within VSCode go to __Terminal__ > __Run Build Tasks...__ and here you can select _Build Native_ or _Build Native & Unittests_ to either only build the application or the unit-tests as well.
+
+## Running the Application
+The application binary is located in builds/build_native/ and from there it can be executed by:  
+```sh
+$ ./modbus_data_logger
+```
