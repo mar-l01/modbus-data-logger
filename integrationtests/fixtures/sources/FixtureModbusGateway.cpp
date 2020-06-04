@@ -10,7 +10,7 @@ namespace Fixture {
 
 FixtureModbusGateway::FixtureModbusGateway() {}
 
-void FixtureModbusGateway::setUp()
+void FixtureModbusGateway::setUp(const int nbReconnections)
 {
     using namespace Gateway;
 
@@ -40,12 +40,22 @@ void FixtureModbusGateway::setUp()
     mbDataMapping.nbHoldingRegisters = FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS;
     mbDataMapping.nbInputRegisters = FixtureTestConstants::MODBUS_NUMBER_INPUT_REGISTERS;
 
-    // create Modbus slave controller and start it up
+    // create Modbus slave controller
     auto mbSlaveController = std::make_unique<ModbusSlaveController>(
       mbSlave, mbGateway, mbDataMapping, FixtureTestConstants::MODBUS_IP_ADDRESS_INTERNAL_SLAVE,
       FixtureTestConstants::MODBUS_PORT_INTERNAL_SLAVE);
-    mbSlaveController->waitForIncomingConnection();
-    mbSlaveController->run();
+
+    // run Modbus slave until 'stop' was received (no reconnection will be triggered then)
+    int currentReconnections = 0;
+    for (;;) {
+        mbSlaveController->waitForIncomingConnection();
+        mbSlaveController->run();
+
+        if (currentReconnections == nbReconnections) {
+            break;
+        }
+        ++currentReconnections;
+    }
 
     // close external connection in the end
     mbSlaveController->closeConnection();

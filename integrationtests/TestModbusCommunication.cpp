@@ -26,8 +26,8 @@ TEST(TestModbusCommunication, checkWriteReadOperation)
     // create Modbus gateway fixture
     FixtureModbusGateway mbGateway;
 
-    // run gateway in extra thread
-    std::thread mbGatewayThread(&FixtureModbusGateway::setUp, &mbGateway);
+    // run gateway in extra thread -> no reconnection needed
+    std::thread mbGatewayThread(&FixtureModbusGateway::setUp, &mbGateway, 0);
 
     // wait some ms to make sure internal slave is up and running
     std::this_thread::sleep_for(std::chrono::milliseconds(500));

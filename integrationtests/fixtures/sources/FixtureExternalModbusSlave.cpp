@@ -4,6 +4,8 @@
 
 #include "gtest/gtest.h"
 
+#include <unistd.h>
+
 namespace Fixture {
 
 FixtureExternalModbusSlave::FixtureExternalModbusSlave()
@@ -86,6 +88,14 @@ void FixtureExternalModbusSlave::run()
             FAIL();
             break;
         }
+    }
+
+    // close socket after connection (necessary to close file descriptor)
+    if (close(m_socket) == 0) {
+        // reset socket value
+        m_socket = -1;
+    } else {
+        FAIL();
     }
 }
 
