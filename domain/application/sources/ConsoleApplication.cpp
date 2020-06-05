@@ -4,10 +4,24 @@
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
 
 #include <iostream>
+#include <signal.h>
+
+namespace ModbusReconnection {
+bool startUpModbusSlaveAgain = true;
+}
+
+// handler triggered on CTRL + C
+void signalHandler(sig_atomic_t)
+{
+    ModbusReconnection::startUpModbusSlaveAgain = false;
+}
 
 int main()
 {
     using namespace Gateway;
+
+    // use CTRL + C to stop application
+    signal(SIGINT, signalHandler);
 
     // external master
     const std::string ipAddrExtMaster = "127.0.0.1";
@@ -34,8 +48,12 @@ int main()
     // create Modbus controller and start it up
     auto mbSlaveController =
       std::make_unique<ModbusSlaveController>(mbSlave, mbGateway, mbDataMapping, ipAddrExtMaster, portExtMaster);
-    mbSlaveController->waitForIncomingConnection();
-    mbSlaveController->run();
+
+    // run Modbus slave until 'stop' was received (no reconnection will be triggered then)
+    do {
+        mbSlaveController->waitForIncomingConnection();
+        mbSlaveController->run();
+    } while (ModbusReconnection::startUpModbusSlaveAgain);
 
     // close external connection in the end
     mbSlaveController->closeConnection();

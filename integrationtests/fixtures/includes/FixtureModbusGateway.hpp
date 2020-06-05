@@ -7,7 +7,7 @@ class FixtureModbusGateway
 public:
     FixtureModbusGateway();
 
-    void setUp();
+    void setUp(const int nbReconnections);
 };
 
 }

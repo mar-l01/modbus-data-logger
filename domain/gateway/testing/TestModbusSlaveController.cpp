@@ -29,6 +29,7 @@ protected:
     std::shared_ptr<ModbusSlaveController> createTestObject()
     {
         EXPECT_CALL(*m_modbusSlaveMock, setModbusDataMapping(_)).Times(1);
+        EXPECT_CALL(*m_modbusSlaveMock, bind(m_ipAddr, m_port)).Times(1);
         auto testObj = std::make_shared<ModbusSlaveController>(m_modbusSlaveMock, m_modbusRequestControllerMock,
                                                                m_modbusDataMapping, m_ipAddr, m_port);
         return testObj;
@@ -52,7 +53,6 @@ TEST_F(TestModbusSlaveController, connect)
     auto testObj = createTestObject();
     int modbusSocket = 1;
 
-    EXPECT_CALL(*m_modbusSlaveMock, bind(m_ipAddr, m_port)).Times(1);
     EXPECT_CALL(*m_modbusSlaveMock, listen(1)).WillOnce(Return(modbusSocket));
     EXPECT_CALL(*m_modbusSlaveMock, accept(modbusSocket)).Times(1);
     testObj->waitForIncomingConnection();

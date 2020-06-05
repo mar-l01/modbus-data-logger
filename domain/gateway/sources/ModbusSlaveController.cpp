@@ -1,5 +1,6 @@
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
 
+#include <unistd.h>
 #include <vector>
 
 namespace Gateway {
@@ -17,12 +18,13 @@ ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>&
 {
     // set Modbus data mapping
     m_modbusSlave->setModbusDataMapping(m_modbusDataMapping);
+
+    // bind slave to given ip address and port
+    m_modbusSlave->bind(m_ipAddress, m_port);
 }
 
 void ModbusSlaveController::waitForIncomingConnection()
 {
-    // set up Modbus slave connection
-    m_modbusSlave->bind(m_ipAddress, m_port);
     m_socket = m_modbusSlave->listen(ModbusConstants::NUMBER_CONNECTIONS_IN);
     m_modbusSlave->accept(m_socket);
 }
@@ -66,6 +68,14 @@ void ModbusSlaveController::run()
             std::cerr << "[ModbusSlaveController] Failed to return response\n";
             break;
         }
+    }
+
+    // close socket after connection (necessary to close file descriptor)
+    if (close(m_socket) == 0) {
+        // reset socket value
+        m_socket = -1;
+    } else {
+        std::cerr << "[ModbusSlaveController] Failed to close socket!\n";
     }
 }
 
