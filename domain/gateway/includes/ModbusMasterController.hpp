@@ -27,6 +27,7 @@ private:
 
     std::shared_ptr<Entity::ModbusTcpResponse> callModbusMasterMethod(
       std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest);
+    void tryReconnecting();
 };
 
 }
