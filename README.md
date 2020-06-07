@@ -8,4 +8,5 @@ An application software which can be used to monitor data during a Modbus TCP co
 - [Contributing & Developing](docs/README_Contribute.md)
 - [Building the Application](docs/README_Build.md)
 - [Running the Application](docs/README_Run.md)
+- [Running Tests (Unit- and Integrationtests)](docs/README_Tests.md)
 
