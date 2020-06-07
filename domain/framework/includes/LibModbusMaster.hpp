@@ -51,7 +51,7 @@ private:
     Entity::ModbusOperationStatus writeValues(int (*libmodbusWriteFunction)(modbus_t*, int, int, const T*), int sAddr,
                                               std::vector<T> values);
 
-    Entity::ModbusOperationStatus setOperationStatus(const int returnCode);
+    Entity::ModbusOperationStatus mapReturnCodeToOperationStatus(const int returnCode);
 };
 
 }
