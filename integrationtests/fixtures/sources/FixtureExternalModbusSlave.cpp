@@ -1,5 +1,6 @@
 #include "integrationtests/fixtures/includes/FixtureExternalModbusSlave.hpp"
 
+#include "domain/entity/includes/ModbusTcpConstants.hpp"
 #include "integrationtests/fixtures/includes/TestConstants.hpp"
 
 #include "gtest/gtest.h"
@@ -11,6 +12,15 @@ namespace Fixture {
 
 FixtureExternalModbusSlave::FixtureExternalModbusSlave()
     : m_socket(-1)
+    , m_timeoutHelperActive(false)
+    , m_curNbTimeouts(0)
+{}
+
+FixtureExternalModbusSlave::FixtureExternalModbusSlave(const timeoutTuple& toTuple)
+    : m_socket(-1)
+    , m_timeoutHelper(toTuple)
+    , m_timeoutHelperActive(true)
+    , m_curNbTimeouts(0)
 {}
 
 void FixtureExternalModbusSlave::setUp()
@@ -82,8 +92,19 @@ void FixtureExternalModbusSlave::run()
             break;
         }
 
-        if (modbusRequest[7] == 0x03) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        // helper for testing timeouts of internal Master to external slave
+        // tests n timeouts of function code fc with a timeout interval of ms seconds
+        if (m_timeoutHelperActive) {
+            if (modbusRequest[Entity::ModbusMessageFrameByte::FUNCTION_CODE] ==
+                std::get<static_cast<int>(TupleIndex::FUNCTION_CODE)>(m_timeoutHelper)) {
+                std::this_thread::sleep_for(
+                  std::chrono::milliseconds(std::get<static_cast<int>(TupleIndex::TIMEOUT_IN_MS)>(m_timeoutHelper)));
+                ++m_curNbTimeouts;
+            }
+
+            if (m_curNbTimeouts == std::get<static_cast<int>(TupleIndex::NUMBER_OF_TIMEOUTS)>(m_timeoutHelper)) {
+                m_timeoutHelperActive = false;
+            }
         }
 
         modbus_reply(m_modbusContext.get(), modbusRequest.data(), reqLen, m_modbusMapping.get());
