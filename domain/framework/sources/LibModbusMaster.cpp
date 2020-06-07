@@ -36,6 +36,13 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 #endif
 }
 
+void LibModbusMaster::setResponseTimeout(const uint16_t timeoutInMs)
+{
+    // set timeout applied when waiting for a response of the Modbus slave
+    // if timeout occurs, ETIMEDOUT is set for calling function
+    modbus_set_response_timeout(m_modbusContext.get(), 0, timeoutInMs * 1000);
+}
+
 Entity::ModbusReadOperationResult<uint8_t> LibModbusMaster::readCoilValues(int startAddress, int nbValues)
 {
     return readValues<uint8_t>(modbus_read_bits, startAddress, nbValues);
@@ -92,6 +99,11 @@ Entity::ModbusReadOperationResult<T> LibModbusMaster::readValues(int (*libmodbus
 
     // execute libmodbus function with respective parameters
     auto rc = libmodbusReadFunction(m_modbusContext.get(), sAddr, nbVals, readValuesVector.data());
+
+    // check for timed out connection
+    if (rc == -1 && errno == ETIMEDOUT) {
+        std::cerr << "[LibModbusMaster] Connection timed out..\n";
+    }
 
     // set operation status depending on return code of function above
     auto operationStatus = (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;

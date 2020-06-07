@@ -4,6 +4,7 @@
 
 #include "gtest/gtest.h"
 
+#include <thread>
 #include <unistd.h>
 
 namespace Fixture {
@@ -81,7 +82,11 @@ void FixtureExternalModbusSlave::run()
             break;
         }
 
-        reqLen = modbus_reply(m_modbusContext.get(), modbusRequest.data(), reqLen, m_modbusMapping.get());
+        if (modbusRequest[7] == 0x03) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        }
+
+        modbus_reply(m_modbusContext.get(), modbusRequest.data(), reqLen, m_modbusMapping.get());
 
         // error in sending response
         if (reqLen == -1) {

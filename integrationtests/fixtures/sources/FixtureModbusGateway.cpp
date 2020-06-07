@@ -25,6 +25,7 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
       std::make_shared<ModbusMasterController>(mbMaster, FixtureTestConstants::MODBUS_IP_ADDRESS_EXTERNAL_SLAVE,
                                                FixtureTestConstants::MODBUS_PORT_EXTERNAL_SLAVE);
     mbMasterController->connect();
+    mbMasterController->setTimeout(200); // set timeout to 200 ms by default
 
     // set up Modbus gateway
     auto mbGateway = std::make_shared<ModbusGateway>(mbMasterController);

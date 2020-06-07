@@ -11,6 +11,7 @@ class ModbusMaster
 {
 public:
     virtual void connect(const std::string& ipAddr, const int port) = 0;
+    virtual void setResponseTimeout(const uint16_t timeoutInMs) = 0;
 
     // read operations (return read values together with the status of the operation)
     virtual Entity::ModbusReadOperationResult<uint8_t> readCoilValues(int startAddress, int nbValues) = 0;

@@ -16,6 +16,11 @@ void ModbusMasterController::connect()
     m_modbusMaster->connect(m_ipAddress, m_port);
 }
 
+void ModbusMasterController::setTimeout(const uint16_t timeoutInMs)
+{
+    m_modbusMaster->setResponseTimeout(timeoutInMs);
+}
+
 std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::getExternalModbusSlaveResponse(
   std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest)
 {

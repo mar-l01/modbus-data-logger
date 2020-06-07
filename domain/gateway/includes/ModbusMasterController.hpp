@@ -13,6 +13,7 @@ public:
     ModbusMasterController(const std::shared_ptr<ModbusMaster>& mbMaster, const std::string& ipAddr, const int port);
 
     void connect();
+    void setTimeout(const uint16_t timeoutInMs);
 
     std::shared_ptr<Entity::ModbusTcpResponse> getExternalModbusSlaveResponse(
       std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest) override;

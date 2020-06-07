@@ -8,6 +8,7 @@ class MockModbusMaster : public Gateway::ModbusMaster
 {
 public:
     MOCK_METHOD(void, connect, (const std::string& ipAddr, const int port), (override));
+    MOCK_METHOD(void, setResponseTimeout, (const uint16_t timeoutInMs), (override));
     MOCK_METHOD(Entity::ModbusReadOperationResult<uint8_t>, readCoilValues, (int startAddress, int nbValues),
                 (override));
     MOCK_METHOD(Entity::ModbusReadOperationResult<uint8_t>, readDiscreteInputValues, (int startAddress, int nbValues),
