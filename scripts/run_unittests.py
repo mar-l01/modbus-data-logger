@@ -29,7 +29,7 @@ rc = subprocess.call(build_dir + "/entity_test")
 return_codes.append((rc, "[Entity]    --> {}".format(FAILED if rc == 1 else PASSED)))
 
 # print summarized information about all unittests at the end
-print("\n==========================")
+print("\n====== TEST RESULTS ======")
 for test_rc in return_codes:
     print("= {} =".format(test_rc[1]))
 print("==========================")
