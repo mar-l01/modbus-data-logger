@@ -100,13 +100,8 @@ Entity::ModbusReadOperationResult<T> LibModbusMaster::readValues(int (*libmodbus
     // execute libmodbus function with respective parameters
     auto rc = libmodbusReadFunction(m_modbusContext.get(), sAddr, nbVals, readValuesVector.data());
 
-    // check for timed out connection
-    if (rc == -1 && errno == ETIMEDOUT) {
-        std::cerr << "[LibModbusMaster] Connection timed out..\n";
-    }
-
     // set operation status depending on return code of function above
-    auto operationStatus = (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
+    auto operationStatus = setOperationStatus(rc);
 
     return Entity::ModbusReadOperationResult<T>(operationStatus, readValuesVector);
 }
@@ -119,7 +114,7 @@ Entity::ModbusOperationStatus LibModbusMaster::writeSingleValue(int (*libmodbusS
     auto rc = libmodbusSingleWriteFunction(m_modbusContext.get(), sAddr, value);
 
     // set operation status depending on return code of function above
-    return (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
+    return setOperationStatus(rc);
 }
 
 template<typename T>
@@ -130,7 +125,23 @@ Entity::ModbusOperationStatus LibModbusMaster::writeValues(int (*libmodbusWriteF
     auto rc = libmodbusWriteFunction(m_modbusContext.get(), sAddr, values.size(), values.data());
 
     // set operation status depending on return code of function above
-    return (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
+    return setOperationStatus(rc);
+}
+
+Entity::ModbusOperationStatus LibModbusMaster::setOperationStatus(const int returnCode)
+{
+    Entity::ModbusOperationStatus mbOpStatus = Entity::ModbusOperationStatus::SUCCESS;
+
+    // -1 is returned in error case / errno gets set
+    if (returnCode == -1) {
+        if (errno == ETIMEDOUT) {
+            mbOpStatus = Entity::ModbusOperationStatus::TIMEOUT;
+        } else {
+            mbOpStatus = Entity::ModbusOperationStatus::FAIL;
+        }
+    }
+
+    return mbOpStatus;
 }
 
 }

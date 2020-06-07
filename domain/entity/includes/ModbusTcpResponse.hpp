@@ -11,7 +11,8 @@ namespace Entity {
 enum class ModbusOperationStatus
 {
     SUCCESS,
-    FAIL
+    FAIL,
+    TIMEOUT
 };
 
 template<typename T>
