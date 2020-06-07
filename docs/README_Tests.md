@@ -1,5 +1,5 @@
 ## Running Tests (Unit- and Integrationtests)
-Before running the tests make sure that the application was [built](README_Build.md).  
+Before running the tests make sure that the application was [built](README_Build.md) using `-t`.  
 Following scripts are executed from within the _scripts/_ directory.  
 
 Run unittests:
