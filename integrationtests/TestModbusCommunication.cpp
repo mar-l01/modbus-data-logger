@@ -51,11 +51,14 @@ TEST(TestModbusCommunication, checkWriteReadOperation)
     mbExtSlaveThread.join();
 }
 
-TEST(TestModbusCommunication, checkConnectionTimeout_IntMasterExtSlave)
+TEST(TestModbusCommunication, checkResponseTimeout_IntMasterExtSlave)
 {
+    // timeout helper: read holding registers, 300ms, once
+    auto timeoutTuple = std::make_tuple(0x03, 300, 1);
+
     // create external test fixtures
     FixtureExternalModbusMaster mbExtMaster;
-    FixtureExternalModbusSlave mbExtSlave;
+    FixtureExternalModbusSlave mbExtSlave(timeoutTuple);
 
     // run external Modbus slave in extra thread
     std::thread mbExtSlaveThread(&FixtureExternalModbusSlave::setUp, &mbExtSlave);
@@ -75,8 +78,8 @@ TEST(TestModbusCommunication, checkConnectionTimeout_IntMasterExtSlave)
     // connect to internal Modbus slave
     mbExtMaster.setUp();
 
-    // checks
-    mbExtMaster.checkWriteReadRequestBits();
+    // check one timeout
+    mbExtMaster.checkResponseTimeoutReadHoldingRegisters();
 
     // wait some ms to make sure internal slave is up and running
     std::this_thread::sleep_for(std::chrono::milliseconds(500));

@@ -136,6 +136,7 @@ Entity::ModbusOperationStatus LibModbusMaster::setOperationStatus(const int retu
     if (returnCode == -1) {
         if (errno == ETIMEDOUT) {
             mbOpStatus = Entity::ModbusOperationStatus::TIMEOUT;
+            std::cerr << "[LibModbusMaster] Connection timed out..\n";
         } else {
             mbOpStatus = Entity::ModbusOperationStatus::FAIL;
         }

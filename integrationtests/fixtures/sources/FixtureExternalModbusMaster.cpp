@@ -1,5 +1,6 @@
 #include "integrationtests/fixtures/includes/FixtureExternalModbusMaster.hpp"
 
+#include "domain/entity/includes/ModbusTcpConstants.hpp"
 #include "integrationtests/fixtures/includes/TestConstants.hpp"
 
 #include "gtest/gtest.h"
@@ -97,6 +98,19 @@ void FixtureExternalModbusMaster::checkUnsupportedFunctionCode()
       readHoldingRegisters.data());
 
     EXPECT_EQ(rc, -1);
+}
+
+void FixtureExternalModbusMaster::checkResponseTimeoutReadHoldingRegisters()
+{
+    std::vector<uint16_t> readHoldingRegisters(FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS);
+
+    // try reading one holding register -> response timeout should occur
+    auto rc = modbus_read_registers(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS,
+                                    1, readHoldingRegisters.data());
+
+    // in case of timeout, Modbus exception code gets set as errno
+    EXPECT_EQ(rc, -1);
+    EXPECT_EQ(errno, EMBXGTAR); // equals GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND
 }
 
 }

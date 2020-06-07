@@ -19,6 +19,8 @@ public:
     void checkWriteReadRequestRegisters();
     void checkUnsupportedFunctionCode();
 
+    void checkResponseTimeoutReadHoldingRegisters();
+
 private:
     std::unique_ptr<modbus_t, std::function<void(modbus_t*)>> m_modbusContext;
 };

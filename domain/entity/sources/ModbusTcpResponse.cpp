@@ -10,6 +10,11 @@ ModbusTcpResponse::ModbusTcpResponse(const ModbusOperationStatus mbOpStatus)
     : m_operationStatus(mbOpStatus)
 {}
 
+ModbusOperationStatus ModbusTcpResponse::getModbusOperationStatus() const
+{
+    return m_operationStatus;
+}
+
 std::vector<uint8_t> ModbusTcpResponse::getReadBitValues() const
 {
     auto readValues = std::vector<uint8_t>();

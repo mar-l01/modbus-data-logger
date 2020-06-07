@@ -26,6 +26,7 @@ public:
     ModbusTcpResponse();
     ModbusTcpResponse(const ModbusOperationStatus mbOpStatus);
 
+    ModbusOperationStatus getModbusOperationStatus() const;
     std::vector<uint8_t> getReadBitValues() const;
     std::vector<uint16_t> getReadRegisterValues() const;
 
