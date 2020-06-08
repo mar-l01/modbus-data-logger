@@ -5,6 +5,7 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
+
 namespace {
 
 using namespace ::testing;
@@ -192,6 +193,7 @@ TEST_F(TestModbusMasterController, reconnectIfTimeout)
 
     EXPECT_CALL(*m_modbusMasterMock,
                 readHoldingRegisterValues(mbReq->getStartAddress(), mbReq->getNumberOfValuesToReadOrWrite()))
+      .Times(1)
       .WillOnce(Return(ModbusReadOperationResult<uint16_t>(ModbusOperationStatus::TIMEOUT, std::vector<uint16_t>())));
     EXPECT_CALL(*m_modbusMasterMock, close()).Times(1);
     EXPECT_CALL(*m_modbusMasterMock, reconnect()).Times(1);
