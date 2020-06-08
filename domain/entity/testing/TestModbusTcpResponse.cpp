@@ -9,9 +9,10 @@ using namespace Entity;
 class TestModbusTcpResponse : public ::testing::Test
 {
 protected:
-    std::unique_ptr<ModbusTcpResponse> createTestObject()
+    std::unique_ptr<ModbusTcpResponse> createTestObject(
+      ModbusOperationStatus mbOpState = ModbusOperationStatus::SUCCESS)
     {
-        auto testObj = std::make_unique<ModbusTcpResponse>();
+        auto testObj = std::make_unique<ModbusTcpResponse>(mbOpState);
 
         return std::move(testObj);
     }
@@ -59,6 +60,36 @@ TEST_F(TestModbusTcpResponse, getReadRegisterValuesEmpty)
 
     auto readRegisterValues = testObj->getReadRegisterValues();
     EXPECT_EQ(readRegisterValues, expectedEmptyRegisterVector);
+}
+
+TEST_F(TestModbusTcpResponse, getModbusOperationStatus_SUCCESS)
+{
+    auto testObj = createTestObject();
+
+    auto expectedModbusOperationStatus = ModbusOperationStatus::SUCCESS;
+
+    auto operationStatus = testObj->getModbusOperationStatus();
+    EXPECT_EQ(operationStatus, expectedModbusOperationStatus);
+}
+
+TEST_F(TestModbusTcpResponse, getModbusOperationStatus_FAIL)
+{
+    auto testObj = createTestObject(ModbusOperationStatus::FAIL);
+
+    auto expectedModbusOperationStatus = ModbusOperationStatus::FAIL;
+
+    auto operationStatus = testObj->getModbusOperationStatus();
+    EXPECT_EQ(operationStatus, expectedModbusOperationStatus);
+}
+
+TEST_F(TestModbusTcpResponse, getModbusOperationStatus_TIMEOUT)
+{
+    auto testObj = createTestObject(ModbusOperationStatus::TIMEOUT);
+
+    auto expectedModbusOperationStatus = ModbusOperationStatus::TIMEOUT;
+
+    auto operationStatus = testObj->getModbusOperationStatus();
+    EXPECT_EQ(operationStatus, expectedModbusOperationStatus);
 }
 
 }

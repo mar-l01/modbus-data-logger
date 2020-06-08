@@ -31,6 +31,7 @@ int main()
     // external slave
     const std::string ipAddrExtSlave = "127.0.0.1";
     const int portExtSlave = 5002;
+    const uint16_t timeout = 200; // 200 ms timeout waiting for response of external slave
 
     // get Modbus slave instance from factory and set up listening
     auto mbSlave = ModbusComponentsFactory::createModbusSlave(ModbusComponentsFramework::LIBMODBUS);
@@ -41,6 +42,7 @@ int main()
     // create Modbus master controller and connect to external Modbusslave
     auto mbMasterController = std::make_shared<ModbusMasterController>(mbMaster, ipAddrExtSlave, portExtSlave);
     mbMasterController->connect();
+    mbMasterController->setTimeout(timeout);
 
     // set up Modbus gateway
     auto mbGateway = std::make_shared<ModbusGateway>(mbMasterController);

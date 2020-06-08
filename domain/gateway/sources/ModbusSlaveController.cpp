@@ -54,13 +54,18 @@ void ModbusSlaveController::run()
 
         // check if function code is supported, if so reply with respective exception
         if (not modbusRequest->isFunctionCodeSupported()) {
-            // TODO (Markus2101, 30.05.2020): return error-code here
             mbRecStatus = m_modbusSlave->replyException(Entity::ModbusExceptionCode::ILLEGAL_FUNCTION);
         } else {
             // forward Modbus request via gateway to external Modbus slave and receive response
             auto modbusResponse = m_modbusRequestController->forwardModbusRequestAndWaitForResponse(modbusRequest);
 
-            mbRecStatus = m_modbusSlave->reply(modbusResponse);
+            // handle timeout of internal Modbus master to external Modbus slave
+            if (modbusResponse->getModbusOperationStatus() == Entity::ModbusOperationStatus::TIMEOUT) {
+                mbRecStatus =
+                  m_modbusSlave->replyException(Entity::ModbusExceptionCode::GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND);
+            } else {
+                mbRecStatus = m_modbusSlave->reply(modbusResponse);
+            }
         }
 
         // error in replying response

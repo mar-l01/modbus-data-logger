@@ -36,6 +36,13 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 #endif
 }
 
+void LibModbusMaster::setResponseTimeout(const uint16_t timeoutInMs)
+{
+    // set timeout applied when waiting for a response of the Modbus slave
+    // if timeout occurs, ETIMEDOUT is set for calling function
+    modbus_set_response_timeout(m_modbusContext.get(), 0, timeoutInMs * 1000);
+}
+
 Entity::ModbusReadOperationResult<uint8_t> LibModbusMaster::readCoilValues(int startAddress, int nbValues)
 {
     return readValues<uint8_t>(modbus_read_bits, startAddress, nbValues);
@@ -94,7 +101,7 @@ Entity::ModbusReadOperationResult<T> LibModbusMaster::readValues(int (*libmodbus
     auto rc = libmodbusReadFunction(m_modbusContext.get(), sAddr, nbVals, readValuesVector.data());
 
     // set operation status depending on return code of function above
-    auto operationStatus = (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
+    auto operationStatus = mapReturnCodeToOperationStatus(rc);
 
     return Entity::ModbusReadOperationResult<T>(operationStatus, readValuesVector);
 }
@@ -107,7 +114,7 @@ Entity::ModbusOperationStatus LibModbusMaster::writeSingleValue(int (*libmodbusS
     auto rc = libmodbusSingleWriteFunction(m_modbusContext.get(), sAddr, value);
 
     // set operation status depending on return code of function above
-    return (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
+    return mapReturnCodeToOperationStatus(rc);
 }
 
 template<typename T>
@@ -118,7 +125,24 @@ Entity::ModbusOperationStatus LibModbusMaster::writeValues(int (*libmodbusWriteF
     auto rc = libmodbusWriteFunction(m_modbusContext.get(), sAddr, values.size(), values.data());
 
     // set operation status depending on return code of function above
-    return (rc == -1) ? Entity::ModbusOperationStatus::FAIL : Entity::ModbusOperationStatus::SUCCESS;
+    return mapReturnCodeToOperationStatus(rc);
+}
+
+Entity::ModbusOperationStatus LibModbusMaster::mapReturnCodeToOperationStatus(const int returnCode)
+{
+    Entity::ModbusOperationStatus mbOpStatus = Entity::ModbusOperationStatus::SUCCESS;
+
+    // -1 is returned in error case / errno gets set
+    if (returnCode == -1) {
+        if (errno == ETIMEDOUT) {
+            mbOpStatus = Entity::ModbusOperationStatus::TIMEOUT;
+            std::cerr << "[LibModbusMaster] Connection timed out..\n";
+        } else {
+            mbOpStatus = Entity::ModbusOperationStatus::FAIL;
+        }
+    }
+
+    return mbOpStatus;
 }
 
 }

@@ -19,6 +19,7 @@ public:
     LibModbusMaster();
 
     void connect(const std::string& ipAddr, const int port);
+    void setResponseTimeout(const uint16_t timeoutInMs);
 
     // read operations
     Entity::ModbusReadOperationResult<uint8_t> readCoilValues(int startAddress, int nbValues);
@@ -49,6 +50,8 @@ private:
     template<typename T>
     Entity::ModbusOperationStatus writeValues(int (*libmodbusWriteFunction)(modbus_t*, int, int, const T*), int sAddr,
                                               std::vector<T> values);
+
+    Entity::ModbusOperationStatus mapReturnCodeToOperationStatus(const int returnCode);
 };
 
 }
