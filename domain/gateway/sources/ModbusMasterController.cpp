@@ -27,6 +27,16 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::getExternalMo
     // call respective method of Modbus master instance to obtain the reply
     auto modbusTcpResponse = callModbusMasterMethod(mbRequest);
 
+    // assume that connection got lost if a timeout occurred
+    if (modbusTcpResponse->getModbusOperationStatus() == Entity::ModbusOperationStatus::TIMEOUT) {
+        // reconnect, but do not re-send request
+        tryReconnecting();
+
+        // TODO(Markus2101, 08.06.2020): Re-sending request would require to adjust transaction
+        //      identifier for all following request/response pairs
+        //      --> further discussion needed!
+    }
+
     return modbusTcpResponse;
 }
 
@@ -124,6 +134,13 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
     }
 
     return mbTcpResponse;
+}
+
+void ModbusMasterController::tryReconnecting()
+{
+    // close connection if timeout was received due to another cause
+    closeConnection();
+    m_modbusMaster->reconnect();
 }
 
 }

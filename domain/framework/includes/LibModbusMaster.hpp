@@ -19,6 +19,7 @@ public:
     LibModbusMaster();
 
     void connect(const std::string& ipAddr, const int port);
+    void reconnect();
     void setResponseTimeout(const uint16_t timeoutInMs);
 
     // read operations

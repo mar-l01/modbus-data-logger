@@ -36,6 +36,19 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 #endif
 }
 
+void LibModbusMaster::reconnect()
+{
+    // connect
+    auto connSuccessful = modbus_connect(m_modbusContext.get());
+
+#ifdef DEBUG
+    // error handling
+    if (connSuccessful == -1) {
+        std::cerr << "[LibModbusMaster] Failed to re-connect to slave\n";
+    }
+#endif
+}
+
 void LibModbusMaster::setResponseTimeout(const uint16_t timeoutInMs)
 {
     // set timeout applied when waiting for a response of the Modbus slave

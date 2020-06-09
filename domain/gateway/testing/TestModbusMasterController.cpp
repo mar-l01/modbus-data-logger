@@ -5,6 +5,7 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
+
 namespace {
 
 using namespace ::testing;
@@ -182,6 +183,20 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc15)
     EXPECT_CALL(*m_modbusMasterMock,
                 writeMultipleHoldingRegisterValues(mbReq->getStartAddress(), mbReq->getHoldingRegisterValuesToWrite()))
       .Times(1);
+    testObj->getExternalModbusSlaveResponse(mbReq);
+}
+
+TEST_F(TestModbusMasterController, reconnectIfTimeout)
+{
+    auto testObj = createTestObject();
+    auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES);
+
+    EXPECT_CALL(*m_modbusMasterMock,
+                readHoldingRegisterValues(mbReq->getStartAddress(), mbReq->getNumberOfValuesToReadOrWrite()))
+      .Times(1)
+      .WillOnce(Return(ModbusReadOperationResult<uint16_t>(ModbusOperationStatus::TIMEOUT, std::vector<uint16_t>())));
+    EXPECT_CALL(*m_modbusMasterMock, close()).Times(1);
+    EXPECT_CALL(*m_modbusMasterMock, reconnect()).Times(1);
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
