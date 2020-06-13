@@ -69,11 +69,26 @@ target_include_directories(mdl_entity PRIVATE
   "/home/docker/better-enums/"
 )
 
+# build utility object-library
+add_library(mdl_utility OBJECT
+  # header files
+  "domain/utility/interfaces/Timer.hpp"
+  "domain/utility/includes/TimerImpl.hpp"
+
+  # source files
+  "domain/utility/sources/TimerImpl.cpp"
+)
+target_compile_options(mdl_utility PUBLIC -Wall -Wextra)
+target_include_directories(mdl_utility PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+)
+
 # build executable target
 add_executable(modbus_data_logger
   $<TARGET_OBJECTS:mdl_framework>
   $<TARGET_OBJECTS:mdl_gateway>
   $<TARGET_OBJECTS:mdl_entity>
+  $<TARGET_OBJECTS:mdl_utility>
   "domain/application/sources/ConsoleApplication.cpp"
 )
 target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra)
