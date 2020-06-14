@@ -22,9 +22,9 @@ done
 
 if [ "${UNITTESTS_ENABLED}" = ON ]
 then
-   echo "Compiling application with unittests";
+   echo "-- Compiling application with unittests";
 else
-  echo "Compiling application without unittests";
+  echo "-- Compiling application without unittests";
 fi
 
 # set up some variables required

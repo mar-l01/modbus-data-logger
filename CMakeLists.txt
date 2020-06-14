@@ -69,19 +69,37 @@ target_include_directories(mdl_entity PRIVATE
   "/home/docker/better-enums/"
 )
 
+# build utility object-library
+add_library(mdl_utility OBJECT
+  # header files
+  "domain/utility/interfaces/Timer.hpp"
+  "domain/utility/includes/TimerImpl.hpp"
+
+  # source files
+  "domain/utility/sources/TimerImpl.cpp"
+)
+target_compile_options(mdl_utility PUBLIC -Wall -Wextra)
+target_include_directories(mdl_utility PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+)
+
 # build executable target
 add_executable(modbus_data_logger
   $<TARGET_OBJECTS:mdl_framework>
   $<TARGET_OBJECTS:mdl_gateway>
   $<TARGET_OBJECTS:mdl_entity>
+  $<TARGET_OBJECTS:mdl_utility>
   "domain/application/sources/ConsoleApplication.cpp"
 )
-target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra)
+target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra -pthread)
 target_include_directories(modbus_data_logger PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/home/docker/better-enums/"
 )
-target_link_libraries(modbus_data_logger PRIVATE /usr/local/lib/libmodbus.so)
+target_link_libraries(modbus_data_logger PRIVATE
+  /usr/local/lib/libmodbus.so
+  /usr/lib/x86_64-linux-gnu/libpthread.so
+)
 
 ##################################################################
 # TESTING
@@ -188,6 +206,23 @@ if (${CMAKE_ENABLE_TESTING})
   )
 
   add_test(NAME entity_test COMMAND $<TARGET_FILE:entity_test>)
+
+  # build utility unittests
+  add_executable(utility_test
+    $<TARGET_OBJECTS:mdl_utility>
+    "domain/utility/testing/TestTimer.cpp"
+  )
+  target_include_directories(utility_test PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+  )
+  target_link_libraries(utility_test
+    PRIVATE
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME utility_test COMMAND $<TARGET_FILE:utility_test>)
 
    # build integrationtest
   add_executable(integrationtest
