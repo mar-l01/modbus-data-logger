@@ -45,7 +45,7 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
 
     // create timer instance
     std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
-    // TODO(Markus2101, 14.06.2020): set callback if timeout is reached
+    // TODO(Markus2101, 14.06.2020): set callback if timeout is reached (currently not necessary)
 
     // create Modbus slave controller
     auto mbSlaveController = std::make_unique<ModbusSlaveController>(
