@@ -58,7 +58,11 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
 
 void TimerImpl::restart()
 {
-    m_restartTimer = true;
+    if (not m_stopTimer) {
+        m_restartTimer = true;
+    } else {
+        std::cerr << "[Timer] Timer cannot be restarted because stopping it is in progress\n";
+    }
 }
 
 void TimerImpl::stop()
