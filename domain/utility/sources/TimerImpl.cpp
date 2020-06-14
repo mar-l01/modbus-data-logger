@@ -9,6 +9,7 @@ namespace Utility {
 TimerImpl::TimerImpl()
     : m_isRunning(false)
     , m_restartTimer(false)
+    , m_stopTimer(false)
 {}
 
 void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>& callback)
@@ -18,8 +19,10 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
         return;
     }
 
+    // init flags
     m_isRunning = true;
     m_restartTimer = false;
+    m_stopTimer = false;
 
     auto startTime = std::chrono::steady_clock::now();
 
@@ -37,12 +40,17 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
                 m_restartTimer = false;
             } else if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() -
                                                                              startTime)
-                         .count() >= timeoutInMs) {
-                // stop and invoke callback if timeout is reached
+                           .count() >= timeoutInMs ||
+                       m_stopTimer) {
+                // stop if timeout is reached or timer shall be stopped
                 break;
             }
         }
-        callback();
+        if (m_stopTimer) {
+            m_stopTimer = false;
+        } else {
+            callback();
+        }
         m_isRunning = false;
     });
     waitThread.detach();
@@ -51,6 +59,11 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
 void TimerImpl::restart()
 {
     m_restartTimer = true;
+}
+
+void TimerImpl::stop()
+{
+    m_stopTimer = true;
 }
 
 }
