@@ -91,12 +91,15 @@ add_executable(modbus_data_logger
   $<TARGET_OBJECTS:mdl_utility>
   "domain/application/sources/ConsoleApplication.cpp"
 )
-target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra)
+target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra -pthread)
 target_include_directories(modbus_data_logger PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/home/docker/better-enums/"
 )
-target_link_libraries(modbus_data_logger PRIVATE /usr/local/lib/libmodbus.so)
+target_link_libraries(modbus_data_logger PRIVATE
+  /usr/local/lib/libmodbus.so
+  /usr/lib/x86_64-linux-gnu/libpthread.so
+)
 
 ##################################################################
 # TESTING
