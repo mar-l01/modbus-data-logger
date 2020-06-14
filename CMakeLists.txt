@@ -207,6 +207,23 @@ if (${CMAKE_ENABLE_TESTING})
 
   add_test(NAME entity_test COMMAND $<TARGET_FILE:entity_test>)
 
+  # build utility unittests
+  add_executable(utility_test
+    $<TARGET_OBJECTS:mdl_utility>
+    "domain/utility/testing/TestTimer.cpp"
+  )
+  target_include_directories(utility_test PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+  )
+  target_link_libraries(utility_test
+    PRIVATE
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME utility_test COMMAND $<TARGET_FILE:utility_test>)
+
    # build integrationtest
   add_executable(integrationtest
     $<TARGET_OBJECTS:mdl_framework>
