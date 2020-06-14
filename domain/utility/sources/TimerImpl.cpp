@@ -10,7 +10,7 @@ TimerImpl::TimerImpl()
     : m_isRunning(false)
 {}
 
-void TimerImpl::callOnTimeout(const int timeout, const std::function<void()>& callback)
+void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>& callback)
 {
     if (m_isRunning) {
         std::cerr << "[Timer] Registering callback not possible because timer is currently running\n";
@@ -20,11 +20,12 @@ void TimerImpl::callOnTimeout(const int timeout, const std::function<void()>& ca
     m_isRunning = true;
 
     // start extra thread to wait until timeout is reached
-    std::thread waitThread([this, timeout, callback]() {
-        std::this_thread::sleep_for(std::chrono::milliseconds(timeout));
+    std::thread waitThread([this, timeoutInMs, callback]() {
+        std::this_thread::sleep_for(std::chrono::milliseconds(timeoutInMs));
         callback();
         m_isRunning = false;
     });
+    waitThread.detach();
 }
 
 }
