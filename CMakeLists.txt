@@ -229,6 +229,7 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
+    $<TARGET_OBJECTS:mdl_utility>
     "integrationtests/TestModbusCommunication.cpp"
     "integrationtests/TestModbusReconnection.cpp"
   )

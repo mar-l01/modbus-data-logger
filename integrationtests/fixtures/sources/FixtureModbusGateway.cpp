@@ -4,6 +4,8 @@
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/utility/includes/TimerImpl.hpp"
+#include "domain/utility/interfaces/Timer.hpp"
 #include "integrationtests/fixtures/includes/TestConstants.hpp"
 
 namespace Fixture {
@@ -41,9 +43,13 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     mbDataMapping.nbHoldingRegisters = FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS;
     mbDataMapping.nbInputRegisters = FixtureTestConstants::MODBUS_NUMBER_INPUT_REGISTERS;
 
+    // create timer instance
+    std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
+    // TODO(Markus2101, 14.06.2020): set callback if timeout is reached
+
     // create Modbus slave controller
     auto mbSlaveController = std::make_unique<ModbusSlaveController>(
-      mbSlave, mbGateway, mbDataMapping, FixtureTestConstants::MODBUS_IP_ADDRESS_INTERNAL_SLAVE,
+      mbSlave, mbGateway, timerInstance, mbDataMapping, FixtureTestConstants::MODBUS_IP_ADDRESS_INTERNAL_SLAVE,
       FixtureTestConstants::MODBUS_PORT_INTERNAL_SLAVE);
 
     // run Modbus slave until 'stop' was received (no reconnection will be triggered then)
