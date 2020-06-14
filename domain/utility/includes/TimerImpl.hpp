@@ -2,6 +2,8 @@
 
 #include "domain/utility/interfaces/Timer.hpp"
 
+#include <atomic>
+
 namespace Utility {
 
 class TimerImpl : public Timer
@@ -9,10 +11,10 @@ class TimerImpl : public Timer
 public:
     TimerImpl();
 
-    void setTimeout(const int timeout, const std::function<void()>& callback) override;
+    void callOnTimeout(const int timeout, const std::function<void()>& callback) override;
 
 private:
-    std::function<void()> m_timeoutCallback;
+    std::atomic_bool m_isRunning;
 };
 
 }

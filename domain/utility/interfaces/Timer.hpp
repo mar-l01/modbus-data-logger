@@ -7,7 +7,7 @@ namespace Utility {
 class Timer
 {
 public:
-    virtual void setTimeout(const int timeout, const std::function<void()>& callback) = 0;
+    virtual void callOnTimeout(const int timeout, const std::function<void()>& callback) = 0;
 };
 
 }
