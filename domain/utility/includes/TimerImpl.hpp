@@ -12,9 +12,13 @@ public:
     TimerImpl();
 
     void callOnTimeout(const int timeoutInMs, const std::function<void()>& callback) override;
+    void restart() override;
+    void stop() override;
 
 private:
     std::atomic_bool m_isRunning;
+    std::atomic_bool m_restartTimer;
+    std::atomic_bool m_stopTimer;
 };
 
 }
