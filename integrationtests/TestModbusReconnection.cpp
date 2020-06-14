@@ -64,7 +64,7 @@ TEST_P(TestModbusReconnection, reconnect_n_times)
 {
     int nbReconnections = GetParam();
 
-    ASSERT_NO_FATAL_FAILURE(reconnect(nbReconnections));
+    EXPECT_NO_FATAL_FAILURE(reconnect(nbReconnections));
 }
 
 INSTANTIATE_TEST_CASE_P(ModbusReconnectionTests, TestModbusReconnection, ::testing::Values(0, 1, 2));

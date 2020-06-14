@@ -44,8 +44,13 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     mbDataMapping.nbInputRegisters = FixtureTestConstants::MODBUS_NUMBER_INPUT_REGISTERS;
 
     // create timer instance
+    int applicationTimeout = FixtureTestConstants::APPLICATION_TIMEOUT_IN_MS; // 2 seconds timeout
+    std::atomic_bool timeoutStop = false;
     std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
-    // TODO(Markus2101, 14.06.2020): set callback if timeout is reached (currently not necessary)
+    timerInstance->callOnTimeout(applicationTimeout, [&timeoutStop]() {
+        timeoutStop = true;
+        std::cerr << "[FixtureModbusGateway] Timeout reached!\n";
+    });
 
     // create Modbus slave controller
     auto mbSlaveController = std::make_unique<ModbusSlaveController>(
@@ -58,11 +63,14 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
         mbSlaveController->waitForIncomingConnection();
         mbSlaveController->run();
 
-        if (currentReconnections == nbReconnections) {
+        if (currentReconnections == nbReconnections || timeoutStop) {
             break;
         }
         ++currentReconnections;
     }
+
+    // stop timer
+    timerInstance->stop();
 
     // close external connection in the end
     mbSlaveController->closeConnection();

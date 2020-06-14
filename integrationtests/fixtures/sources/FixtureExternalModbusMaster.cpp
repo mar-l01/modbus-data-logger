@@ -9,7 +9,7 @@ namespace Fixture {
 
 FixtureExternalModbusMaster::FixtureExternalModbusMaster() {}
 
-void FixtureExternalModbusMaster::setUp()
+void FixtureExternalModbusMaster::setUp(bool expectConnectionFailure)
 {
     // clang-format off
     m_modbusContext = std::move(std::unique_ptr<modbus_t, std::function<void(modbus_t*)>>(
@@ -27,8 +27,13 @@ void FixtureExternalModbusMaster::setUp()
     // connect
     auto ec = modbus_connect(m_modbusContext.get());
 
-    // make sure connection is set up
-    ASSERT_NE(ec, -1);
+    if (expectConnectionFailure) {
+        // connection should not have been established (e.g. due to timeout)
+        ASSERT_EQ(ec, -1);
+    } else {
+        // make sure connection is set up
+        ASSERT_NE(ec, -1);
+    }
 }
 
 void FixtureExternalModbusMaster::tearDown()

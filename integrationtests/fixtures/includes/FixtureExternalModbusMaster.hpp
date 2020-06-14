@@ -12,7 +12,7 @@ class FixtureExternalModbusMaster
 public:
     FixtureExternalModbusMaster();
 
-    void setUp();
+    void setUp(bool expectConnectionFailure = false);
     void tearDown();
 
     void checkWriteReadRequestBits();
