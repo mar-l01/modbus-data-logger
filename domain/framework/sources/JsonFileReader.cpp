@@ -71,7 +71,9 @@ void from_json(const nlohmann::json& j, ModbusConfiguration& mbConfig)
 
 namespace Framework {
 
-JsonFileReader::JsonFileReader() {}
+JsonFileReader::JsonFileReader()
+    : m_modbusConfiguration(Entity::ModbusConfiguration())
+{}
 
 void JsonFileReader::readConfigurationFile(const std::string& path)
 {
