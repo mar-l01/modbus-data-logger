@@ -4,6 +4,8 @@
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/utility/includes/TimerImpl.hpp"
+#include "domain/utility/interfaces/Timer.hpp"
 #include "integrationtests/fixtures/includes/TestConstants.hpp"
 
 namespace Fixture {
@@ -41,9 +43,18 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     mbDataMapping.nbHoldingRegisters = FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS;
     mbDataMapping.nbInputRegisters = FixtureTestConstants::MODBUS_NUMBER_INPUT_REGISTERS;
 
+    // create timer instance
+    int applicationTimeout = FixtureTestConstants::APPLICATION_TIMEOUT_IN_MS; // 2 seconds timeout
+    std::atomic_bool timeoutStop = false;
+    std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
+    timerInstance->callOnTimeout(applicationTimeout, [&timeoutStop]() {
+        timeoutStop = true;
+        std::cerr << "[FixtureModbusGateway] Timeout reached!\n";
+    });
+
     // create Modbus slave controller
     auto mbSlaveController = std::make_unique<ModbusSlaveController>(
-      mbSlave, mbGateway, mbDataMapping, FixtureTestConstants::MODBUS_IP_ADDRESS_INTERNAL_SLAVE,
+      mbSlave, mbGateway, timerInstance, mbDataMapping, FixtureTestConstants::MODBUS_IP_ADDRESS_INTERNAL_SLAVE,
       FixtureTestConstants::MODBUS_PORT_INTERNAL_SLAVE);
 
     // run Modbus slave until 'stop' was received (no reconnection will be triggered then)
@@ -52,11 +63,14 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
         mbSlaveController->waitForIncomingConnection();
         mbSlaveController->run();
 
-        if (currentReconnections == nbReconnections) {
+        if (currentReconnections == nbReconnections || timeoutStop) {
             break;
         }
         ++currentReconnections;
     }
+
+    // stop timer
+    timerInstance->stop();
 
     // close external connection in the end
     mbSlaveController->closeConnection();

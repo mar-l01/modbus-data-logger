@@ -2,6 +2,8 @@
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/utility/includes/TimerImpl.hpp"
+#include "domain/utility/interfaces/Timer.hpp"
 
 #include <iostream>
 #include <signal.h>
@@ -47,15 +49,25 @@ int main()
     // set up Modbus gateway
     auto mbGateway = std::make_shared<ModbusGateway>(mbMasterController);
 
-    // create Modbus controller and start it up
-    auto mbSlaveController =
-      std::make_unique<ModbusSlaveController>(mbSlave, mbGateway, mbDataMapping, ipAddrExtMaster, portExtMaster);
+    // create timer instance
+    int applicationTimeout = 5000; // 5 seconds timeout
+    std::atomic_bool timeoutStop = false;
+    std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
+    timerInstance->callOnTimeout(applicationTimeout, [&timeoutStop]() {
+        timeoutStop = true;
+        std::cerr << "[ConsoleApplication] Timeout reached!\n";
+    });
 
-    // run Modbus slave until 'stop' was received (no reconnection will be triggered then)
+    // create Modbus controller and start it up
+    auto mbSlaveController = std::make_unique<ModbusSlaveController>(mbSlave, mbGateway, timerInstance, mbDataMapping,
+                                                                     ipAddrExtMaster, portExtMaster);
+
+    // run Modbus slave until 'stop' was received by signal interrupt or timeout
+    // (no reconnection will be triggered then)
     do {
         mbSlaveController->waitForIncomingConnection();
         mbSlaveController->run();
-    } while (ModbusReconnection::startUpModbusSlaveAgain);
+    } while (ModbusReconnection::startUpModbusSlaveAgain && not timeoutStop);
 
     // close external connection in the end
     mbSlaveController->closeConnection();

@@ -7,10 +7,12 @@ namespace Gateway {
 
 ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,
                                              const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
+                                             const std::shared_ptr<Utility::Timer>& timerInstance,
                                              const Entity::ModbusDataMapping& mbDataMapping, const std::string& ipAddr,
                                              const int port)
     : m_modbusSlave(mbSlave)
     , m_modbusRequestController(mbReqCtrl)
+    , m_timer(timerInstance)
     , m_modbusDataMapping(mbDataMapping)
     , m_ipAddress(ipAddr)
     , m_port(port)
@@ -38,6 +40,9 @@ void ModbusSlaveController::run()
     for (;;) {
         do {
             mbRecStatus = m_modbusSlave->receive(modbusRequest);
+
+            // reset timer on each newly received Modbus request
+            m_timer->restart();
         } while (mbRecStatus == ModbusReceiveStatus::IGNORED);
 
         // error in receiving request
