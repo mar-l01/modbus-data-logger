@@ -150,10 +150,15 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/framework/testing/TestLibModbusSlave.cpp"
     "domain/framework/testing/TestLibModbusMaster.cpp"
     "domain/framework/testing/TestFileReaderFactory.cpp"
+    "domain/framework/testing/TestJsonFileReader.cpp"
   )
   target_include_directories(framework_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
     "/home/docker/better-enums/"
+  )
+  target_sources(framework_test
+    PRIVATE
+      "domain/framework/testing/gmock/MockConfigurationFileReader.hpp"
   )
   target_link_libraries(framework_test
     PRIVATE
