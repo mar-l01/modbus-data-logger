@@ -14,11 +14,13 @@ add_library(mdl_framework OBJECT
   "domain/framework/includes/LibModbusMaster.hpp"
   "domain/framework/interfaces/ConfigurationFileReader.hpp"
   "domain/framework/includes/JsonFileReader.hpp"
+  "domain/framework/includes/FileReaderFactory.hpp"
 
   # source files
   "domain/framework/sources/LibModbusSlave.cpp"
   "domain/framework/sources/LibModbusMaster.cpp"
   "domain/framework/sources/JsonFileReader.cpp"
+  "domain/framework/sources/FileReaderFactory.cpp"
 )
 target_compile_options(mdl_framework PUBLIC -Wall -Wextra)
 target_include_directories(mdl_framework PRIVATE
