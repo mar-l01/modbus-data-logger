@@ -9,7 +9,6 @@
 #include <iostream>
 #include <signal.h>
 
-
 namespace ModbusReconnection {
 bool startUpModbusSlaveAgain = true;
 }
@@ -22,26 +21,16 @@ void signalHandler(sig_atomic_t)
 
 int main()
 {
-    using namespace Gateway;
-
-    std::string jsonFilePath = "../../resources/mbdl_config.json";
-    auto fileReader = Framework::FileReaderFactory::createFileReader(Framework::FileReaderFramework::NLOHMANN_JSON);
-    fileReader->readConfigurationFile(jsonFilePath);
-
-    return 1;
-
     // use CTRL + C to stop application
     signal(SIGINT, signalHandler);
 
-    // external master
-    const std::string ipAddrExtMaster = "127.0.0.1";
-    const int portExtMaster = 5002; // no private port use (Modbus default := 502)
-    const Entity::ModbusDataMapping mbDataMapping = {0, 0, 0, 0, 10, 10, 10, 10};
+    using namespace Gateway;
 
-    // external slave
-    const std::string ipAddrExtSlave = "127.0.0.1";
-    const int portExtSlave = 5002;
-    const uint16_t timeout = 200; // 200 ms timeout waiting for response of external slave
+    // read in Modbus configuration
+    std::string jsonFilePath = "../../resources/mbdl_config.json";
+    auto fileReader = Framework::FileReaderFactory::createFileReader(Framework::FileReaderFramework::NLOHMANN_JSON);
+    fileReader->readConfigurationFile(jsonFilePath);
+    const auto& mbConfig = fileReader->getModbusConfiguration();
 
     // get Modbus slave instance from factory and set up listening
     auto mbSlave = ModbusComponentsFactory::createModbusSlave(ModbusComponentsFramework::LIBMODBUS);
@@ -50,25 +39,25 @@ int main()
     auto mbMaster = ModbusComponentsFactory::createModbusMaster(ModbusComponentsFramework::LIBMODBUS);
 
     // create Modbus master controller and connect to external Modbusslave
-    auto mbMasterController = std::make_shared<ModbusMasterController>(mbMaster, ipAddrExtSlave, portExtSlave);
+    auto mbMasterController =
+      std::make_shared<ModbusMasterController>(mbMaster, mbConfig.ipAddrExtSlave, mbConfig.portExtSlave);
     mbMasterController->connect();
-    mbMasterController->setTimeout(timeout);
+    mbMasterController->setTimeout(mbConfig.modbusTimeout);
 
     // set up Modbus gateway
     auto mbGateway = std::make_shared<ModbusGateway>(mbMasterController);
 
     // create timer instance
-    int applicationTimeout = 5000; // 5 seconds timeout
     std::atomic_bool timeoutStop = false;
     std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
-    timerInstance->callOnTimeout(applicationTimeout, [&timeoutStop]() {
+    timerInstance->callOnTimeout(mbConfig.applicationTimeout, [&timeoutStop]() {
         timeoutStop = true;
         std::cerr << "[ConsoleApplication] Timeout reached!\n";
     });
 
     // create Modbus controller and start it up
-    auto mbSlaveController = std::make_unique<ModbusSlaveController>(mbSlave, mbGateway, timerInstance, mbDataMapping,
-                                                                     ipAddrExtMaster, portExtMaster);
+    auto mbSlaveController = std::make_unique<ModbusSlaveController>(
+      mbSlave, mbGateway, timerInstance, mbConfig.dataMapping, mbConfig.ipAddrIntSlave, mbConfig.portIntSlave);
 
     // run Modbus slave until 'stop' was received by signal interrupt or timeout
     // (no reconnection will be triggered then)
