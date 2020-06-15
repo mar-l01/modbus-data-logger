@@ -59,12 +59,14 @@ add_library(mdl_entity OBJECT
   "domain/entity/includes/ModbusTcpRequest.hpp"
   "domain/entity/includes/ModbusTcpResponse.hpp"
   "domain/entity/includes/ModbusTcpConstants.hpp"
+  "domain/entity/includes/ModbusConfiguration.hpp"
 
   # source files
   "domain/entity/sources/ModbusDataMapping.cpp"
   "domain/entity/sources/ModbusTcpMessageFrame.cpp"
   "domain/entity/sources/ModbusTcpRequest.cpp"
   "domain/entity/sources/ModbusTcpResponse.cpp"
+  "domain/entity/sources/ModbusConfiguration.cpp"
 )
 target_compile_options(mdl_entity PUBLIC -Wall -Wextra)
 target_include_directories(mdl_entity PRIVATE
