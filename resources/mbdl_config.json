@@ -1,0 +1,33 @@
+{
+    "internal_modbus_slave" : {
+        "ip_address" : "127.0.0.1",
+        "port" : 5002
+    },
+
+    "external_modbus_slave" : {
+        "ip_address": "127.0.0.1",
+        "port" : 5002
+    },
+
+    "modbus_data_mapping" : {
+        "coil": {
+            "start_address" : 0,
+            "number_of_values" : 10
+        },
+        "discrete_input": {
+            "start_address" : 0,
+            "number_of_values" : 10
+        },
+        "holding_register": {
+            "start_address" : 0,
+            "number_of_values" : 10
+        },
+        "input_register": {
+            "start_address" : 0,
+            "number_of_values" : 10
+        }
+    },
+
+    "modbus_timeout_in_ms" : 200,
+    "application_timeout_in_ms" : 5000
+}
