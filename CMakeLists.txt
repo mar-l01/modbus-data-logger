@@ -95,6 +95,7 @@ target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra -pthread)
 target_include_directories(modbus_data_logger PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/home/docker/better-enums/"
+  "/usr/include/nlohmann/"
 )
 target_link_libraries(modbus_data_logger PRIVATE
   /usr/local/lib/libmodbus.so
