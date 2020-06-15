@@ -14,6 +14,7 @@ enum class FileReaderFramework
 
 class FileReaderFactory
 {
+public:
     static std::shared_ptr<ConfigurationFileReader> createFileReader(FileReaderFramework fileReaderFramework);
 };
 

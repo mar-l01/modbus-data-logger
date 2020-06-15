@@ -1,3 +1,4 @@
+#include "domain/framework/includes/FileReaderFactory.hpp"
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
@@ -7,6 +8,7 @@
 
 #include <iostream>
 #include <signal.h>
+
 
 namespace ModbusReconnection {
 bool startUpModbusSlaveAgain = true;
@@ -21,6 +23,12 @@ void signalHandler(sig_atomic_t)
 int main()
 {
     using namespace Gateway;
+
+    std::string jsonFilePath = "../../resources/mbdl_config.json";
+    auto fileReader = Framework::FileReaderFactory::createFileReader(Framework::FileReaderFramework::NLOHMANN_JSON);
+    fileReader->readConfigurationFile(jsonFilePath);
+
+    return 1;
 
     // use CTRL + C to stop application
     signal(SIGINT, signalHandler);
