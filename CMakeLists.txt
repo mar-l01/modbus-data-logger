@@ -149,6 +149,7 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_entity>
     "domain/framework/testing/TestLibModbusSlave.cpp"
     "domain/framework/testing/TestLibModbusMaster.cpp"
+    "domain/framework/testing/TestFileReaderFactory.cpp"
   )
   target_include_directories(framework_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
