@@ -12,10 +12,15 @@ add_library(mdl_framework OBJECT
   # header files
   "domain/framework/includes/LibModbusSlave.hpp"
   "domain/framework/includes/LibModbusMaster.hpp"
+  "domain/framework/interfaces/ConfigurationFileReader.hpp"
+  "domain/framework/includes/JsonFileReader.hpp"
+  "domain/framework/includes/FileReaderFactory.hpp"
 
   # source files
   "domain/framework/sources/LibModbusSlave.cpp"
   "domain/framework/sources/LibModbusMaster.cpp"
+  "domain/framework/sources/JsonFileReader.cpp"
+  "domain/framework/sources/FileReaderFactory.cpp"
 )
 target_compile_options(mdl_framework PUBLIC -Wall -Wextra)
 target_include_directories(mdl_framework PRIVATE
@@ -56,12 +61,14 @@ add_library(mdl_entity OBJECT
   "domain/entity/includes/ModbusTcpRequest.hpp"
   "domain/entity/includes/ModbusTcpResponse.hpp"
   "domain/entity/includes/ModbusTcpConstants.hpp"
+  "domain/entity/includes/ModbusConfiguration.hpp"
 
   # source files
   "domain/entity/sources/ModbusDataMapping.cpp"
   "domain/entity/sources/ModbusTcpMessageFrame.cpp"
   "domain/entity/sources/ModbusTcpRequest.cpp"
   "domain/entity/sources/ModbusTcpResponse.cpp"
+  "domain/entity/sources/ModbusConfiguration.cpp"
 )
 target_compile_options(mdl_entity PUBLIC -Wall -Wextra)
 target_include_directories(mdl_entity PRIVATE
@@ -142,10 +149,16 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_entity>
     "domain/framework/testing/TestLibModbusSlave.cpp"
     "domain/framework/testing/TestLibModbusMaster.cpp"
+    "domain/framework/testing/TestFileReaderFactory.cpp"
+    "domain/framework/testing/TestJsonFileReader.cpp"
   )
   target_include_directories(framework_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
     "/home/docker/better-enums/"
+  )
+  target_sources(framework_test
+    PRIVATE
+      "domain/framework/testing/gmock/MockConfigurationFileReader.hpp"
   )
   target_link_libraries(framework_test
     PRIVATE
@@ -153,6 +166,7 @@ if (${CMAKE_ENABLE_TESTING})
       gtest
       gmock
       gtest_main
+      stdc++fs # std::filesystem
   )
 
   add_test(NAME framework_test COMMAND $<TARGET_FILE:framework_test>)

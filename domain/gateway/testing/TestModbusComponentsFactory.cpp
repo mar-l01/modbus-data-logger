@@ -1,6 +1,5 @@
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 
-#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 namespace {

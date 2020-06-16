@@ -14,11 +14,11 @@ bool operator==(const ModbusDataMapping& mbMappingA, const ModbusDataMapping& mb
 
 std::ostream& operator<<(std::ostream& os, const ModbusDataMapping& mbMapping)
 {
-    os << "ModbusMapping [start-address (decimal) | #values]: "
+    os << "ModbusMapping [start-address (decimal) | #values]:\n"
        << "[ " << mbMapping.startAddressCoils << " | " << mbMapping.nbCoils << " ]\n"
        << "[ " << mbMapping.startAddressDiscreteInputs << " | " << mbMapping.nbDiscreteInputs << " ]\n"
        << "[ " << mbMapping.startAddressHoldingRegisters << " | " << mbMapping.nbHoldingRegisters << " ]\n"
-       << "[ " << mbMapping.startAddressInputRegisters << " | " << mbMapping.nbInputRegisters;
+       << "[ " << mbMapping.startAddressInputRegisters << " | " << mbMapping.nbInputRegisters << " ]";
 
     return os;
 }

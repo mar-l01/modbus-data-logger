@@ -37,5 +37,8 @@ for test_rc in return_codes:
 print("==========================")
 
 # exit script depending on test-result with error or not
-exit_code = 1 if 1 in return_codes else 0
-sys.exit(exit_code)
+for (exit_code, _) in return_codes:
+    if exit_code is not 0:
+        sys.exit(1)
+
+sys.exit(0)
