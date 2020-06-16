@@ -6,8 +6,10 @@ Within VSCodes integrated terminal run following command from within the _script
 ```sh
 $ ./build_native
 ```
-Add `-t` parameter to additionally build all unit-tests.  
+Add `-t` parameter to additionally build all unit-tests. This will build a debug-target.   
+Add `-d` parameter to build a debug target.  
+Add `-r` parameter to build a release target.  
 
 ### VSCode Build Task
-Within VSCode go to __Terminal__ > __Run Build Tasks...__ and here you can select _Build Native_ or _Build Native & Unittests_ to either only build the application or the unit-tests as well.
+Within VSCode go to __Terminal__ > __Run Build Tasks...__ and here you can select _Build Native DEBUG_, _Build Native RELEASE_ or _Build Native & Unittests_ to either build the application in debug or release mode or the unit-tests as well.
 
