@@ -7,6 +7,11 @@ project(modbus-data-logger-project)
 # BUILD APPLICATION
 ##################################################################
 
+# add preprocessor macro #define DEBUG for debug-version
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+  add_compile_definitions(DEBUG)
+endif()
+
 # build framework object-library
 add_library(mdl_framework OBJECT
   # header files

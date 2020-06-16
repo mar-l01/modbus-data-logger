@@ -8,9 +8,6 @@
 #include <iostream>
 #include <memory>
 
-// use debug messages for libmodbus library
-#define DEBUG
-
 namespace Framework {
 
 class LibModbusMaster : public Gateway::ModbusMaster
