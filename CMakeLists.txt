@@ -166,6 +166,7 @@ if (${CMAKE_ENABLE_TESTING})
       gtest
       gmock
       gtest_main
+      stdc++fs # std::filesystem
   )
 
   add_test(NAME framework_test COMMAND $<TARGET_FILE:framework_test>)

@@ -2,6 +2,8 @@
 
 #include "gtest/gtest.h"
 
+#include <filesystem>
+
 namespace {
 
 using namespace ::testing;
@@ -34,7 +36,12 @@ TEST_F(TestJsonFileReader, readConfigurationFileNoThrowWhenUnkownFilepath)
 TEST_F(TestJsonFileReader, getModbusConfigurationReturnsConfigObject)
 {
     auto testObj = createTestObject();
-    const auto filePath = "../resources/mbdl_config.json";
+
+    // make sure file can be accessed (either from root or scripts directory)
+    auto filePath = "../resources/mbdl_config.json"; // from modbus-data-logger/scripts/
+    if (std::filesystem::current_path().filename() == "modbus-data-logger") {
+        filePath = "resources/mbdl_config.json"; // from modbus-data-logger/
+    }
 
     ASSERT_NO_THROW(testObj->readConfigurationFile(filePath));
     const auto& returnedModbusConfig = testObj->getModbusConfiguration();
