@@ -4,14 +4,24 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Native",
+            "label": "Build Native DEBUG",
             "type": "shell",
-            "command": "scripts/build_native.sh",
+            "command": "scripts/build_native.sh -d",
             "problemMatcher": ["$gcc"],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
+            }
+        },
+        {
+            "label": "Build Native RELEASE",
+            "type": "shell",
+            "command": "scripts/build_native.sh -r",
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "Build Native & Unittests",
@@ -21,8 +31,7 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-
+            }
         }
     ]
 }

@@ -7,9 +7,6 @@
 #include <functional>
 #include <memory>
 
-// use debug messages for libmodbus library
-#define DEBUG
-
 namespace Framework {
 
 namespace LibModbusConstants {

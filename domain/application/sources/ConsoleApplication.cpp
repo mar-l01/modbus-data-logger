@@ -28,7 +28,7 @@ int main()
 
     // read in Modbus configuration
     // TODO(Markus2101, 15.06.2020): replace with absolute filepath
-    std::string jsonFilePath = "../../resources/mbdl_config.json";
+    std::string jsonFilePath = "../../../resources/mbdl_config.json";
     auto fileReader = Framework::FileReaderFactory::createFileReader(Framework::FileReaderFramework::NLOHMANN_JSON);
     fileReader->readConfigurationFile(jsonFilePath);
     const auto& mbConfig = fileReader->getModbusConfiguration();

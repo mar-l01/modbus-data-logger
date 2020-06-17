@@ -10,7 +10,7 @@ PASSED = "\033[92mPASSED\033[00m"
 file_path = os.path.dirname(os.path.realpath(__file__))
 
 # get path to build-directory
-build_dir = file_path + "/../builds/build_native"
+build_dir = file_path + "/../builds/build_native/debug/"
 
 # check if path exists
 if not os.path.isdir(build_dir):
