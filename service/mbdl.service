@@ -6,8 +6,8 @@ After=network.target
 [Service]
 User=root
 Type=simple
-ExecStart=/builds/build_native/release/modbus_data_logger
-ExecStop=script/executing/a/kill -INT
+ExecStart=start_mbdl_service.sh
+ExecStop=stop_mbdl_service.sh
 
 [Install]
 WantedBy=multi-user.target
