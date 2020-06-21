@@ -1,0 +1,13 @@
+[Unit]
+Description=Start Modbus data logger application as service#
+Requires=network.target
+After=network.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=start_mbdl_service.sh
+ExecStop=stop_mbdl_service.sh
+
+[Install]
+WantedBy=multi-user.target
