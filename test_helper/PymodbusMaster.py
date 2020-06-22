@@ -13,7 +13,7 @@ def run_modbus_master():
     assert(res.registers[0] == holding_reg_val)
 
     holding_reg_vals = [10,20,30,40,50]
-    print("Writing values {} to holding registers starting at address {}".format(holding_reg_addr, holding_reg_val))
+    print("Writing values {} to holding registers starting at address {}".format(holding_reg_addr, holding_reg_vals))
     req = client.write_registers(holding_reg_addr, holding_reg_vals)
     res = client.read_holding_registers(holding_reg_addr, len(holding_reg_vals))
     assert(not req.isError())
