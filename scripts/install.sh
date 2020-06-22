@@ -23,14 +23,14 @@ if [ ! -d "${INSTALL_DIR}" ]; then
 fi
 
 # move application binary to install directory
-mv -f "${BUILD_DIR}/modbus-data-logger" "${INSTALL_DIR}"
+cp -f "${BUILD_DIR}/modbus_data_logger" "${INSTALL_DIR}"
 
 # move configuration file to install directory
-mv -f "${RESOURCE_DIR}/mbdl_config.json" "${INSTALL_DIR}"
+cp -f "${RESOURCE_DIR}/mbdl_config.json" "${INSTALL_DIR}"
 
 # move start/stop scripts to install directory
-mv -f "${SERVICE_DIR}/start_mbdl_service.sh" "${INSTALL_DIR}"
-mv -f "${SERVICE_DIR}/stop_mbdl_service.sh" "${INSTALL_DIR}"
+cp -f "${SERVICE_DIR}/start_mbdl_service.sh" "${INSTALL_DIR}"
+cp -f "${SERVICE_DIR}/stop_mbdl_service.sh" "${INSTALL_DIR}"
 
 # create service directory if it is not present
 if [ ! -d "${SERVICE_INSTALL_DIR}" ]; then
@@ -39,4 +39,4 @@ if [ ! -d "${SERVICE_INSTALL_DIR}" ]; then
 fi
 
 # move .service file to service directory
-mv -f "${SERVICE_DIR}/mbdl.service" "${SERVICE_INSTALL_DIR}"
+cp -f "${SERVICE_DIR}/mbdl.service" "${SERVICE_INSTALL_DIR}"
