@@ -11,7 +11,8 @@ def run_server():
 
     context = ModbusServerContext(slaves=mb_mapping, single=True)
 
-    StartTcpServer(context, address=("localhost", 5002))
+    StartTcpServer(context, address=("127.0.0.1", 5002))
+
 
 if __name__ == "__main__":
     try:
