@@ -6,8 +6,8 @@ After=network.target
 [Service]
 User=root
 Type=simple
-ExecStart=start_mbdl_service.sh
-ExecStop=stop_mbdl_service.sh
+ExecStart=/opt/mbdl/start_mbdl_service.sh
+ExecStop=/opt/mbdl/stop_mbdl_service.sh
 
 [Install]
 WantedBy=multi-user.target

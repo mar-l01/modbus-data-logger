@@ -1,12 +1,10 @@
 #!/bin/bash
 
 # set up some variables required
-SCRIPT_PATH=`realpath $0`
-SCRIPT_DIR=`dirname ${SCRIPT_PATH}`
-BUILD_DIR="${SCRIPT_DIR}/../builds/build_native/release"
+SCRIPT_DIR="/opt/mbdl/"
 
-# navigate to build folder
-cd ${BUILD_DIR}
+# change into respective directory
+cd ${SCRIPT_DIR}
 
 # execute application
 ./modbus_data_logger

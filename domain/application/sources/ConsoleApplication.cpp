@@ -19,16 +19,21 @@ void signalHandler(sig_atomic_t)
     ModbusReconnection::startUpModbusSlaveAgain = false;
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+    if (argc <= 1) {
+        std::cerr << "[ModbusDataLogger] File path required!\n";
+        std::cerr << "[ModbusDataLogger] Usage: ./modbus_data_logger <config-file-path>\n";
+        return 1;
+    }
+
     // use CTRL + C to stop application
     signal(SIGINT, signalHandler);
 
     using namespace Gateway;
 
-    // read in Modbus configuration
-    // TODO(Markus2101, 15.06.2020): replace with absolute filepath
-    std::string jsonFilePath = "../../../resources/mbdl_config.json";
+    // read in Modbus configuration (file is provided via first console argument)
+    std::string jsonFilePath(argv[1]);
     auto fileReader = Framework::FileReaderFactory::createFileReader(Framework::FileReaderFramework::NLOHMANN_JSON);
     fileReader->readConfigurationFile(jsonFilePath);
     const auto& mbConfig = fileReader->getModbusConfiguration();
