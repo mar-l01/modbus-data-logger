@@ -1,5 +1,6 @@
 #include "domain/framework/includes/LibModbusMaster.hpp"
 
+
 namespace Framework {
 
 LibModbusMaster::LibModbusMaster() {}
@@ -83,7 +84,7 @@ Entity::ModbusOperationStatus LibModbusMaster::writeSingleCoilValue(int startAdd
 
 Entity::ModbusOperationStatus LibModbusMaster::writeSingleHoldingRegisterValue(int startAddress, uint16_t registerValue)
 {
-    return writeSingleValue<uint16_t>(modbus_write_register, startAddress, registerValue);
+    return writeSingleValue<int>(modbus_write_register, startAddress, registerValue);
 }
 
 Entity::ModbusOperationStatus LibModbusMaster::writeMultipleCoilValues(int startAddress,

@@ -32,7 +32,7 @@ target_include_directories(mdl_framework PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/usr/include/better-enums/"
 )
-target_link_libraries(mdl_framework PRIVATE /usr/local/lib/libmodbus.so)
+target_link_libraries(mdl_framework PRIVATE /usr/lib/x86_64-linux-gnu/libmodbus.so)
 
 # build gateway object-library
 add_library(mdl_gateway OBJECT
@@ -110,7 +110,7 @@ target_include_directories(modbus_data_logger PRIVATE
   "/usr/include/nlohmann/"
 )
 target_link_libraries(modbus_data_logger PRIVATE
-  /usr/local/lib/libmodbus.so
+  /usr/lib/x86_64-linux-gnu/libmodbus.so
   /usr/lib/x86_64-linux-gnu/libpthread.so
 )
 
@@ -167,7 +167,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_link_libraries(framework_test
     PRIVATE
-      /usr/local/lib/libmodbus.so
+      /usr/lib/x86_64-linux-gnu/libmodbus.so
       gtest
       gmock
       gtest_main
@@ -199,7 +199,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_link_libraries(gateway_test
     PRIVATE
-      /usr/local/lib/libmodbus.so
+      /usr/lib/x86_64-linux-gnu/libmodbus.so
       gtest
       gmock
       gtest_main
@@ -265,7 +265,7 @@ if (${CMAKE_ENABLE_TESTING})
 )
   target_link_libraries(integrationtest
     PRIVATE
-      /usr/local/lib/libmodbus.so
+      /usr/lib/x86_64-linux-gnu/libmodbus.so
       gtest
       gmock
       gtest_main
