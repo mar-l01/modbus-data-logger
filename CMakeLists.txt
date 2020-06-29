@@ -30,9 +30,9 @@ add_library(mdl_framework OBJECT
 target_compile_options(mdl_framework PUBLIC -Wall -Wextra)
 target_include_directories(mdl_framework PRIVATE
   "${PROJECT_SOURCE_DIR}"
-  "/home/docker/better-enums/"
+  "/usr/include/better-enums/"
 )
-target_link_libraries(mdl_framework PRIVATE /usr/local/lib/libmodbus.so)
+target_link_libraries(mdl_framework PRIVATE /usr/lib/x86_64-linux-gnu/libmodbus.so)
 
 # build gateway object-library
 add_library(mdl_gateway OBJECT
@@ -55,7 +55,7 @@ add_library(mdl_gateway OBJECT
 target_compile_options(mdl_gateway PUBLIC -Wall -Wextra)
 target_include_directories(mdl_gateway PRIVATE
   "${PROJECT_SOURCE_DIR}"
-  "/home/docker/better-enums/"
+  "/usr/include/better-enums/"
 )
 
 # build entity object-library
@@ -78,7 +78,7 @@ add_library(mdl_entity OBJECT
 target_compile_options(mdl_entity PUBLIC -Wall -Wextra)
 target_include_directories(mdl_entity PRIVATE
   "${PROJECT_SOURCE_DIR}"
-  "/home/docker/better-enums/"
+  "/usr/include/better-enums/"
 )
 
 # build utility object-library
@@ -106,11 +106,11 @@ add_executable(modbus_data_logger
 target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra -pthread)
 target_include_directories(modbus_data_logger PRIVATE
   "${PROJECT_SOURCE_DIR}"
-  "/home/docker/better-enums/"
+  "/usr/include/better-enums/"
   "/usr/include/nlohmann/"
 )
 target_link_libraries(modbus_data_logger PRIVATE
-  /usr/local/lib/libmodbus.so
+  /usr/lib/x86_64-linux-gnu/libmodbus.so
   /usr/lib/x86_64-linux-gnu/libpthread.so
 )
 
@@ -159,7 +159,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_include_directories(framework_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
-    "/home/docker/better-enums/"
+    "/usr/include/better-enums/"
   )
   target_sources(framework_test
     PRIVATE
@@ -167,7 +167,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_link_libraries(framework_test
     PRIVATE
-      /usr/local/lib/libmodbus.so
+      /usr/lib/x86_64-linux-gnu/libmodbus.so
       gtest
       gmock
       gtest_main
@@ -188,7 +188,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_include_directories(gateway_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
-    "/home/docker/better-enums/"
+    "/usr/include/better-enums/"
   )
   target_sources(gateway_test
     PRIVATE
@@ -199,7 +199,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_link_libraries(gateway_test
     PRIVATE
-      /usr/local/lib/libmodbus.so
+      /usr/lib/x86_64-linux-gnu/libmodbus.so
       gtest
       gmock
       gtest_main
@@ -217,7 +217,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_include_directories(entity_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
-    "/home/docker/better-enums/"
+    "/usr/include/better-enums/"
   )
   target_link_libraries(entity_test
     PRIVATE
@@ -255,7 +255,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_include_directories(integrationtest PRIVATE
     "${PROJECT_SOURCE_DIR}"
-    "/home/docker/better-enums/"
+    "/usr/include/better-enums/"
   )
   target_sources(integrationtest
     PRIVATE
@@ -265,7 +265,7 @@ if (${CMAKE_ENABLE_TESTING})
 )
   target_link_libraries(integrationtest
     PRIVATE
-      /usr/local/lib/libmodbus.so
+      /usr/lib/x86_64-linux-gnu/libmodbus.so
       gtest
       gmock
       gtest_main
