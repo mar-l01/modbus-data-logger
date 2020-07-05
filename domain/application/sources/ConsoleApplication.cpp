@@ -7,7 +7,6 @@
 #include "domain/utility/interfaces/Timer.hpp"
 
 #include "spdlog/spdlog.h"
-#include <iostream>
 #include <signal.h>
 
 namespace ModbusReconnection {

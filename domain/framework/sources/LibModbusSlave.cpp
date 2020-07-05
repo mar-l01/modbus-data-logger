@@ -5,7 +5,6 @@
 #include "spdlog/fmt/ostr.h" // required to let spdlog know about overloaded << operator
 #include "spdlog/spdlog.h"
 #include <errno.h>
-#include <iostream>
 
 namespace Framework {
 

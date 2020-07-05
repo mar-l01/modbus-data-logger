@@ -2,7 +2,6 @@
 
 #include "spdlog/spdlog.h"
 #include <chrono>
-#include <iostream>
 #include <thread>
 
 namespace Utility {
@@ -24,8 +23,6 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
     m_isRunning = true;
     m_restartTimer = false;
     m_stopTimer = false;
-
-    auto startTime = std::chrono::steady_clock::now();
 
     // start extra thread to wait until timeout is reached
     std::thread waitThread([this, timeoutInMs, callback]() {
