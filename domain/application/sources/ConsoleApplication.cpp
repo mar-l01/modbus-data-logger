@@ -6,6 +6,7 @@
 #include "domain/utility/includes/TimerImpl.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
 
+#include "spdlog/spdlog.h"
 #include <iostream>
 #include <signal.h>
 
@@ -22,8 +23,8 @@ void signalHandler(sig_atomic_t)
 int main(int argc, char* argv[])
 {
     if (argc <= 1) {
-        std::cerr << "[ModbusDataLogger] File path required!\n";
-        std::cerr << "[ModbusDataLogger] Usage: ./modbus_data_logger <config-file-path>\n";
+        spdlog::error("[ModbusDataLogger] File path required!");
+        spdlog::error("[ModbusDataLogger] Usage: ./modbus_data_logger <config-file-path>");
         return 1;
     }
 
@@ -58,7 +59,7 @@ int main(int argc, char* argv[])
     std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
     timerInstance->callOnTimeout(mbConfig.applicationTimeout, [&timeoutStop]() {
         timeoutStop = true;
-        std::cerr << "[ConsoleApplication] Timeout reached!\n";
+        spdlog::info("[ConsoleApplication] Timeout reached!");
     });
 
     // create Modbus controller and start it up
