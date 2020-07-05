@@ -1,5 +1,6 @@
 #include "domain/framework/includes/LibModbusMaster.hpp"
 
+#include "spdlog/spdlog.h"
 
 namespace Framework {
 
@@ -15,13 +16,15 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
             }));
     // clang-format on
 
-#ifdef DEBUG
     // error handling
     if (m_modbusContext == nullptr) {
-        std::cerr << "[LibModbusMaster] Unable to allocate libmodbus context\n";
-        std::cerr << "[LibModbusMaster] - IP: " << ipAddr << '\n';
-        std::cerr << "[LibModbusMaster] - Port: " << port << '\n';
-    } else {
+        spdlog::error("[LibModbusMaster] Unable to allocate libmodbus context");
+        spdlog::error("[LibModbusMaster] - IP: {0}", ipAddr);
+        spdlog::error("[LibModbusMaster] - Port: {0:d}", port);
+    }
+#ifdef DEBUG
+    else {
+
         modbus_set_debug(m_modbusContext.get(), true);
     }
 #endif
@@ -29,12 +32,10 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
     // connect
     auto connSuccessful = modbus_connect(m_modbusContext.get());
 
-#ifdef DEBUG
     // error handling
     if (connSuccessful == -1) {
-        std::cerr << "[LibModbusMaster] Failed to connect to slave\n";
+        spdlog::error("[LibModbusMaster] Failed to connect to slave");
     }
-#endif
 }
 
 void LibModbusMaster::reconnect()
@@ -42,12 +43,10 @@ void LibModbusMaster::reconnect()
     // connect
     auto connSuccessful = modbus_connect(m_modbusContext.get());
 
-#ifdef DEBUG
     // error handling
     if (connSuccessful == -1) {
-        std::cerr << "[LibModbusMaster] Failed to re-connect to slave\n";
+        spdlog::error("[LibModbusMaster] Failed to re-connect to slave");
     }
-#endif
 }
 
 void LibModbusMaster::setResponseTimeout(const uint16_t timeoutInMs)
@@ -150,7 +149,7 @@ Entity::ModbusOperationStatus LibModbusMaster::mapReturnCodeToOperationStatus(co
     if (returnCode == -1) {
         if (errno == ETIMEDOUT) {
             mbOpStatus = Entity::ModbusOperationStatus::TIMEOUT;
-            std::cerr << "[LibModbusMaster] Connection timed out..\n";
+            spdlog::error("[LibModbusMaster] Connection timed out..");
         } else {
             mbOpStatus = Entity::ModbusOperationStatus::FAIL;
         }

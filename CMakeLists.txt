@@ -12,6 +12,9 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   add_compile_definitions(DEBUG)
 endif()
 
+# logging library, static linked
+find_package(spdlog REQUIRED)
+
 # build framework object-library
 add_library(mdl_framework OBJECT
   # header files
@@ -32,7 +35,11 @@ target_include_directories(mdl_framework PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/usr/include/better-enums/"
 )
-target_link_libraries(mdl_framework PRIVATE /usr/lib/x86_64-linux-gnu/libmodbus.so)
+target_link_libraries(mdl_framework
+  PRIVATE
+    /usr/lib/x86_64-linux-gnu/libmodbus.so
+    spdlog::spdlog
+)
 
 # build gateway object-library
 add_library(mdl_gateway OBJECT
