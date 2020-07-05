@@ -35,11 +35,7 @@ target_include_directories(mdl_framework PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/usr/include/better-enums/"
 )
-target_link_libraries(mdl_framework
-  PRIVATE
-    /usr/lib/x86_64-linux-gnu/libmodbus.so
-    spdlog::spdlog
-)
+target_link_libraries(mdl_framework PRIVATE /usr/lib/x86_64-linux-gnu/libmodbus.so)
 
 # build gateway object-library
 add_library(mdl_gateway OBJECT
