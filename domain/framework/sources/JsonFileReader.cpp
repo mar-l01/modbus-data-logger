@@ -4,6 +4,7 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 
+
 namespace Entity {
 
 void to_json(nlohmann::json& j, const ModbusConfiguration& mbConfig)
@@ -80,7 +81,7 @@ void JsonFileReader::readConfigurationFile(const std::string& path)
 {
     std::ifstream jsonFs(path);
     if (!jsonFs) {
-        spdlog::error("[JsonFileReader] Failed to open file: {0}", path);
+        SPDLOG_ERROR("[JsonFileReader] Failed to open file: {0}", path);
         return;
     }
 
@@ -90,7 +91,7 @@ void JsonFileReader::readConfigurationFile(const std::string& path)
 
         m_modbusConfiguration = j.get<Entity::ModbusConfiguration>();
     } catch (std::exception& ex) {
-        spdlog::error("[JsonFileReader] Error: {0}.", ex.what());
+        SPDLOG_ERROR("[JsonFileReader] Error: {0}.", ex.what());
     }
 }
 

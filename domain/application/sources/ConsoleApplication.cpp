@@ -9,6 +9,7 @@
 #include "spdlog/spdlog.h"
 #include <signal.h>
 
+
 namespace ModbusReconnection {
 bool startUpModbusSlaveAgain = true;
 }
@@ -22,8 +23,8 @@ void signalHandler(sig_atomic_t)
 int main(int argc, char* argv[])
 {
     if (argc <= 1) {
-        spdlog::error("[ModbusDataLogger] File path required!");
-        spdlog::error("[ModbusDataLogger] Usage: ./modbus_data_logger <config-file-path>");
+        SPDLOG_ERROR("[ModbusDataLogger] File path required!");
+        SPDLOG_ERROR("[ModbusDataLogger] Usage: ./modbus_data_logger <config-file-path>");
         return 1;
     }
 
@@ -58,7 +59,7 @@ int main(int argc, char* argv[])
     std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
     timerInstance->callOnTimeout(mbConfig.applicationTimeout, [&timeoutStop]() {
         timeoutStop = true;
-        spdlog::info("[ConsoleApplication] Timeout reached!");
+        SPDLOG_INFO("[ConsoleApplication] Timeout reached!");
     });
 
     // create Modbus controller and start it up

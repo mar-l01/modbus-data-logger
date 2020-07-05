@@ -6,6 +6,7 @@
 #include "spdlog/spdlog.h"
 #include <errno.h>
 
+
 namespace Framework {
 
 LibModbusSlave::LibModbusSlave()
@@ -28,8 +29,8 @@ void LibModbusSlave::setModbusDataMapping(const Entity::ModbusDataMapping& mbMap
 
     // error handling
     if (m_modbusMapping == nullptr) {
-        spdlog::error("[LibModbusSlave] Failed to allocate the mapping");
-        spdlog::error("[LibModbusSlave] - Data-Mapping: {0}", mbMapping);
+        SPDLOG_ERROR("[LibModbusSlave] Failed to allocate the mapping");
+        SPDLOG_ERROR("[LibModbusSlave] - Data-Mapping: {0}", mbMapping);
     }
 }
 
@@ -45,9 +46,9 @@ void LibModbusSlave::bind(const std::string& ipAddr, const int port)
 
     // error handling
     if (m_modbusContext == nullptr) {
-        spdlog::error("[LibModbusSlave] Unable to allocate libmodbus context");
-        spdlog::error("[LibModbusSlave] - IP: {0}", ipAddr);
-        spdlog::error("[LibModbusSlave] - Port: {0:d}", port);
+        SPDLOG_ERROR("[LibModbusSlave] Unable to allocate libmodbus context");
+        SPDLOG_ERROR("[LibModbusSlave] - IP: {0}", ipAddr);
+        SPDLOG_ERROR("[LibModbusSlave] - Port: {0:d}", port);
     }
 #ifdef DEBUG
     else {
@@ -58,7 +59,7 @@ void LibModbusSlave::bind(const std::string& ipAddr, const int port)
 
 int LibModbusSlave::listen(const int nbConns)
 {
-    spdlog::debug("[LibModbusSlave] Listen for a incoming connection");
+    SPDLOG_DEBUG("[LibModbusSlave] Listen for a incoming connection");
 
     auto slaveSocket = modbus_tcp_listen(m_modbusContext.get(), nbConns);
 
@@ -69,7 +70,7 @@ void LibModbusSlave::accept(int& socket)
 {
     modbus_tcp_accept(m_modbusContext.get(), &socket);
 
-    spdlog::debug("[LibModbusSlave] Accepted incoming connection");
+    SPDLOG_DEBUG("[LibModbusSlave] Accepted incoming connection");
 }
 
 Gateway::ModbusReceiveStatus LibModbusSlave::receive(std::shared_ptr<Entity::ModbusTcpRequest>& request)
@@ -148,7 +149,7 @@ void LibModbusSlave::updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusT
             updateInputRegisterValues(response->getReadRegisterValues());
             break;
         default:
-            spdlog::warn("[LibModbusSlave] No read operation took place");
+            SPDLOG_WARN("[LibModbusSlave] No read operation took place");
             break;
     }
 }

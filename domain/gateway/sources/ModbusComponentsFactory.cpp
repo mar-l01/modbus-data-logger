@@ -5,6 +5,7 @@
 
 #include "spdlog/spdlog.h"
 
+
 namespace Gateway {
 
 std::shared_ptr<ModbusSlave> ModbusComponentsFactory::createModbusSlave(ModbusComponentsFramework mbFramework)
@@ -16,7 +17,7 @@ std::shared_ptr<ModbusSlave> ModbusComponentsFactory::createModbusSlave(ModbusCo
             modbusSlaveInstance = std::make_shared<Framework::LibModbusSlave>();
             break;
         case ModbusComponentsFramework::OTHER_MODBUS_FRAMEWORK:
-            spdlog::error("[ModbusComponentsFactory] Failed to create Modbus slave instance (framework not supported)");
+            SPDLOG_ERROR("[ModbusComponentsFactory] Failed to create Modbus slave instance (framework not supported)");
             modbusSlaveInstance = nullptr;
             break;
     }
@@ -33,8 +34,7 @@ std::shared_ptr<ModbusMaster> ModbusComponentsFactory::createModbusMaster(Modbus
             modbusMasterInstance = std::make_shared<Framework::LibModbusMaster>();
             break;
         case ModbusComponentsFramework::OTHER_MODBUS_FRAMEWORK:
-            spdlog::error(
-              "[ModbusComponentsFactory] Failed to create Modbus master instance (framework not supported)");
+            SPDLOG_ERROR("[ModbusComponentsFactory] Failed to create Modbus master instance (framework not supported)");
             modbusMasterInstance = nullptr;
             break;
     }
