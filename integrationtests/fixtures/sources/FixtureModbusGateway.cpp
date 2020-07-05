@@ -8,6 +8,8 @@
 #include "domain/utility/interfaces/Timer.hpp"
 #include "integrationtests/fixtures/includes/TestConstants.hpp"
 
+#include "spdlog/spdlog.h"
+
 namespace Fixture {
 
 FixtureModbusGateway::FixtureModbusGateway() {}
@@ -49,7 +51,7 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
     timerInstance->callOnTimeout(applicationTimeout, [&timeoutStop]() {
         timeoutStop = true;
-        std::cerr << "[FixtureModbusGateway] Timeout reached!\n";
+        spdlog::info("[FixtureModbusGateway] Timeout reached!");
     });
 
     // create Modbus slave controller
