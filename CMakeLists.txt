@@ -7,10 +7,16 @@ project(modbus-data-logger-project)
 # BUILD APPLICATION
 ##################################################################
 
-# add preprocessor macro #define DEBUG for debug-version
+# add preprocessor macros for logging (debug -> DEBUG, release -> ERROR)
 if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   add_compile_definitions(DEBUG)
+  add_compile_definitions(SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG)
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+  add_compile_definitions(SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_ERROR)
 endif()
+
+# logging library, static linked
+find_package(spdlog REQUIRED)
 
 # build framework object-library
 add_library(mdl_framework OBJECT

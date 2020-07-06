@@ -1,7 +1,9 @@
 #include "domain/framework/includes/JsonFileReader.hpp"
 
+#include "spdlog/spdlog.h"
 #include <fstream>
 #include <nlohmann/json.hpp>
+
 
 namespace Entity {
 
@@ -79,7 +81,7 @@ void JsonFileReader::readConfigurationFile(const std::string& path)
 {
     std::ifstream jsonFs(path);
     if (!jsonFs) {
-        std::cerr << "[JsonFileReader] Failed to open file: " << path << '\n';
+        SPDLOG_ERROR("[JsonFileReader] Failed to open file: {0}", path);
         return;
     }
 
@@ -89,7 +91,7 @@ void JsonFileReader::readConfigurationFile(const std::string& path)
 
         m_modbusConfiguration = j.get<Entity::ModbusConfiguration>();
     } catch (std::exception& ex) {
-        std::cerr << "[JsonFileReader] Error: " << ex.what() << '\n';
+        SPDLOG_ERROR("[JsonFileReader] Error: {0}.", ex.what());
     }
 }
 

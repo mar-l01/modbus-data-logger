@@ -2,8 +2,10 @@
 
 #include "domain/entity/includes/ModbusTcpConstants.hpp"
 
+#include "spdlog/fmt/ostr.h" // required to let spdlog know about overloaded << operator
+#include "spdlog/spdlog.h"
 #include <errno.h>
-#include <iostream>
+
 
 namespace Framework {
 
@@ -27,10 +29,8 @@ void LibModbusSlave::setModbusDataMapping(const Entity::ModbusDataMapping& mbMap
 
     // error handling
     if (m_modbusMapping == nullptr) {
-#ifdef DEBUG
-        std::cerr << "[LibModbusSlave] Failed to allocate the mapping\n";
-        std::cerr << "[LibModbusSlave] - Data-Mapping: " << mbMapping << '\n';
-#endif
+        SPDLOG_ERROR("[LibModbusSlave] Failed to allocate the mapping");
+        SPDLOG_ERROR("[LibModbusSlave] - Data-Mapping: {0}", mbMapping);
     }
 }
 
@@ -44,13 +44,14 @@ void LibModbusSlave::bind(const std::string& ipAddr, const int port)
         }));
     // clang-format on
 
-#ifdef DEBUG
     // error handling
     if (m_modbusContext == nullptr) {
-        std::cerr << "[LibModbusSlave] Unable to allocate libmodbus context\n";
-        std::cerr << "[LibModbusSlave] - IP: " << ipAddr << '\n';
-        std::cerr << "[LibModbusSlave] - Port: " << port << '\n';
-    } else {
+        SPDLOG_ERROR("[LibModbusSlave] Unable to allocate libmodbus context");
+        SPDLOG_ERROR("[LibModbusSlave] - IP: {0}", ipAddr);
+        SPDLOG_ERROR("[LibModbusSlave] - Port: {0:d}", port);
+    }
+#ifdef DEBUG
+    else {
         modbus_set_debug(m_modbusContext.get(), true);
     }
 #endif
@@ -58,9 +59,7 @@ void LibModbusSlave::bind(const std::string& ipAddr, const int port)
 
 int LibModbusSlave::listen(const int nbConns)
 {
-#ifdef DEBUG
-    std::cout << "[LibModbusSlave] Listen for a incoming connection\n";
-#endif
+    SPDLOG_DEBUG("[LibModbusSlave] Listen for a incoming connection");
 
     auto slaveSocket = modbus_tcp_listen(m_modbusContext.get(), nbConns);
 
@@ -71,9 +70,7 @@ void LibModbusSlave::accept(int& socket)
 {
     modbus_tcp_accept(m_modbusContext.get(), &socket);
 
-#ifdef DEBUG
-    std::cout << "[LibModbusSlave] Accepted incoming connection\n";
-#endif
+    SPDLOG_DEBUG("[LibModbusSlave] Accepted incoming connection");
 }
 
 Gateway::ModbusReceiveStatus LibModbusSlave::receive(std::shared_ptr<Entity::ModbusTcpRequest>& request)
@@ -151,11 +148,9 @@ void LibModbusSlave::updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusT
         case static_cast<uint8_t>(Entity::ModbusFunctionCode::READ_INPUT_REGISTER_VALUES):
             updateInputRegisterValues(response->getReadRegisterValues());
             break;
-#ifdef DEBUG
         default:
-            std::cout << "[LibModbusSlave] No read operation took place\n";
+            SPDLOG_WARN("[LibModbusSlave] No read operation took place");
             break;
-#endif
     }
 }
 

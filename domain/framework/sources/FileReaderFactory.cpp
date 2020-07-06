@@ -2,6 +2,9 @@
 
 #include "domain/framework/includes/JsonFileReader.hpp"
 
+#include "spdlog/spdlog.h"
+
+
 namespace Framework {
 
 std::shared_ptr<ConfigurationFileReader> FileReaderFactory::createFileReader(FileReaderFramework fileReaderFramework)
@@ -13,7 +16,7 @@ std::shared_ptr<ConfigurationFileReader> FileReaderFactory::createFileReader(Fil
             fileReader = std::make_shared<Framework::JsonFileReader>();
             break;
         case FileReaderFramework::OTHER_READER_FRAMEWORK:
-            std::cerr << "[FileReaderFactory] Failed to create file reader instance (framework not supported)\n";
+            SPDLOG_ERROR("[FileReaderFactory] Failed to create file reader instance (framework not supported)");
             fileReader = nullptr;
             break;
     }

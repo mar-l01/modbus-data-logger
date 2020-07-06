@@ -1,6 +1,5 @@
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 
-#include <iostream>
 
 namespace Entity {
 

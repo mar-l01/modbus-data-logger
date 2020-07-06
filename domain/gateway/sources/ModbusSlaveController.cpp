@@ -1,5 +1,6 @@
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
 
+#include "spdlog/spdlog.h"
 #include <unistd.h>
 #include <vector>
 
@@ -47,13 +48,13 @@ void ModbusSlaveController::run()
 
         // error in receiving request
         if (mbRecStatus == ModbusReceiveStatus::FAILED) {
-            std::cerr << "[ModbusSlaveController] Failed to receive incoming request\n";
+            SPDLOG_ERROR("[ModbusSlaveController] Failed to receive incoming request");
             break;
         }
 
         // Modbus master closed connection
         if (mbRecStatus == ModbusReceiveStatus::CONNECTION_CLOSED_BY_MASTER) {
-            std::cerr << "[ModbusSlaveController] Modbus master closed connection\n";
+            SPDLOG_INFO("[ModbusSlaveController] Modbus master closed connection");
             break;
         }
 
@@ -75,7 +76,7 @@ void ModbusSlaveController::run()
 
         // error in replying response
         if (mbRecStatus == ModbusReceiveStatus::FAILED) {
-            std::cerr << "[ModbusSlaveController] Failed to return response\n";
+            SPDLOG_ERROR("[ModbusSlaveController] Failed to return response");
             break;
         }
     }
@@ -85,7 +86,7 @@ void ModbusSlaveController::run()
         // reset socket value
         m_socket = -1;
     } else {
-        std::cerr << "[ModbusSlaveController] Failed to close socket!\n";
+        SPDLOG_ERROR("[ModbusSlaveController] Failed to close socket!");
     }
 }
 

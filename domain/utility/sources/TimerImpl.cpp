@@ -1,8 +1,9 @@
 #include "domain/utility/includes/TimerImpl.hpp"
 
+#include "spdlog/spdlog.h"
 #include <chrono>
-#include <iostream>
 #include <thread>
+
 
 namespace Utility {
 
@@ -15,7 +16,7 @@ TimerImpl::TimerImpl()
 void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>& callback)
 {
     if (m_isRunning) {
-        std::cerr << "[Timer] Registering callback not possible because timer is currently running\n";
+        SPDLOG_ERROR("[Timer] Registering callback not possible because timer is currently running");
         return;
     }
 
@@ -23,8 +24,6 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
     m_isRunning = true;
     m_restartTimer = false;
     m_stopTimer = false;
-
-    auto startTime = std::chrono::steady_clock::now();
 
     // start extra thread to wait until timeout is reached
     std::thread waitThread([this, timeoutInMs, callback]() {
@@ -61,7 +60,7 @@ void TimerImpl::restart()
     if (not m_stopTimer) {
         m_restartTimer = true;
     } else {
-        std::cerr << "[Timer] Timer cannot be restarted because stopping it is in progress\n";
+        SPDLOG_ERROR("[Timer] Timer cannot be restarted because stopping it is in progress");
     }
 }
 
