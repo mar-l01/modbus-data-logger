@@ -6,7 +6,6 @@
 #include "spdlog/spdlog.h"
 #include <errno.h>
 
-
 namespace Framework {
 
 LibModbusSlave::LibModbusSlave()
@@ -29,8 +28,8 @@ void LibModbusSlave::setModbusDataMapping(const Entity::ModbusDataMapping& mbMap
 
     // error handling
     if (m_modbusMapping == nullptr) {
-        SPDLOG_ERROR("[LibModbusSlave] Failed to allocate the mapping");
-        SPDLOG_ERROR("[LibModbusSlave] - Data-Mapping: {0}", mbMapping);
+        SPDLOG_ERROR("Failed to allocate the mapping");
+        SPDLOG_ERROR("- Data-Mapping: {0}", mbMapping);
     }
 }
 
@@ -46,9 +45,9 @@ void LibModbusSlave::bind(const std::string& ipAddr, const int port)
 
     // error handling
     if (m_modbusContext == nullptr) {
-        SPDLOG_ERROR("[LibModbusSlave] Unable to allocate libmodbus context");
-        SPDLOG_ERROR("[LibModbusSlave] - IP: {0}", ipAddr);
-        SPDLOG_ERROR("[LibModbusSlave] - Port: {0:d}", port);
+        SPDLOG_ERROR("Unable to allocate libmodbus context");
+        SPDLOG_ERROR("- IP: {0}", ipAddr);
+        SPDLOG_ERROR("- Port: {0:d}", port);
     }
 #ifdef DEBUG
     else {
@@ -59,7 +58,7 @@ void LibModbusSlave::bind(const std::string& ipAddr, const int port)
 
 int LibModbusSlave::listen(const int nbConns)
 {
-    SPDLOG_DEBUG("[LibModbusSlave] Listen for a incoming connection");
+    SPDLOG_DEBUG("Listen for a incoming connection");
 
     auto slaveSocket = modbus_tcp_listen(m_modbusContext.get(), nbConns);
 
@@ -70,7 +69,7 @@ void LibModbusSlave::accept(int& socket)
 {
     modbus_tcp_accept(m_modbusContext.get(), &socket);
 
-    SPDLOG_DEBUG("[LibModbusSlave] Accepted incoming connection");
+    SPDLOG_DEBUG("Accepted incoming connection");
 }
 
 Gateway::ModbusReceiveStatus LibModbusSlave::receive(std::shared_ptr<Entity::ModbusTcpRequest>& request)
@@ -149,7 +148,7 @@ void LibModbusSlave::updateMappingIfNeeded(const std::shared_ptr<Entity::ModbusT
             updateInputRegisterValues(response->getReadRegisterValues());
             break;
         default:
-            SPDLOG_WARN("[LibModbusSlave] No read operation took place");
+            SPDLOG_WARN("No read operation took place");
             break;
     }
 }

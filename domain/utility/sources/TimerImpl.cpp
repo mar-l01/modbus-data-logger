@@ -4,7 +4,6 @@
 #include <chrono>
 #include <thread>
 
-
 namespace Utility {
 
 TimerImpl::TimerImpl()
@@ -16,7 +15,7 @@ TimerImpl::TimerImpl()
 void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>& callback)
 {
     if (m_isRunning) {
-        SPDLOG_ERROR("[Timer] Registering callback not possible because timer is currently running");
+        SPDLOG_ERROR("Registering callback not possible because timer is currently running");
         return;
     }
 
@@ -60,7 +59,7 @@ void TimerImpl::restart()
     if (not m_stopTimer) {
         m_restartTimer = true;
     } else {
-        SPDLOG_ERROR("[Timer] Timer cannot be restarted because stopping it is in progress");
+        SPDLOG_ERROR("Timer cannot be restarted because stopping it is in progress");
     }
 }
 

@@ -10,7 +10,6 @@
 
 #include "spdlog/spdlog.h"
 
-
 namespace Fixture {
 
 FixtureModbusGateway::FixtureModbusGateway() {}
@@ -52,7 +51,7 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
     timerInstance->callOnTimeout(applicationTimeout, [&timeoutStop]() {
         timeoutStop = true;
-        SPDLOG_INFO("[FixtureModbusGateway] Timeout reached!");
+        SPDLOG_INFO("Timeout reached!");
     });
 
     // create Modbus slave controller

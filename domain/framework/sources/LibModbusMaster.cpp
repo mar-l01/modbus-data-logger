@@ -2,7 +2,6 @@
 
 #include "spdlog/spdlog.h"
 
-
 namespace Framework {
 
 LibModbusMaster::LibModbusMaster() {}
@@ -19,9 +18,9 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 
     // error handling
     if (m_modbusContext == nullptr) {
-        SPDLOG_ERROR("[LibModbusMaster] Unable to allocate libmodbus context");
-        SPDLOG_ERROR("[LibModbusMaster] - IP: {0}", ipAddr);
-        SPDLOG_ERROR("[LibModbusMaster] - Port: {0:d}", port);
+        SPDLOG_ERROR("Unable to allocate libmodbus context");
+        SPDLOG_ERROR("- IP: {0}", ipAddr);
+        SPDLOG_ERROR("- Port: {0:d}", port);
     }
 #ifdef DEBUG
     else {
@@ -35,7 +34,7 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 
     // error handling
     if (connSuccessful == -1) {
-        SPDLOG_ERROR("[LibModbusMaster] Failed to connect to slave");
+        SPDLOG_ERROR("Failed to connect to slave");
     }
 }
 
@@ -46,7 +45,7 @@ void LibModbusMaster::reconnect()
 
     // error handling
     if (connSuccessful == -1) {
-        SPDLOG_ERROR("[LibModbusMaster] Failed to re-connect to slave");
+        SPDLOG_ERROR("Failed to re-connect to slave");
     }
 }
 
@@ -150,7 +149,7 @@ Entity::ModbusOperationStatus LibModbusMaster::mapReturnCodeToOperationStatus(co
     if (returnCode == -1) {
         if (errno == ETIMEDOUT) {
             mbOpStatus = Entity::ModbusOperationStatus::TIMEOUT;
-            SPDLOG_ERROR("[LibModbusMaster] Connection timed out..");
+            SPDLOG_ERROR("Connection timed out..");
         } else {
             mbOpStatus = Entity::ModbusOperationStatus::FAIL;
         }
