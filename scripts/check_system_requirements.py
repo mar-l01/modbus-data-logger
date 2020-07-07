@@ -5,7 +5,7 @@ import sys
 
 # minimal versions
 OS_MIN_VERSION = {"debian" : "10", "ubuntu": "18.04"}
-CMAKE_MIN_VERSION = "3.10"
+CMAKE_MIN_VERSION = "3.13"
 GCC_MIN_VERSION = "8.3.0"
 
 # colored test-results
@@ -72,13 +72,7 @@ def check_version_numbers(target_dir):
             req_fulfilled = False
             print("---> At least GCC version {} is required!".format(GCC_MIN_VERSION))
 
-    print("================================")
-    if is_version_sufficient:
-        print("[{}] All requirements fulfilled!".format(OK))
-    else:
-        print("[{}] All requirements fulfilled!".format(ERROR))
-    print("================================")
-
+    return req_fulfilled
 
 def find_version_string(search_file, is_os_version=False):
     version_id = ""
@@ -133,4 +127,14 @@ if __name__ == "__main__":
         os.mkdir(tmp_dir)
 
     save_version_numbers_in_files(tmp_dir)
-    check_version_numbers(tmp_dir)
+    all_requirements_fulfilled = check_version_numbers(tmp_dir)
+    print("================================")
+
+    if not all_requirements_fulfilled:
+        print("[{}] Not all requirements are fulfilled!".format(ERROR))
+        print("================================")
+        sys.exit(1)
+
+    print("[{}] All requirements are fulfilled!".format(OK))
+    print("================================")
+    sys.exit(0)
