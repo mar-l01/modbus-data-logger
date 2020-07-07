@@ -38,5 +38,6 @@ $ ./install.sh
 ### Starting the application
 The application got installed into _/opt/mbdl_ together with its configuration file. Open the file *mbdl_config.json* and adjust all necessary parameters to fit your needs, e.g. ip-addresses and ports. Afterwards the application an be started, for instance, manually with:
 ```sh
+$ cd /opt/mbdl
 $ ./modbus_data_logger mbdl_config.json
 ```
