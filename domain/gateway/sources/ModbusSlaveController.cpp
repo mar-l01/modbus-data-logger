@@ -48,13 +48,13 @@ void ModbusSlaveController::run()
 
         // error in receiving request
         if (mbRecStatus == ModbusReceiveStatus::FAILED) {
-            SPDLOG_ERROR("[ModbusSlaveController] Failed to receive incoming request");
+            SPDLOG_ERROR("Failed to receive incoming request");
             break;
         }
 
         // Modbus master closed connection
         if (mbRecStatus == ModbusReceiveStatus::CONNECTION_CLOSED_BY_MASTER) {
-            SPDLOG_INFO("[ModbusSlaveController] Modbus master closed connection");
+            SPDLOG_INFO("Modbus master closed connection");
             break;
         }
 
@@ -76,7 +76,7 @@ void ModbusSlaveController::run()
 
         // error in replying response
         if (mbRecStatus == ModbusReceiveStatus::FAILED) {
-            SPDLOG_ERROR("[ModbusSlaveController] Failed to return response");
+            SPDLOG_ERROR("Failed to return response");
             break;
         }
     }
@@ -86,7 +86,7 @@ void ModbusSlaveController::run()
         // reset socket value
         m_socket = -1;
     } else {
-        SPDLOG_ERROR("[ModbusSlaveController] Failed to close socket!");
+        SPDLOG_ERROR("Failed to close socket!");
     }
 }
 
