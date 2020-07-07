@@ -32,5 +32,11 @@ By default, x86_64-linux-gnu is set. To build for another target, add `-a <TARGE
 ### Move dependencies to specified directories
 After a successful build of the application, the application and its dependencies can be installed on the system, meaning they are moved into their respective target folders. Following scripts will do exactly that:
 ```sh
-$ .install.sh
+$ ./install.sh
+```
+
+### Starting the application
+The application got installed into _/opt/mbdl_ together with its configuration file. Open the file *mbdl_config.json* and adjust all necessary parameters to fit your needs, e.g. ip-addresses and ports. Afterwards the application an be started, for instance, manually with:
+```sh
+$ ./modbus_data_logger mbdl_config.json
 ```
