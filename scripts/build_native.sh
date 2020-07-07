@@ -3,13 +3,17 @@
 # unittests are not enabled by default
 UNITTESTS_ENABLED=OFF
 
+# lib folder of target architecture (required for libmodbus.so and libpthread.so)
+TARGET_ARCHITECTURE=x86_64-linux-gnu
+
 # by default 'Debug' build mode is set
 BUILD_TYPE=Debug
 
 printHelp()
 {
    echo ""
-   echo "Usage: $0 [-t] [-d|-r]"
+   echo "Usage: $0 [-a] [-t] [-d|-r]"
+   echo -a "\t -d If '-a' is given, application is built for given target architecture (by default: x86_64-linux-gnu)"
    echo -e "\t -t If '-t' is given, application is built in 'Debug' mode together with its unittests"
    echo -d "\t -d If '-d' is given, application is built in 'Debug' mode"
    echo -r "\t -r If '-r' is given, application is built in 'Release' mode"
@@ -17,9 +21,10 @@ printHelp()
    exit 1
 }
 
-while getopts ":tdr" opt
+while getopts ":a:tdr" opt
 do
    case "$opt" in
+      a ) TARGET_ARCHITECTURE=${OPTARG} ;;
       t ) UNITTESTS_ENABLED=ON
             BUILD_TYPE=Debug ;;
       d ) BUILD_TYPE=Debug ;;
@@ -27,6 +32,9 @@ do
       ? ) printHelp ;;
    esac
 done
+
+USR_LIB_ARCH=/usr/lib/${TARGET_ARCHITECTURE}
+echo "-- Compiling application for target: ${TARGET_ARCHITECTURE}"
 
 if [ "${UNITTESTS_ENABLED}" = ON ]
 then
@@ -62,6 +70,7 @@ cmake -G Ninja \
    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
    -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
    -DCMAKE_ENABLE_TESTING=${UNITTESTS_ENABLED} \
+   -DCMAKE_USR_LIB_ARCH=${USR_LIB_ARCH} \
    ../../..
 
 # build project using ninja
