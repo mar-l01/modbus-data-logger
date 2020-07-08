@@ -6,6 +6,7 @@ Within VSCodes integrated terminal run following command from within the _script
 ```sh
 $ ./build_native
 ```
+Add `-a` parameter to select a different target.  
 Add `-t` parameter to additionally build all unit-tests. This will build a debug-target.   
 Add `-d` parameter to build a debug target.  
 Add `-r` parameter to build a release target.  
