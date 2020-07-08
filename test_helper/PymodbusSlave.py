@@ -4,10 +4,10 @@ from pymodbus.datastore import ModbusSequentialDataBlock, ModbusSlaveContext, Mo
 
 def run_server():
     mb_mapping = ModbusSlaveContext(
-        di=ModbusSequentialDataBlock(0, [i for i in range(50)]),
-        co=ModbusSequentialDataBlock(0, [0]*50),
-        hr=ModbusSequentialDataBlock(0, [0]*50),
-        ir=ModbusSequentialDataBlock(0, [i for i in range(50)]))
+        di=ModbusSequentialDataBlock(1, [(True if i % 3 == 0 else False) for i in range(50)]),
+        co=ModbusSequentialDataBlock(1, [0]*50),
+        hr=ModbusSequentialDataBlock(1, [0]*50),
+        ir=ModbusSequentialDataBlock(1, [i for i in range(50)]))
 
     context = ModbusServerContext(slaves=mb_mapping, single=True)
 
