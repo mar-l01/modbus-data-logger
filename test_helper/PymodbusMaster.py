@@ -8,6 +8,8 @@ def run_modbus_master():
     client.connect()
 
     test_read_multiple_discrete_inputs(client)
+    test_write_and_read_single_coil(client)
+    test_write_and_read_multiple_coils(client)
     test_write_and_read_single_holding_register(client)
     test_write_and_read_multiple_holding_register(client)
 
@@ -22,6 +24,33 @@ def test_read_multiple_discrete_inputs(client):
     print("Reading {} values from discrete inputs starting at address {}...".format(di_nb, di_addr))
     res = client.read_discrete_inputs(di_addr, di_nb, unit=UNIT_ID)
     if not res.isError() and res.bits == di_expected:
+        print("...OK")
+    else:
+        print("...FAILED")
+
+def test_write_and_read_single_coil(client):
+    co_addr = 5
+    co_val = True
+
+    print("Writing value [{}] to coil at address {}...".format(co_val, co_addr))
+    req = client.write_coils(co_addr, co_val, unit=UNIT_ID)
+    res = client.read_coils(co_addr, 1, unit=UNIT_ID)
+
+    if not req.isError() and res.bits[0] == co_val:
+        print("...OK")
+    else:
+        print("...FAILED")
+
+def test_write_and_read_multiple_coils(client):
+    co_addr = 5
+    co_vals = [True, False, True, True]
+
+    print("Writing values {} to coils starting at address {}...".format(co_vals, co_addr))
+    req = client.write_coils(co_addr, co_vals, unit=UNIT_ID)
+    res = client.read_coils(co_addr, len(co_vals), unit=UNIT_ID)
+
+    # padded by 4 bits set to False to result in a single byte
+    if not req.isError() and res.bits == co_vals + [False, False, False, False]:
         print("...OK")
     else:
         print("...FAILED")
