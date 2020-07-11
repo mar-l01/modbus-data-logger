@@ -10,6 +10,7 @@ def run_modbus_master():
     test_read_multiple_discrete_inputs(client)
     test_write_and_read_single_coil(client)
     test_write_and_read_multiple_coils(client)
+    test_read_multiple_input_register(client)
     test_write_and_read_single_holding_register(client)
     test_write_and_read_multiple_holding_register(client)
 
@@ -51,6 +52,19 @@ def test_write_and_read_multiple_coils(client):
 
     # padded by 4 bits set to False to result in a single byte
     if not req.isError() and res.bits == co_vals + [False, False, False, False]:
+        print("...OK")
+    else:
+        print("...FAILED")
+
+def test_read_multiple_input_register(client):
+    input_reg_addr = 20
+    input_reg_nb = 5
+    # slave holds input register values [0, 1, 2, ..., 49]
+    input_reg_expected = [i for i in range(50)][input_reg_addr : (input_reg_addr + input_reg_nb)]
+
+    print("Reading {} values from input register starting at address {}...".format(input_reg_nb, input_reg_addr))
+    res = client.read_input_registers(input_reg_addr, input_reg_nb, unit=UNIT_ID)
+    if not res.isError() and res.registers == input_reg_expected:
         print("...OK")
     else:
         print("...FAILED")
