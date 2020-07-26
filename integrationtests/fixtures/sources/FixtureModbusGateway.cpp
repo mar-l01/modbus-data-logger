@@ -4,7 +4,7 @@
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
-#include "domain/utility/includes/TimerImpl.hpp"
+#include "domain/utility/includes/TimerFactory.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
 #include "integrationtests/fixtures/includes/TestConstants.hpp"
 
@@ -45,10 +45,10 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     mbDataMapping.nbHoldingRegisters = FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS;
     mbDataMapping.nbInputRegisters = FixtureTestConstants::MODBUS_NUMBER_INPUT_REGISTERS;
 
-    // create timer instance
+    // create timer instance with a loop frequency of 1 ms
     int applicationTimeout = FixtureTestConstants::APPLICATION_TIMEOUT_IN_MS; // 2 seconds timeout
     std::atomic_bool timeoutStop = false;
-    std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
+    std::shared_ptr<Utility::Timer> timerInstance = Utility::TimerFactory::createLoopTimer(1);
     timerInstance->callOnTimeout(applicationTimeout, [&timeoutStop]() {
         timeoutStop = true;
         SPDLOG_INFO("Timeout reached!");

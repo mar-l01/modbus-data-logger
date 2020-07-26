@@ -3,7 +3,7 @@
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
-#include "domain/utility/includes/TimerImpl.hpp"
+#include "domain/utility/includes/TimerFactory.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
 
 #include "spdlog/spdlog.h"
@@ -53,9 +53,9 @@ int main(int argc, char* argv[])
     // set up Modbus gateway
     auto mbGateway = std::make_shared<ModbusGateway>(mbMasterController);
 
-    // create timer instance
+    // create timer instance with a loop frequency of 1 ms
     std::atomic_bool timeoutStop = false;
-    std::shared_ptr<Utility::Timer> timerInstance = std::make_shared<Utility::TimerImpl>();
+    std::shared_ptr<Utility::Timer> timerInstance = Utility::TimerFactory::createLoopTimer(1);
     timerInstance->callOnTimeout(mbConfig.applicationTimeout, [&timeoutStop]() {
         timeoutStop = true;
         SPDLOG_INFO("Timeout reached!");
