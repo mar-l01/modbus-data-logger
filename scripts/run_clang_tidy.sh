@@ -12,4 +12,4 @@ fi
 cd ${BUILD_DIR}
 
 # run clang-tidy analyser
-/usr/bin/run-clang-tidy-7.py -header-filter='^"domain/'
+/usr/bin/run-clang-tidy-7.py

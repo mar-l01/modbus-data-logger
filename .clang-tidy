@@ -22,7 +22,7 @@ Checks:          '-*,
                   readability-magic-numbers,
                   readability-non-const-parameter,
                   readability-redundant-smartptr-get'
-HeaderFilterRegex: ''
+HeaderFilterRegex: '^"domain/'
 WarningsAsErrors: '*'
 AnalyzeTemporaryDtors: false
 FormatStyle:     none
