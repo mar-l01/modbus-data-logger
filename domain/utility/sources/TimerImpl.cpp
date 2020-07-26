@@ -10,6 +10,7 @@ TimerImpl::TimerImpl()
     : m_isRunning(false)
     , m_restartTimer(false)
     , m_stopTimer(false)
+    , m_frequencyInMs(1) // default initialization to 1 ms
 {}
 
 void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>& callback)
@@ -30,7 +31,7 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
 
         for (;;) {
             // sleep 1 ms and check again
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(m_frequencyInMs));
 
             if (m_restartTimer) {
                 // restart timer if required
@@ -66,6 +67,11 @@ void TimerImpl::restart()
 void TimerImpl::stop()
 {
     m_stopTimer = true;
+}
+
+void TimerImpl::setFrequencyInMs(const int frequencyInMs)
+{
+    m_frequencyInMs = frequencyInMs;
 }
 
 }

@@ -15,10 +15,13 @@ public:
     void restart() override;
     void stop() override;
 
+    void setFrequencyInMs(const int frequencyInMs);
+
 private:
     std::atomic_bool m_isRunning;
     std::atomic_bool m_restartTimer;
     std::atomic_bool m_stopTimer;
+    int m_frequencyInMs;
 };
 
 }
