@@ -4,7 +4,7 @@
 
 namespace Utility {
 
-std::shared_ptr<Timer> TimerFactory::createLoopTimer(const int frequencyInMs = 1)
+std::shared_ptr<Timer> TimerFactory::createLoopTimer(const int frequencyInMs)
 {
     auto timerInstance = std::make_shared<TimerImpl>();
     timerInstance->setFrequencyInMs(frequencyInMs);

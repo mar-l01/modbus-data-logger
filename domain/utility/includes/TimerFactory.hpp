@@ -9,7 +9,7 @@ namespace Utility {
 class TimerFactory
 {
 public:
-    static std::shared_ptr<Timer> createLoopTimer(const int frequencyInMs);
+    static std::shared_ptr<Timer> createLoopTimer(const int frequencyInMs = 1);
 };
 
 }

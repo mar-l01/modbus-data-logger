@@ -239,6 +239,7 @@ if (${CMAKE_ENABLE_TESTING})
   add_executable(utility_test
     $<TARGET_OBJECTS:mdl_utility>
     "domain/utility/testing/TestTimer.cpp"
+    "domain/utility/testing/TestTimerFactory.cpp"
   )
   target_include_directories(utility_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
