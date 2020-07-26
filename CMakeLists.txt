@@ -92,9 +92,11 @@ add_library(mdl_utility OBJECT
   # header files
   "domain/utility/interfaces/Timer.hpp"
   "domain/utility/includes/TimerImpl.hpp"
+  "domain/utility/includes/TimerFactory.hpp"
 
   # source files
   "domain/utility/sources/TimerImpl.cpp"
+  "domain/utility/sources/TimerFactory.cpp"
 )
 target_compile_options(mdl_utility PUBLIC -Wall -Wextra)
 target_include_directories(mdl_utility PRIVATE
