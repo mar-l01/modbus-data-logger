@@ -20,14 +20,17 @@ jobs:
     - name: Make build-script executable
       run: chmod +x scripts/build_native.sh
 
-    - name: Build application with unittests
-      run: scripts/build_native.sh -t
+    - name: Build application in debug mode to exclude test-files from clang-tidy
+      run: scripts/build_native.sh -d
 
     - name: Make clang-tidy script executable
       run: chmod +x scripts/run_clang_tidy.sh
 
     - name: Run clang-tidy analyzer
       run: scripts/run_clang_tidy.sh
+
+    - name: Build application again with unittests
+      run: scripts/build_native.sh -t
 
     - name: Run unittests
       run: python scripts/run_unittests.py
