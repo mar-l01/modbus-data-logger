@@ -6,7 +6,7 @@
 
 namespace Entity {
 
-void to_json(nlohmann::json& j, const ModbusConfiguration& mbConfig)
+void to_json(nlohmann::json& j, const ModbusConfiguration& mbConfig) // NOLINT(readability-identifier-naming)
 {
     j = nlohmann::json{
       {"internal_modbus_slave", {"ip_address", mbConfig.ipAddrIntSlave}},
@@ -29,7 +29,7 @@ void to_json(nlohmann::json& j, const ModbusConfiguration& mbConfig)
       {"application_timeout_in_ms", mbConfig.applicationTimeout}};
 }
 
-void from_json(const nlohmann::json& j, ModbusConfiguration& mbConfig)
+void from_json(const nlohmann::json& j, ModbusConfiguration& mbConfig) // NOLINT(readability-identifier-naming)
 {
     j.at("internal_modbus_slave").at("ip_address").get_to(mbConfig.ipAddrIntSlave);
     j.at("internal_modbus_slave").at("port").get_to(mbConfig.portIntSlave);

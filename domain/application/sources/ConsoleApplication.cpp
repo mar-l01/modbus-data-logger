@@ -30,8 +30,6 @@ int main(int argc, char* argv[])
     // use CTRL + C to stop application
     signal(SIGINT, signalHandler);
 
-    using namespace Gateway;
-
     // read in Modbus configuration (file is provided via first console argument)
     std::string jsonFilePath(argv[1]);
     auto fileReader = Framework::FileReaderFactory::createFileReader(Framework::FileReaderFramework::NLOHMANN_JSON);
@@ -39,19 +37,19 @@ int main(int argc, char* argv[])
     const auto& mbConfig = fileReader->getModbusConfiguration();
 
     // get Modbus slave instance from factory and set up listening
-    auto mbSlave = ModbusComponentsFactory::createModbusSlave(ModbusComponentsFramework::LIBMODBUS);
+    auto mbSlave = Gateway::ModbusComponentsFactory::createModbusSlave(Gateway::ModbusComponentsFramework::LIBMODBUS);
 
     // get Modbus master instance from factory
-    auto mbMaster = ModbusComponentsFactory::createModbusMaster(ModbusComponentsFramework::LIBMODBUS);
+    auto mbMaster = Gateway::ModbusComponentsFactory::createModbusMaster(Gateway::ModbusComponentsFramework::LIBMODBUS);
 
     // create Modbus master controller and connect to external Modbusslave
     auto mbMasterController =
-      std::make_shared<ModbusMasterController>(mbMaster, mbConfig.ipAddrExtSlave, mbConfig.portExtSlave);
+      std::make_shared<Gateway::ModbusMasterController>(mbMaster, mbConfig.ipAddrExtSlave, mbConfig.portExtSlave);
     mbMasterController->connect();
     mbMasterController->setTimeout(mbConfig.modbusTimeout);
 
     // set up Modbus gateway
-    auto mbGateway = std::make_shared<ModbusGateway>(mbMasterController);
+    auto mbGateway = std::make_shared<Gateway::ModbusGateway>(mbMasterController);
 
     // create timer instance
     std::atomic_bool timeoutStop = false;
@@ -62,7 +60,7 @@ int main(int argc, char* argv[])
     });
 
     // create Modbus controller and start it up
-    auto mbSlaveController = std::make_unique<ModbusSlaveController>(
+    auto mbSlaveController = std::make_unique<Gateway::ModbusSlaveController>(
       mbSlave, mbGateway, timerInstance, mbConfig.dataMapping, mbConfig.ipAddrIntSlave, mbConfig.portIntSlave);
 
     // run Modbus slave until 'stop' was received by signal interrupt or timeout
