@@ -103,12 +103,25 @@ target_include_directories(mdl_utility PRIVATE
   "${PROJECT_SOURCE_DIR}"
 )
 
+# build logging object-library
+add_library(mdl_logging OBJECT
+  # header files
+  "domain/logging/interfaces/DataLogger.hpp"
+
+  # source files
+)
+target_compile_options(mdl_logging PUBLIC -Wall -Wextra)
+target_include_directories(mdl_logging PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+)
+
 # build executable target
 add_executable(modbus_data_logger
   $<TARGET_OBJECTS:mdl_framework>
   $<TARGET_OBJECTS:mdl_gateway>
   $<TARGET_OBJECTS:mdl_entity>
   $<TARGET_OBJECTS:mdl_utility>
+  $<TARGET_OBJECTS:mdl_logging>
   "domain/application/sources/ConsoleApplication.cpp"
 )
 target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra -pthread)
