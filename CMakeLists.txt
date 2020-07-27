@@ -107,6 +107,7 @@ target_include_directories(mdl_utility PRIVATE
 add_library(mdl_logging OBJECT
   # header files
   "domain/logging/interfaces/DataLogger.hpp"
+  "domain/logging/includes/ModbusDataLogger.hpp"
 
   # source files
 )
