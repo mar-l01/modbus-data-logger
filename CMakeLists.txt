@@ -110,6 +110,7 @@ add_library(mdl_logging OBJECT
   "domain/logging/includes/ModbusDataLogger.hpp"
 
   # source files
+  "domain/logging/sources/ModbusDataLogger.cpp"
 )
 target_compile_options(mdl_logging PUBLIC -Wall -Wextra)
 target_include_directories(mdl_logging PRIVATE

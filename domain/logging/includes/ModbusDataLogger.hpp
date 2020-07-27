@@ -13,6 +13,8 @@ namespace Logging {
 class ModbusDataLogger : public DataLogger
 {
 public:
+    ModbusDataLogger();
+
     void logModbusRequest(const Entity::ModbusTcpRequest& mbRequest) override;
     void logModbusResponse(const Entity::ModbusTcpResponse& mbResponse) override;
 };
