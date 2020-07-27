@@ -92,9 +92,11 @@ add_library(mdl_utility OBJECT
   # header files
   "domain/utility/interfaces/Timer.hpp"
   "domain/utility/includes/TimerImpl.hpp"
+  "domain/utility/includes/TimerFactory.hpp"
 
   # source files
   "domain/utility/sources/TimerImpl.cpp"
+  "domain/utility/sources/TimerFactory.cpp"
 )
 target_compile_options(mdl_utility PUBLIC -Wall -Wextra)
 target_include_directories(mdl_utility PRIVATE
@@ -237,6 +239,7 @@ if (${CMAKE_ENABLE_TESTING})
   add_executable(utility_test
     $<TARGET_OBJECTS:mdl_utility>
     "domain/utility/testing/TestTimer.cpp"
+    "domain/utility/testing/TestTimerFactory.cpp"
   )
   target_include_directories(utility_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
