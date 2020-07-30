@@ -12,13 +12,13 @@ void ModbusDataLogger::logModbusRequest(const Entity::ModbusTcpRequest& mbReques
 void ModbusDataLogger::logModbusResponse(const Entity::ModbusTcpResponse& mbResponse) {}
 
 std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusRequestListener(
-  const std::function<void(const Entity::ModbusTcpRequest& mbRequest)>& signalCallback)
+  SignalCallback<Entity::ModbusTcpRequest> signalCallback)
 {
     return std::make_shared<ScopedConnection>(m_mbRequestEvent.connect(signalCallback));
 }
 
 std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusResponseListener(
-  const std::function<void(const Entity::ModbusTcpResponse& mbResponse)>& signalCallback)
+  SignalCallback<Entity::ModbusTcpResponse> signalCallback)
 {
     return std::make_shared<ScopedConnection>(m_mbResponseEvent.connect(signalCallback));
 }

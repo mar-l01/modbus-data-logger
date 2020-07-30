@@ -27,9 +27,9 @@ public:
     void logModbusResponse(const Entity::ModbusTcpResponse& mbResponse) override;
 
     std::shared_ptr<ScopedConnection> addModbusRequestListener(
-      const std::function<void(const Entity::ModbusTcpRequest& mbRequest)>& signalCallback) override;
+      SignalCallback<Entity::ModbusTcpRequest> signalCallback) override;
     std::shared_ptr<ScopedConnection> addModbusResponseListener(
-      const std::function<void(const Entity::ModbusTcpResponse& mbResponse)>& signalCallback) override;
+      SignalCallback<Entity::ModbusTcpResponse> signalCallback) override;
 
 private:
     SignalEvent<Entity::ModbusTcpRequest> m_mbRequestEvent;

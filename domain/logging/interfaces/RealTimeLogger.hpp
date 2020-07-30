@@ -13,15 +13,17 @@ class ModbusTcpResponse;
 namespace Logging {
 
 using ScopedConnection = boost::signals2::scoped_connection;
+template<typename T>
+using SignalCallback = const std::function<void(const T&)>&;
 
 class RealTimeLogger
 {
 public:
     virtual std::shared_ptr<ScopedConnection> addModbusRequestListener(
-      const std::function<void(const Entity::ModbusTcpRequest& mbRequest)>& signalCallback) = 0;
+      SignalCallback<Entity::ModbusTcpRequest> signalCallback) = 0;
 
     virtual std::shared_ptr<ScopedConnection> addModbusResponseListener(
-      const std::function<void(const Entity::ModbusTcpResponse& mbResponse)>& signalCallback) = 0;
+      SignalCallback<Entity::ModbusTcpResponse> signalCallback) = 0;
 };
 
 }
