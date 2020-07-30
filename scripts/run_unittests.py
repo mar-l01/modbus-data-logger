@@ -29,6 +29,8 @@ rc = subprocess.call(build_dir + "/entity_test")
 return_codes.append((rc, "[Entity]    --> {}".format(PASSED if rc == 0 else FAILED)))
 rc = subprocess.call(build_dir + "/utility_test")
 return_codes.append((rc, "[Utility]   --> {}".format(PASSED if rc == 0 else FAILED)))
+rc = subprocess.call(build_dir + "/logging_test")
+return_codes.append((rc, "[Logging]   --> {}".format(PASSED if rc == 0 else FAILED)))
 
 # print summarized information about all unittests at the end
 print("\n====== TEST RESULTS ======")

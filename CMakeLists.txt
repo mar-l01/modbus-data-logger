@@ -271,6 +271,24 @@ if (${CMAKE_ENABLE_TESTING})
 
   add_test(NAME utility_test COMMAND $<TARGET_FILE:utility_test>)
 
+  # build logging unittests
+  add_executable(logging_test
+    $<TARGET_OBJECTS:mdl_logging>
+    "domain/logging/testing/TestModbusDataLogger.cpp"
+  )
+  target_include_directories(logging_test PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+    "/usr/include/boost_1_72_0/"
+  )
+  target_link_libraries(logging_test
+    PRIVATE
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME logging_test COMMAND $<TARGET_FILE:logging_test>)
+
    # build integrationtest
   add_executable(integrationtest
     $<TARGET_OBJECTS:mdl_framework>
