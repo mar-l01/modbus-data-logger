@@ -3,20 +3,24 @@
 #include "domain/entity/includes/ModbusTcpRequest.hpp"
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 
+#include <thread>
+
 namespace Logging {
 
 ModbusDataLogger::ModbusDataLogger() {}
 
 void ModbusDataLogger::logModbusRequest(const Entity::ModbusTcpRequest& mbRequest)
 {
-    // raise event
-    m_mbRequestEvent(mbRequest);
+    // raise event in additonal thread
+    std::thread loggingThread([this, &mbRequest]() { m_mbRequestEvent(mbRequest); });
+    loggingThread.detach();
 }
 
 void ModbusDataLogger::logModbusResponse(const Entity::ModbusTcpResponse& mbResponse)
 {
-    // raise event
-    m_mbResponseEvent(mbResponse);
+    // raise event in additonal thread
+    std::thread loggingThread([this, &mbResponse]() { m_mbResponseEvent(mbResponse); });
+    loggingThread.detach();
 }
 
 std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusRequestListener(

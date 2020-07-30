@@ -5,6 +5,8 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
+#include <thread>
+
 namespace {
 
 using namespace ::testing;
@@ -35,10 +37,16 @@ TEST_F(TestModbusDataLogger, receiveSignalWithModbusRequest)
     EXPECT_CALL(signalCallback, Call(expectedModbusRequest)).Times(1);
     testObj->logModbusRequest(expectedModbusRequest);
 
+    // wait some time until expected function was called (runs in detached thread)
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
     // removing connection should not inform us about new data
     connectionPointer.reset();
     EXPECT_CALL(signalCallback, Call(expectedModbusRequest)).Times(0);
     testObj->logModbusRequest(expectedModbusRequest);
+
+    // wait some time until expected function was called (runs in detached thread)
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 TEST_F(TestModbusDataLogger, receiveSignalWithModbusResponse)
@@ -52,10 +60,16 @@ TEST_F(TestModbusDataLogger, receiveSignalWithModbusResponse)
     EXPECT_CALL(signalCallback, Call(expectedModbusResponse)).Times(1);
     testObj->logModbusResponse(expectedModbusResponse);
 
+    // wait some time until expected function was called (runs in detached thread)
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
     // removing connection should not inform us about new data
     connectionPointer.reset();
     EXPECT_CALL(signalCallback, Call(expectedModbusResponse)).Times(0);
     testObj->logModbusResponse(expectedModbusResponse);
+
+    // wait some time until expected function was called (runs in detached thread)
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 
 }
