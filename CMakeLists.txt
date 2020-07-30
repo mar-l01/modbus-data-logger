@@ -274,6 +274,7 @@ if (${CMAKE_ENABLE_TESTING})
   # build logging unittests
   add_executable(logging_test
     $<TARGET_OBJECTS:mdl_logging>
+    $<TARGET_OBJECTS:mdl_entity>
     "domain/logging/testing/TestModbusDataLogger.cpp"
   )
   target_include_directories(logging_test PRIVATE

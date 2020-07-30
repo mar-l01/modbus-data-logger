@@ -7,9 +7,17 @@ namespace Logging {
 
 ModbusDataLogger::ModbusDataLogger() {}
 
-void ModbusDataLogger::logModbusRequest(const Entity::ModbusTcpRequest& mbRequest) {}
+void ModbusDataLogger::logModbusRequest(const Entity::ModbusTcpRequest& mbRequest)
+{
+    // raise event
+    m_mbRequestEvent(mbRequest);
+}
 
-void ModbusDataLogger::logModbusResponse(const Entity::ModbusTcpResponse& mbResponse) {}
+void ModbusDataLogger::logModbusResponse(const Entity::ModbusTcpResponse& mbResponse)
+{
+    // raise event
+    m_mbResponseEvent(mbResponse);
+}
 
 std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusRequestListener(
   SignalCallback<Entity::ModbusTcpRequest> signalCallback)
