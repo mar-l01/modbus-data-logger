@@ -11,16 +11,16 @@ void ModbusDataLogger::logModbusRequest(const Entity::ModbusTcpRequest& mbReques
 
 void ModbusDataLogger::logModbusResponse(const Entity::ModbusTcpResponse& mbResponse) {}
 
-ConnectionPointer ModbusDataLogger::addModbusRequestListener(
+std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusRequestListener(
   const std::function<void(const Entity::ModbusTcpRequest& mbRequest)>& signalCallback)
 {
-    return ConnectionPointer();
+    return std::make_shared<ScopedConnection>(m_mbRequestEvent.connect(signalCallback));
 }
 
-ConnectionPointer ModbusDataLogger::addModbusResponseListener(
+std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusResponseListener(
   const std::function<void(const Entity::ModbusTcpResponse& mbResponse)>& signalCallback)
 {
-    return ConnectionPointer();
+    return std::make_shared<ScopedConnection>(m_mbResponseEvent.connect(signalCallback));
 }
 
 }
