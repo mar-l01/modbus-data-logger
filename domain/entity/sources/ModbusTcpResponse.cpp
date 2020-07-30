@@ -45,4 +45,9 @@ void ModbusTcpResponse::setReadValues(const ModbusReadValues& vals)
     m_readValues = vals;
 }
 
+bool operator==(const ModbusTcpResponse& mbResA, const ModbusTcpResponse& mbResB)
+{
+    return mbResA.m_operationStatus == mbResB.m_operationStatus && mbResA.m_readValues == mbResB.m_readValues;
+}
+
 }

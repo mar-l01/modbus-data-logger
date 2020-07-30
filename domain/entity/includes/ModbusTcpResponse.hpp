@@ -32,6 +32,8 @@ public:
 
     void setReadValues(const ModbusReadValues& vals);
 
+    friend bool operator==(const ModbusTcpResponse& mbResA, const ModbusTcpResponse& mbResB);
+
 private:
     ModbusOperationStatus m_operationStatus;
     ModbusReadValues m_readValues; // 1-bit or 16-bit values
