@@ -107,6 +107,7 @@ target_include_directories(mdl_utility PRIVATE
 add_library(mdl_logging OBJECT
   # header files
   "domain/logging/interfaces/DataLogger.hpp"
+  "domain/logging/interfaces/RealTimeLogger.hpp"
   "domain/logging/includes/ModbusDataLogger.hpp"
 
   # source files
@@ -115,6 +116,7 @@ add_library(mdl_logging OBJECT
 target_compile_options(mdl_logging PUBLIC -Wall -Wextra)
 target_include_directories(mdl_logging PRIVATE
   "${PROJECT_SOURCE_DIR}"
+  "/usr/include/boost_1_72_0/"
 )
 
 # build executable target
@@ -131,6 +133,7 @@ target_include_directories(modbus_data_logger PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/usr/include/better-enums/"
   "/usr/include/nlohmann/"
+  "/usr/include/boost_1_72_0/"
 )
 target_link_libraries(modbus_data_logger PRIVATE
   ${CMAKE_USR_LIB_ARCH}/libmodbus.so
