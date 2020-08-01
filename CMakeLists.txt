@@ -107,6 +107,7 @@ target_include_directories(mdl_utility PRIVATE
 add_library(mdl_logging OBJECT
   # header files
   "domain/logging/interfaces/DataLogger.hpp"
+  "domain/logging/interfaces/RealTimeLogger.hpp"
   "domain/logging/includes/ModbusDataLogger.hpp"
 
   # source files
@@ -115,6 +116,7 @@ add_library(mdl_logging OBJECT
 target_compile_options(mdl_logging PUBLIC -Wall -Wextra)
 target_include_directories(mdl_logging PRIVATE
   "${PROJECT_SOURCE_DIR}"
+  "/usr/include/boost_1_72_0/"
 )
 
 # build executable target
@@ -131,6 +133,7 @@ target_include_directories(modbus_data_logger PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/usr/include/better-enums/"
   "/usr/include/nlohmann/"
+  "/usr/include/boost_1_72_0/"
 )
 target_link_libraries(modbus_data_logger PRIVATE
   ${CMAKE_USR_LIB_ARCH}/libmodbus.so
@@ -267,6 +270,25 @@ if (${CMAKE_ENABLE_TESTING})
   )
 
   add_test(NAME utility_test COMMAND $<TARGET_FILE:utility_test>)
+
+  # build logging unittests
+  add_executable(logging_test
+    $<TARGET_OBJECTS:mdl_logging>
+    $<TARGET_OBJECTS:mdl_entity>
+    "domain/logging/testing/TestModbusDataLogger.cpp"
+  )
+  target_include_directories(logging_test PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+    "/usr/include/boost_1_72_0/"
+  )
+  target_link_libraries(logging_test
+    PRIVATE
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME logging_test COMMAND $<TARGET_FILE:logging_test>)
 
    # build integrationtest
   add_executable(integrationtest
