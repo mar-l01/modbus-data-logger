@@ -16,6 +16,7 @@ public:
     void startLogger() override;
     void stopLogger() override;
     void setLogConfiguration(const Entity::ModbusLoggerConfiguration& mbLogConfig) override;
+    void logModbusData(const std::variant<Entity::ModbusTcpRequest, Entity::ModbusTcpResponse>& mbModbusData) override;
 
 private:
     Entity::ModbusLoggerConfiguration m_mbLoggerConfig;

@@ -30,4 +30,26 @@ void SpdlogFileController::setLogConfiguration(const Entity::ModbusLoggerConfigu
     m_mbLoggerConfig = mbLogConfig;
 }
 
+void SpdlogFileController::logModbusData(
+  const std::variant<Entity::ModbusTcpRequest, Entity::ModbusTcpResponse>& mbModbusData)
+{
+    // log only if logger is active
+    if (m_mbDataLogger != nullptr) {
+        // decide between ModbusTcpRequest or ModbusTcpResponse
+        // TODO(Markus2101, 2020-08-02): Make a customm type which can be logged depending on
+        // whether a ModbusRequest or a ModbusResponse is present. Idea: Base class which provides
+        // a toString() method and both classes derive from it and hence the data can be logged easily
+        std::string logMsg("");
+        if (auto loggedData = std::get_if<Entity::ModbusTcpRequest>(&mbModbusData)) {
+            logMsg = "ModbusTcpRequest";
+        } else if (auto loggedData = std::get_if<Entity::ModbusTcpResponse>(&mbModbusData)) {
+            logMsg = "ModbusTcpResponse";
+        }
+
+        spdlog::get(m_mbLoggerConfig.loggerName)->info("Logging Modbus data: ", logMsg);
+    } else {
+        SPDLOG_DEBUG("Trying to log, but logger is not active");
+    }
+}
+
 }
