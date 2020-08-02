@@ -26,12 +26,14 @@ add_library(mdl_framework OBJECT
   "domain/framework/interfaces/ConfigurationFileReader.hpp"
   "domain/framework/includes/JsonFileReader.hpp"
   "domain/framework/includes/FileReaderFactory.hpp"
+  "domain/framework/includes/SpdlogFileController.hpp"
 
   # source files
   "domain/framework/sources/LibModbusSlave.cpp"
   "domain/framework/sources/LibModbusMaster.cpp"
   "domain/framework/sources/JsonFileReader.cpp"
   "domain/framework/sources/FileReaderFactory.cpp"
+  "domain/framework/sources/SpdlogFileController.cpp"
 )
 target_compile_options(mdl_framework PUBLIC -Wall -Wextra)
 target_include_directories(mdl_framework PRIVATE
@@ -113,11 +115,9 @@ add_library(mdl_logging OBJECT
   "domain/logging/interfaces/FileLogger.hpp"
   "domain/logging/interfaces/FileLoggerController.hpp"
   "domain/logging/includes/ModbusDataLogger.hpp"
-  "domain/logging/includes/SpdlogFileController.hpp"
 
   # source files
   "domain/logging/sources/ModbusDataLogger.cpp"
-  "domain/logging/sources/SpdlogFileController.cpp"
 )
 target_compile_options(mdl_logging PUBLIC -Wall -Wextra)
 target_include_directories(mdl_logging PRIVATE

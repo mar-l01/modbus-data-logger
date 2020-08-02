@@ -6,9 +6,9 @@
 #include "spdlog/sinks/rotating_file_sink.h"
 #include <memory>
 
-namespace Logging {
+namespace Framework {
 
-class SpdlogFileController : public FileLoggerController
+class SpdlogFileController : public Logging::FileLoggerController
 {
 public:
     SpdlogFileController();

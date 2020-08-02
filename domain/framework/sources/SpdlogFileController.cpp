@@ -1,6 +1,6 @@
-#include "domain/logging/includes/SpdlogFileController.hpp"
+#include "domain/framework/includes/SpdlogFileController.hpp"
 
-namespace Logging {
+namespace Framework {
 
 SpdlogFileController::SpdlogFileController() {}
 
