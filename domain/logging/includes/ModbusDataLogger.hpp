@@ -2,6 +2,7 @@
 
 #include "domain/logging/interfaces/DataLogger.hpp"
 #include "domain/logging/interfaces/FileLogger.hpp"
+#include "domain/logging/interfaces/FileLoggerController.hpp"
 #include "domain/logging/interfaces/RealTimeLogger.hpp"
 
 #include "spdlog/sinks/rotating_file_sink.h"
@@ -25,7 +26,7 @@ class ModbusDataLogger
     , public FileLogger
 {
 public:
-    ModbusDataLogger();
+    ModbusDataLogger(const std::shared_ptr<FileLoggerController>& fileLoggerController);
 
     // DataLogger interface
     void logModbusRequest(const Entity::ModbusTcpRequest& mbRequest) override;
@@ -45,6 +46,7 @@ public:
 private:
     SignalEvent<Entity::ModbusTcpRequest> m_mbRequestEvent;
     SignalEvent<Entity::ModbusTcpResponse> m_mbResponseEvent;
+    const std::shared_ptr<FileLoggerController> m_fileLoggerController;
 };
 
 }

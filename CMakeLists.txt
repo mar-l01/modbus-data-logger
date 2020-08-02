@@ -288,6 +288,13 @@ if (${CMAKE_ENABLE_TESTING})
     "${PROJECT_SOURCE_DIR}"
     "/usr/include/boost_1_72_0/"
   )
+  target_sources(logging_test
+    PRIVATE
+      "domain/logging/testing/gmock/MockDataLogger.hpp"
+      "domain/logging/testing/gmock/MockFileLogger.hpp"
+      "domain/logging/testing/gmock/MockRealTimeLogger.hpp"
+      "domain/logging/testing/gmock/MockFileLoggerController.hpp"
+  )
   target_link_libraries(logging_test
     PRIVATE
       gtest

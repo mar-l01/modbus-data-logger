@@ -8,7 +8,9 @@
 
 namespace Logging {
 
-ModbusDataLogger::ModbusDataLogger() {}
+ModbusDataLogger::ModbusDataLogger(const std::shared_ptr<FileLoggerController>& fileLoggerController)
+    : m_fileLoggerController(fileLoggerController)
+{}
 
 void ModbusDataLogger::logModbusRequest(const Entity::ModbusTcpRequest& mbRequest)
 {

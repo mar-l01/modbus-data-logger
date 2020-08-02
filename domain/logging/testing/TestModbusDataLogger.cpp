@@ -1,11 +1,14 @@
+#include "domain/entity/includes/ModbusLoggerConfiguration.hpp"
 #include "domain/entity/includes/ModbusTcpRequest.hpp"
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 #include "domain/logging/includes/ModbusDataLogger.hpp"
+#include "domain/logging/testing/gmock/MockFileLoggerController.hpp"
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 #include <thread>
+
 
 namespace {
 
@@ -15,10 +18,16 @@ using namespace Logging;
 class TestModbusDataLogger : public ::testing::Test
 {
 protected:
+    TestModbusDataLogger()
+        : m_fileLoggerControllerMock(std::make_shared<MockFileLoggerController>())
+    {}
+
     std::shared_ptr<ModbusDataLogger> createTestObject()
     {
-        return std::make_shared<ModbusDataLogger>();
+        return std::make_shared<ModbusDataLogger>(m_fileLoggerControllerMock);
     }
+
+    std::shared_ptr<MockFileLoggerController> m_fileLoggerControllerMock;
 };
 
 TEST_F(TestModbusDataLogger, ctorSuccessful)
