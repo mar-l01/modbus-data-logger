@@ -1,5 +1,8 @@
 #include "domain/framework/includes/SpdlogFileController.hpp"
 
+#include "domain/entity/includes/ModbusTcpRequest.hpp"
+#include "domain/entity/includes/ModbusTcpResponse.hpp"
+
 namespace Framework {
 
 SpdlogFileController::SpdlogFileController() {}

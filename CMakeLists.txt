@@ -188,6 +188,7 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/framework/testing/TestLibModbusMaster.cpp"
     "domain/framework/testing/TestFileReaderFactory.cpp"
     "domain/framework/testing/TestJsonFileReader.cpp"
+    "domain/framework/testing/TestSpdlogFileController.cpp"
   )
   target_include_directories(framework_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
