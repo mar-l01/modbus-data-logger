@@ -110,10 +110,14 @@ add_library(mdl_logging OBJECT
   # header files
   "domain/logging/interfaces/DataLogger.hpp"
   "domain/logging/interfaces/RealTimeLogger.hpp"
+  "domain/logging/interfaces/FileLogger.hpp"
+  "domain/logging/interfaces/FileLoggerController.hpp"
   "domain/logging/includes/ModbusDataLogger.hpp"
+  "domain/logging/includes/SpdlogFileController.hpp"
 
   # source files
   "domain/logging/sources/ModbusDataLogger.cpp"
+  "domain/logging/sources/SpdlogFileController.cpp"
 )
 target_compile_options(mdl_logging PUBLIC -Wall -Wextra)
 target_include_directories(mdl_logging PRIVATE

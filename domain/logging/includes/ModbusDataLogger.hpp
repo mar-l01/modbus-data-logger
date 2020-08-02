@@ -4,6 +4,7 @@
 #include "domain/logging/interfaces/FileLogger.hpp"
 #include "domain/logging/interfaces/RealTimeLogger.hpp"
 
+#include "spdlog/sinks/rotating_file_sink.h"
 #include <boost/signals2/signal.hpp>
 
 namespace Entity {

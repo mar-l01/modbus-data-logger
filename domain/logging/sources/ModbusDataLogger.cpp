@@ -1,5 +1,6 @@
 #include "domain/logging/includes/ModbusDataLogger.hpp"
 
+#include "domain/entity/includes/ModbusLoggerConfiguration.hpp"
 #include "domain/entity/includes/ModbusTcpRequest.hpp"
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 
