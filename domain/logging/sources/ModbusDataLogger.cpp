@@ -1,5 +1,6 @@
 #include "domain/logging/includes/ModbusDataLogger.hpp"
 
+#include "domain/entity/includes/ModbusLoggerConfiguration.hpp"
 #include "domain/entity/includes/ModbusTcpRequest.hpp"
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 
@@ -34,5 +35,11 @@ std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusResponseListener(
 {
     return std::make_shared<ScopedConnection>(m_mbResponseEvent.connect(signalCallback));
 }
+
+void ModbusDataLogger::startLogging() {}
+
+void ModbusDataLogger::stopLogging() {}
+
+void ModbusDataLogger::changeLogFileConfiguration(const Entity::ModbusLoggerConfiguration& mbLogConfig) {}
 
 }
