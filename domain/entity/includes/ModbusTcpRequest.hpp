@@ -1,12 +1,15 @@
 #pragma once
 
 #include "domain/entity/includes/ModbusTcpMessageFrame.hpp"
+#include "domain/entity/interfaces/ModbusDataLog.hpp"
 
 #include <memory>
 
 namespace Entity {
 
-class ModbusTcpRequest : public ModbusTcpMessageFrame
+class ModbusTcpRequest
+    : public ModbusTcpMessageFrame
+    , public ModbusDataLog
 {
 public:
     ModbusTcpRequest();
@@ -15,6 +18,8 @@ public:
     uint8_t getNumberOfBytesOfValuesToWrite() const;
     std::vector<uint8_t> getCoilValuesToWrite() const;
     std::vector<uint16_t> getHoldingRegisterValuesToWrite() const;
+
+    std::string convertToLogString() const override;
 };
 
 }
