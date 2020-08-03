@@ -56,7 +56,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
               m_modbusMaster->readCoilValues(mbRequest->getStartAddress(), mbRequest->getNumberOfValuesToReadOrWrite());
 
             // create response object with operation state and read values
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse.first);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, mbResponse.first);
             mbTcpResponse->setReadValues(mbResponse.second);
 
             break;
@@ -66,7 +66,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
                                                                       mbRequest->getNumberOfValuesToReadOrWrite());
 
             // create response object with operation state and read values
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse.first);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, mbResponse.first);
             mbTcpResponse->setReadValues(mbResponse.second);
 
             break;
@@ -76,7 +76,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
                                                                         mbRequest->getNumberOfValuesToReadOrWrite());
 
             // create response object with operation state and read values
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse.first);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, mbResponse.first);
             mbTcpResponse->setReadValues(mbResponse.second);
 
             break;
@@ -86,7 +86,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
                                                                       mbRequest->getNumberOfValuesToReadOrWrite());
 
             // create response object with operation state and read values
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse.first);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, mbResponse.first);
             mbTcpResponse->setReadValues(mbResponse.second);
 
             break;
@@ -96,7 +96,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
               m_modbusMaster->writeSingleCoilValue(mbRequest->getStartAddress(), mbRequest->getSingleValueToWrite());
 
             // create response object with operation state only
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, mbResponse);
 
             break;
         }
@@ -105,7 +105,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
                                                                               mbRequest->getSingleValueToWrite());
 
             // create response object with operation state only
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, mbResponse);
 
             break;
         }
@@ -114,7 +114,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
               m_modbusMaster->writeMultipleCoilValues(mbRequest->getStartAddress(), mbRequest->getCoilValuesToWrite());
 
             // create response object with operation state only
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, mbResponse);
 
             break;
         }
@@ -123,13 +123,13 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
               mbRequest->getStartAddress(), mbRequest->getHoldingRegisterValuesToWrite());
 
             // create response object with operation state only
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbResponse);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, mbResponse);
 
             break;
         }
         default:
             // currently nothing to be done if FC is not supported
-            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(Entity::ModbusOperationStatus::FAIL);
+            mbTcpResponse = std::make_shared<Entity::ModbusTcpResponse>(mbRequest, Entity::ModbusOperationStatus::FAIL);
             break;
     }
 

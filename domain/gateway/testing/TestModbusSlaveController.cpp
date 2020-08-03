@@ -72,7 +72,7 @@ TEST_F(TestModbusSlaveController, runOneFullLoop)
     EXPECT_CALL(*m_timerMock, restart()).InSequence(seq);
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_))
       .InSequence(seq)
-      .WillOnce(Return(std::make_shared<ModbusTcpResponse>(ModbusOperationStatus::SUCCESS)));
+      .WillOnce(Return(std::make_shared<ModbusTcpResponse>(m_modbusTcpRequest, ModbusOperationStatus::SUCCESS)));
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::OK));
     EXPECT_CALL(*m_modbusSlaveMock, receive(_))
       .InSequence(seq)
@@ -147,7 +147,7 @@ TEST_F(TestModbusSlaveController, runFailedReply)
     EXPECT_CALL(*m_timerMock, restart()).InSequence(seq);
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_))
       .InSequence(seq)
-      .WillOnce(Return(std::make_shared<ModbusTcpResponse>(ModbusOperationStatus::SUCCESS)));
+      .WillOnce(Return(std::make_shared<ModbusTcpResponse>(m_modbusTcpRequest, ModbusOperationStatus::SUCCESS)));
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).InSequence(seq).WillOnce(Return(Gateway::ModbusReceiveStatus::FAILED));
     testObj->run();
 }
@@ -163,7 +163,7 @@ TEST_F(TestModbusSlaveController, runTimeoutExceptionReply)
     EXPECT_CALL(*m_timerMock, restart()).InSequence(seq);
     EXPECT_CALL(*m_modbusRequestControllerMock, forwardModbusRequestAndWaitForResponse(_))
       .InSequence(seq)
-      .WillOnce(Return(std::make_shared<ModbusTcpResponse>(ModbusOperationStatus::TIMEOUT)));
+      .WillOnce(Return(std::make_shared<ModbusTcpResponse>(m_modbusTcpRequest, ModbusOperationStatus::TIMEOUT)));
     EXPECT_CALL(*m_modbusSlaveMock, reply(_)).Times(0);
     EXPECT_CALL(*m_modbusSlaveMock, replyException(+ModbusExceptionCode::GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND))
       .InSequence(seq)
