@@ -19,6 +19,8 @@ public:
     std::vector<uint8_t> getCoilValuesToWrite() const;
     std::vector<uint16_t> getHoldingRegisterValuesToWrite() const;
 
+    friend bool operator==(const ModbusTcpRequest& mbReqA, const ModbusTcpRequest& mbReqB);
+
     std::string convertToLogString() const override;
 };
 

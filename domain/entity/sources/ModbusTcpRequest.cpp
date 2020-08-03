@@ -32,6 +32,13 @@ std::vector<uint16_t> ModbusTcpRequest::getHoldingRegisterValuesToWrite() const
     return extractRegisterValues(ModbusDataByteOffset::WRITE_VALUES, getNumberOfValuesToReadOrWrite());
 }
 
+bool operator==(const ModbusTcpRequest& mbReqA, const ModbusTcpRequest& mbReqB)
+{
+    return mbReqA.transactionIdentifier == mbReqB.transactionIdentifier &&
+           mbReqA.protocolIdentifier == mbReqB.protocolIdentifier && mbReqA.lengthField == mbReqB.lengthField &&
+           mbReqA.unitIdentifier == mbReqB.unitIdentifier && mbReqA.functionCode == mbReqB.functionCode;
+}
+
 std::string ModbusTcpRequest::convertToLogString() const
 {
     std::stringstream loggedString;
