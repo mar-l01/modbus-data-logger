@@ -8,7 +8,6 @@
 #include <variant>
 #include <vector>
 
-
 namespace Entity {
 
 // forward declaration
@@ -46,6 +45,9 @@ private:
     const std::shared_ptr<ModbusTcpRequest> m_mbRequest;
     ModbusOperationStatus m_operationStatus;
     ModbusReadValues m_readValues; // 1-bit or 16-bit values
+
+    int computeLengthFieldInByte() const;
+    std::vector<uint8_t> getDataBytesInByteVector() const;
 };
 
 }

@@ -42,14 +42,14 @@ bool operator==(const ModbusTcpRequest& mbReqA, const ModbusTcpRequest& mbReqB)
 std::string ModbusTcpRequest::convertToLogString() const
 {
     std::stringstream loggedString;
-    loggedString << "--- Modbus Request ---> ";
+    loggedString << "--- Modbus Request ---> \n";
 
     // add bytes representation
     loggedString << '<' << std::hex << std::setw(4) << std::setfill('0') << transactionIdentifier;
     loggedString << "><" << std::hex << std::setw(4) << std::setfill('0') << protocolIdentifier;
     loggedString << "><" << std::hex << std::setw(4) << std::setfill('0') << lengthField;
     loggedString << "><" << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(unitIdentifier);
-    loggedString << "><" << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(functionCode);
+    loggedString << "><" << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(functionCode) << '>';
     for (const auto dataByte : dataBytes) {
         loggedString << '<' << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(dataByte) << '>';
     }
