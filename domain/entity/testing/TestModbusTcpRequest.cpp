@@ -62,4 +62,20 @@ TEST_F(TestModbusTcpRequest, getHoldingRegisterValuesToWrite)
     EXPECT_EQ(registerValues, expectedRegisterValues);
 }
 
+TEST_F(TestModbusTcpRequest, convertToLogString)
+{
+    auto testObj = createTestObject();
+
+    testObj->dataBytes = {0x00, 0x04, 0x00, 0x0a};
+
+    std::string expectedOutput(
+      "--- Modbus Request ---> \n<0001><0000><0006><ff><03><00><04><00><0a>\n\tTransaction Id: 1\n\tProtocol Id: 0 "
+      "(TCP/IP Protocol)\n\tLength: 6\n\tUnit Id: 255\n\tFunction Code: READ_HOLDING_REGISTER_VALUES\n\tData "
+      "Bytes:\n\t|--Start Address: 4\n\t|--Number of values to read: 10");
+
+    auto generatedLogOutput = testObj->convertToLogString();
+
+    EXPECT_STRCASEEQ(generatedLogOutput.c_str(), expectedOutput.c_str());
+}
+
 }
