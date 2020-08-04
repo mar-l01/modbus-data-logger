@@ -76,6 +76,7 @@ add_library(mdl_entity OBJECT
   "domain/entity/includes/ModbusTcpConstants.hpp"
   "domain/entity/includes/ModbusConfiguration.hpp"
   "domain/entity/includes/ModbusLoggerConfiguration.hpp"
+  "domain/entity/interfaces/ModbusDataLog.hpp"
 
   # source files
   "domain/entity/sources/ModbusDataMapping.cpp"

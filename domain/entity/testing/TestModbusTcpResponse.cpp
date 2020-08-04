@@ -1,3 +1,4 @@
+#include "domain/entity/includes/ModbusTcpRequest.hpp"
 #include "domain/entity/includes/ModbusTcpResponse.hpp"
 
 #include "gtest/gtest.h"
@@ -12,7 +13,8 @@ protected:
     std::unique_ptr<ModbusTcpResponse> createTestObject(
       ModbusOperationStatus mbOpState = ModbusOperationStatus::SUCCESS)
     {
-        auto testObj = std::make_unique<ModbusTcpResponse>(mbOpState);
+        auto mbRequest = std::make_shared<ModbusTcpRequest>();
+        auto testObj = std::make_unique<ModbusTcpResponse>(mbRequest, mbOpState);
 
         return std::move(testObj);
     }
