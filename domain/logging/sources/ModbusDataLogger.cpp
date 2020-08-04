@@ -20,7 +20,7 @@ void ModbusDataLogger::logModbusRequest(const Entity::ModbusTcpRequest& mbReques
         m_mbRequestEvent(mbRequest);
 
         // log Modbus data
-        m_fileLoggerController->logModbusData(mbRequest);
+        m_fileLoggerController->logModbusData(std::make_shared<Entity::ModbusTcpRequest>(mbRequest));
     });
     loggingThread.detach();
 }
@@ -33,7 +33,7 @@ void ModbusDataLogger::logModbusResponse(const Entity::ModbusTcpResponse& mbResp
         m_mbResponseEvent(mbResponse);
 
         // log Modbus data
-        m_fileLoggerController->logModbusData(mbResponse);
+        m_fileLoggerController->logModbusData(std::make_shared<Entity::ModbusTcpResponse>(mbResponse));
     });
     loggingThread.detach();
 }

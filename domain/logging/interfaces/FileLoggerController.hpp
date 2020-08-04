@@ -1,12 +1,11 @@
 #pragma once
 
-#include <variant>
+#include <memory>
 
 namespace Entity {
 // forward declarations
 class ModbusLoggerConfiguration;
-class ModbusTcpRequest;
-class ModbusTcpResponse;
+class ModbusDataLog;
 }
 
 namespace Logging {
@@ -18,8 +17,7 @@ public:
     virtual void stopLogger() = 0;
     virtual void setLogConfiguration(const Entity::ModbusLoggerConfiguration& mbLogConfig) = 0;
 
-    virtual void logModbusData(
-      const std::variant<Entity::ModbusTcpRequest, Entity::ModbusTcpResponse>& mbModbusData) = 0;
+    virtual void logModbusData(const std::shared_ptr<Entity::ModbusDataLog>& mbModbusData) = 0;
 };
 
 }
