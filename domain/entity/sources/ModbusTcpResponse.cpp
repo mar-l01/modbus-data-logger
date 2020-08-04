@@ -67,10 +67,12 @@ std::string ModbusTcpResponse::convertToLogString() const
     loggedString << "<--- Modbus Response --- \n";
 
     if (m_operationStatus == ModbusOperationStatus::SUCCESS) {
+        auto lengthFieldInBytes = computeLengthFieldInByte();
+
         // add bytes representation
         loggedString << '<' << std::hex << std::setw(4) << std::setfill('0') << m_mbRequest->transactionIdentifier;
         loggedString << "><" << std::hex << std::setw(4) << std::setfill('0') << m_mbRequest->protocolIdentifier;
-        loggedString << "><" << std::hex << std::setw(4) << std::setfill('0') << computeLengthFieldInByte();
+        loggedString << "><" << std::hex << std::setw(4) << std::setfill('0') << lengthFieldInBytes;
         loggedString << "><" << std::hex << std::setw(2) << std::setfill('0')
                      << static_cast<int>(m_mbRequest->unitIdentifier);
         loggedString << "><" << std::hex << std::setw(2) << std::setfill('0')
@@ -83,7 +85,7 @@ std::string ModbusTcpResponse::convertToLogString() const
         loggedString << "\n\tTransaction Id: " << std::dec << static_cast<int>(m_mbRequest->transactionIdentifier);
         loggedString << "\n\tProtocol Id: " << std::dec << static_cast<int>(m_mbRequest->protocolIdentifier)
                      << (m_mbRequest->protocolIdentifier == 0 ? " (TCP/IP Protocol)" : " ");
-        loggedString << "\n\tLength: " << std::dec << computeLengthFieldInByte();
+        loggedString << "\n\tLength: " << std::dec << lengthFieldInBytes;
         loggedString << "\n\tUnit Id: " << std::dec << static_cast<int>(m_mbRequest->unitIdentifier);
         loggedString << "\n\tFunction Code: "
                      << (ModbusFunctionCode::_from_integral(static_cast<int>(m_mbRequest->functionCode)))._to_string();
@@ -197,6 +199,7 @@ std::vector<uint8_t> ModbusTcpResponse::getDataBytesInByteVector() const
 {
     std::vector<uint8_t> bytesRepresentation;
 
+    // adds a 16-bit value as two byte values to vector above
     auto add16BitValueToVector = [&bytesRepresentation](const uint16_t val) {
         bytesRepresentation.emplace_back(static_cast<uint8_t>(val >> 8));
         bytesRepresentation.emplace_back(static_cast<uint8_t>(val & 0x0000ffff));
