@@ -94,4 +94,29 @@ TEST_F(TestModbusTcpResponse, getModbusOperationStatus_TIMEOUT)
     EXPECT_EQ(operationStatus, expectedModbusOperationStatus);
 }
 
+TEST_F(TestModbusTcpResponse, convertToLogString)
+{
+    // set-up test object with specific ModbusTcpRequest
+    auto mbRequest = std::make_shared<ModbusTcpRequest>();
+    mbRequest->transactionIdentifier = 4;
+    mbRequest->protocolIdentifier = 0;
+    mbRequest->lengthField = 6;
+    mbRequest->unitIdentifier = 255;
+    mbRequest->functionCode = 3;
+    mbRequest->dataBytes = {0x00, 0x00, 0x00, 0x03};
+    ModbusTcpResponse mbResponse(mbRequest, ModbusOperationStatus::SUCCESS);
+    std::vector<uint16_t> readRegisterValues = {4660, 22136, 39612};
+    mbResponse.setReadValues(readRegisterValues);
+
+    std::string expectedOutput(
+      "<--- Modbus Response --- \n<0004><0000><0009><ff><03><06><12><34><56><78><9a><bc>\n\tTransaction Id: "
+      "4\n\tProtocol Id: 0 (TCP/IP Protocol)\n\tLength: 9\n\tUnit Id: 255\n\tFunction Code: "
+      "READ_HOLDING_REGISTER_VALUES\n\tData Bytes:\n\t|--Number of bytes to follow: 6\n\t|--Holding Register (1): "
+      "4660\n\t|--Holding Register (2): 22136\n\t|--Holding Register (3): 39612");
+
+    auto generatedLogOutput = mbResponse.convertToLogString();
+
+    EXPECT_STRCASEEQ(generatedLogOutput.c_str(), expectedOutput.c_str());
+}
+
 }
