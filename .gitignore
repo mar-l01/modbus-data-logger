@@ -1,6 +1,9 @@
 # Build directory
 builds/
 
+# Doxygen documentation
+docs/doxygen/
+
 # Local settings file
 .vscode/settings.json
 
