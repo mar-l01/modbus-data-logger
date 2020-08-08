@@ -15,14 +15,12 @@ namespace Framework {
  * It derives from @ref ModbusMaster, which internally represents the Modbus master.
  *
  * For further information about the 'libmodbus'-framwork see: https://github.com/stephane/libmodbus
- *
  */
 class LibModbusMaster : public Gateway::ModbusMaster
 {
 public:
     /**
      * @brief Construct a new LibModbusMaster object.
-     *
      */
     LibModbusMaster();
 
