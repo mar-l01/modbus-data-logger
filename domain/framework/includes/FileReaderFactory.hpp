@@ -26,7 +26,7 @@ public:
      *
      * @param fileReaderFramework The respective data-type which the file-reader should process (see @ref
      * FileReaderFramework).
-     * @return A shared-ptr instance of type @ref ConfigurationFileReader
+     * @return A shared-ptr instance of type @ref ConfigurationFileReader.
      */
     static std::shared_ptr<ConfigurationFileReader> createFileReader(FileReaderFramework fileReaderFramework);
 };
