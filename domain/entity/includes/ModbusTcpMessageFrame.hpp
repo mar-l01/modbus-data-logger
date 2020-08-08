@@ -45,10 +45,29 @@ public:
      */
     std::vector<uint8_t> dataBytes;
 
-    // common parts (request and response) of dynamic data bytes
-    uint16_t getStartAddress() const;                // w, req/res and r, req
-    uint16_t getNumberOfValuesToReadOrWrite() const; // r/w, req/res
-    uint16_t getSingleValueToWrite() const;          // w, req/res
+    /**
+     * @brief Get start address provided in Modbus frame's data field
+     * This can be applied to read or write requests.
+     *
+     * @return start address of the respective data-type (16-bit)
+     */
+    uint16_t getStartAddress() const;
+
+    /**
+     * @brief Get number of values to read or write provided in Modbus frame's data field.
+     * This can be applied to read or write requests.
+     *
+     * @return total number of values to read/write (16-bit)
+     */
+    uint16_t getNumberOfValuesToReadOrWrite() const;
+
+    /**
+     * @brief Get single value to write.
+     * This can be applied to write requests.
+     *
+     * @return single value of the respective data-type to write (16-bit)
+     */
+    uint16_t getSingleValueToWrite() const;
 
     /**
      * @brief Checks whether a provided function code is reported by this application
