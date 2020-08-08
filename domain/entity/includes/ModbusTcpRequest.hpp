@@ -11,7 +11,7 @@ namespace Entity {
  * @brief This class represents a Modbus TCP request and provides additional methods
  * to extract information solely available in Modbus requests.
  * It inherits from @ref ModbusTcpMessageFrame to access all header-related information.
- * The inheritance of @ref ModbusDataLog is used to print a request in a log-file
+ * The inheritance of @ref ModbusDataLog is used to print a request in a log-file.
  */
 class ModbusTcpRequest
     : public ModbusTcpMessageFrame
@@ -20,7 +20,6 @@ class ModbusTcpRequest
 public:
     /**
      * @brief Construct a new Modbus Tcp Request object (empty constructor).
-     *
      */
     ModbusTcpRequest();
 
