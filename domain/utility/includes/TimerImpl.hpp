@@ -6,15 +6,38 @@
 
 namespace Utility {
 
+/**
+ * @brief This class represents a timer, which is used to fire a timeout once the corresponding time has expired.
+ * It implemented the @ref Timer interface.
+ */
 class TimerImpl : public Timer
 {
 public:
+    /**
+     * @brief Construct a new TimerImpl object.
+     */
     TimerImpl();
 
+    /**
+     * @see Timer::callOnTimeout
+     */
     void callOnTimeout(const int timeoutInMs, const std::function<void()>& callback) override;
+
+    /**
+     * @see Timer::restart
+     */
     void restart() override;
+
+    /**
+     * @see Timer::stop
+     */
     void stop() override;
 
+    /**
+     * @brief Allow to set the loop frequency: The time which the loop sleeps after each iteration.
+     *
+     * @param frequencyInMs A frequency value provided in milliseconds.
+     */
     void setFrequencyInMs(const int frequencyInMs);
 
 private:
