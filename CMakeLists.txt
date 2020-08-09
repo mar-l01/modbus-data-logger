@@ -27,6 +27,7 @@ add_library(mdl_framework OBJECT
   "domain/framework/includes/JsonFileReader.hpp"
   "domain/framework/includes/FileReaderFactory.hpp"
   "domain/framework/includes/SpdlogFileController.hpp"
+  "domain/framework/includes/FileLoggerControllerFactory.hpp"
 
   # source files
   "domain/framework/sources/LibModbusSlave.cpp"
@@ -34,6 +35,7 @@ add_library(mdl_framework OBJECT
   "domain/framework/sources/JsonFileReader.cpp"
   "domain/framework/sources/FileReaderFactory.cpp"
   "domain/framework/sources/SpdlogFileController.cpp"
+  "domain/framework/sources/FileLoggerControllerFactory.cpp"
 )
 target_compile_options(mdl_framework PUBLIC -Wall -Wextra)
 target_include_directories(mdl_framework PRIVATE
@@ -190,6 +192,7 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/framework/testing/TestFileReaderFactory.cpp"
     "domain/framework/testing/TestJsonFileReader.cpp"
     "domain/framework/testing/TestSpdlogFileController.cpp"
+    "domain/framework/testing/TestFileLoggerControllerFactory.cpp"
   )
   target_include_directories(framework_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
