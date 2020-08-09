@@ -26,7 +26,7 @@ public:
     /**
      * @brief Allows for changing the configuration which is used for logging, e.g. filename/-path, ...
      *
-     * @param mbLogConfig The configuration which sets-up the file logging (see @ref ModbusLoggerConfiguration).
+     * @param mbLogConfig The configuration which sets-up the file logging (see @ref Entity::ModbusLoggerConfiguration).
      */
     virtual void changeLogFileConfiguration(const Entity::ModbusLoggerConfiguration& mbLogConfig) = 0;
 };

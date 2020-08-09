@@ -22,9 +22,9 @@ using SignalEvent = boost::signals2::signal<void(const T&)>;
 
 /**
  * @brief This class implements several interfaces, which are used for logging a Modbus communication:
- * - @ref DataLogger: used to log either a Modbus request or a Modbus response
- * - @ref RealTimeLogger: used for real-time notifications to subscribed clients
- * - @ref FileLogger: used to log a Modbus communication to files
+ * - DataLogger: used to log either a Modbus request or a Modbus response
+ * - RealTimeLogger: used for real-time notifications to subscribed clients
+ * - FileLogger: used to log a Modbus communication to files
  */
 class ModbusDataLogger
     : public DataLogger

@@ -16,7 +16,7 @@ public:
     /**
      * @brief Construct a new ModbusMasterController object.
      *
-     * @param mbMaster A @ref ModbusMaster instance, e.g. @ref LibModbusMaster
+     * @param mbMaster A @ref ModbusMaster instance, e.g. @ref Framework::LibModbusMaster
      * @param ipAddr The IP-address of the external Modbus slave, which above master instance should connect to.
      * @param port The port value of the external Modbus slave, which above master instance should connect to.
      *  */

@@ -21,7 +21,7 @@ constexpr const int CONNECTION_CLOSED_BY_MASTER = 104;
 
 /**
  * @brief This class represents a Modbus slave implemented with the 'libmodbus'-framework.
- * It derives from @ref ModbusSlave, which internally represents the Modbus slave.
+ * It derives from @ref Gateway::ModbusSlave, which internally represents the Modbus slave.
  *
  * For further information about the 'libmodbus'-framwork see: https://github.com/stephane/libmodbus
  */

@@ -45,7 +45,7 @@ public:
     /**
      * @brief Construct a new Modbus Tcp Response object with provided arguments. These are denoting
      * the respective Modbus request @ref ModbusTcpRequest (which resulted in this Modbus response) and
-     * the respective operation status @ref ModbusOperationStatus.
+     * the respective operation status.
      *
      * @param mbRequest The respective Modbus TCP request, which created this response message
      * @param mbOpStatus The operation status: success, fail or timeout.
@@ -55,21 +55,21 @@ public:
     /**
      * @brief Get the current Modbus operation status
      *
-     * @return a @ref ModbusOperationStatus (success, fail or timeout).
+     * @return A Modbus operation status (success, fail or timeout).
      */
     ModbusOperationStatus getModbusOperationStatus() const;
 
     /**
      * @brief Get all read bit values (either coil or discrete input values)
      *
-     * @return a vector of all read bit values (8-bit elements each representing a single value)
+     * @return A vector of all read bit values (8-bit elements each representing a single value)
      */
     std::vector<uint8_t> getReadBitValues() const;
 
     /**
      * @brief Get all read register values (either holding or input register values)
      *
-     * @return a vector of all read register values (16-bit elements each representing a single value)
+     * @return A vector of all read register values (16-bit elements each representing a single value)
      */
     std::vector<uint16_t> getReadRegisterValues() const;
 
@@ -78,7 +78,7 @@ public:
      * - coil or discrete input values (one value per 8-bit)
      * - holding or input register values (16-bit)
      *
-     * @param vals a std::variant which can either hold 8-bit or 16-bit values
+     * @param vals A std::variant which can either hold 8-bit or 16-bit values
      */
     void setReadValues(const ModbusReadValues& vals);
 

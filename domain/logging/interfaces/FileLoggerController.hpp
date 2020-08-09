@@ -29,14 +29,14 @@ public:
     /**
      * @brief Change the file logger configuration.
      *
-     * @param mbLogConfig The configuration which sets-up the file logging (see @ref ModbusLoggerConfiguration).
+     * @param mbLogConfig The configuration which sets-up the file logging (see @ref Entity::ModbusLoggerConfiguration).
      */
     virtual void setLogConfiguration(const Entity::ModbusLoggerConfiguration& mbLogConfig) = 0;
 
     /**
      * @brief Log provided Modbus data, either a Modbus request or a Modbus response.
      *
-     * @param mbModbusData THe Modbus data to be logged. Needs to be dervied from @ref ModbusDataLog.
+     * @param mbModbusData THe Modbus data to be logged. Needs to be dervied from @ref Entity::ModbusDataLog.
      */
     virtual void logModbusData(const std::shared_ptr<Entity::ModbusDataLog>& mbModbusData) = 0;
 };

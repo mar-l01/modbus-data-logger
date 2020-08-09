@@ -24,8 +24,7 @@ public:
     /**
      * @brief Create a file-reader which is capable of reading json-files.
      *
-     * @param fileReaderFramework The respective data-type which the file-reader should process (see @ref
-     * FileReaderFramework).
+     * @param fileReaderFramework The respective data-type which the file-reader should process.
      * @return A shared-ptr instance of type @ref ConfigurationFileReader.
      */
     static std::shared_ptr<ConfigurationFileReader> createFileReader(FileReaderFramework fileReaderFramework);

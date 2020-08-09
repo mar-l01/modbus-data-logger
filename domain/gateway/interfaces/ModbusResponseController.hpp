@@ -18,8 +18,8 @@ public:
      * @brief Get a response message of an external Modbus slave. This method shall do the actual communication by
      * using the internal Modbus master instance to forward provided request and wait for the response and return it.
      *
-     * @param mbRequest @ref ModbusTcpRequest for which a response should be returned.
-     * @return A @ref ModbusTcpResponse which is triggered using above Modbus TCP request.
+     * @param mbRequest @ref Entity::ModbusTcpRequest for which a response should be returned.
+     * @return A @ref Entity::ModbusTcpResponse which is triggered using above Modbus TCP request.
      */
     virtual std::shared_ptr<Entity::ModbusTcpResponse> getExternalModbusSlaveResponse(
       std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest) = 0;

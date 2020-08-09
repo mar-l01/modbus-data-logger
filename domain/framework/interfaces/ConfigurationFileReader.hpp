@@ -9,7 +9,7 @@ namespace Framework {
 /**
  * @brief This interfaces provides methods to read a Modbus configuration provided in
  * a pre-defined format (currently only json-files are supported) and return the read
- * file in an @ref ModbusConfiguration object.
+ * file in an @ref Entity::ModbusConfiguration object.
  */
 class ConfigurationFileReader
 {
@@ -22,7 +22,7 @@ public:
     virtual void readConfigurationFile(const std::string& path) = 0;
 
     /**
-     * @brief Get the current @ref ModbusConfiguration object, which holds information about how to
+     * @brief Get the current @ref Entity::ModbusConfiguration object, which holds information about how to
      * configure this application.
      *
      * @return Entity::ModbusConfiguration A Modbus configuration used for this application.

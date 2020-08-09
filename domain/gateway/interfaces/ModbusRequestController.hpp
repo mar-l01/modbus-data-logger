@@ -17,9 +17,9 @@ public:
     /**
      * @brief Forward provided Modbus request to a Modbus slave and wait for its response.
      *
-     * @param mbRequest The Modbus TCP request (see @ref ModbusTcpRequest) which should be forwarded to the Modbus
-     * slave.
-     * @return The Modbus TCP response (see @ref ModbusTcpResponse) received from the Modbus slave.
+     * @param mbRequest The Modbus TCP request (see @ref Entity::ModbusTcpRequest) which should be forwarded to the
+     * Modbus slave.
+     * @return The Modbus TCP response (see @ref Entity::ModbusTcpResponse) received from the Modbus slave.
      */
     virtual std::shared_ptr<Entity::ModbusTcpResponse> forwardModbusRequestAndWaitForResponse(
       std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest) = 0;

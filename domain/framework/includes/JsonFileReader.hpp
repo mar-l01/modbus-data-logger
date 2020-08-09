@@ -6,13 +6,13 @@
 
 namespace Entity {
 /**
- * @brief Used to convert a @ref ModbusConfiguration to a json-file.
+ * @brief Used to convert a @ref Entity::ModbusConfiguration to a json-file.
  * See https://github.com/nlohmann/json#basic-usage for further information
  */
 void to_json(nlohmann::json& j, const ModbusConfiguration& mbConfig);
 
 /**
- * @brief Used to convert a json-file to a @ref ModbusConfiguration.
+ * @brief Used to convert a json-file to a @ref Entity::ModbusConfiguration.
  * See https://github.com/nlohmann/json#basic-usage for further information
  */
 void from_json(const nlohmann::json& j, ModbusConfiguration& mbConfig);
@@ -23,7 +23,7 @@ namespace Framework {
 /**
  * @brief This class represents a json-file reader and is used to read a file containing
  * information about our Modbus application. This file is interpreted and a respective
- * @ref ModbusConfiguration object is created.
+ * @ref Entity::ModbusConfiguration object is created.
  */
 class JsonFileReader : public ConfigurationFileReader
 {

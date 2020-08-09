@@ -17,7 +17,7 @@ constexpr const int MODBUS_TCP_REQUEST_LENGTH_MAX = 260;
 }
 
 /**
- * @brief This class is internally used to control the @ref ModbusSlave object, e.g. a @ref LibModbusSlave.
+ * @brief This class is internally used to control the @ref ModbusSlave object, e.g. a @ref Framework::LibModbusSlave.
  * It provides methods to
  * - wait for an incoming connection (if so, a connection gets established),
  * - run the Modbus slave functionality (receive request, process it, reply) and
@@ -30,10 +30,10 @@ public:
      * @brief Construct a new ModbusSlaveController object, which controls the @ref ModbusSlave instance,
      * representing the internal Modbus slave.
      *
-     * @param mbSlave An instance derived @ref ModbusSlave interface, e.g. @ref LibModbusSlave.
-     * @param mbReqCtrl An instance derived from @ref ModbusRequestController, e.g. @ref ModbusGateway.
-     * @param timerInstance An @ref Timer instance used to control timeouts.
-     * @param mbDataMapping A @ref ModbusDataMapping which holds information about all Modbus data-types.
+     * @param mbSlave An instance derived @ref ModbusSlave interface, e.g. @ref Framework::LibModbusSlave.
+     * @param mbReqCtrl An instance derived from @ref ModbusRequestController, e.g. @ref  ModbusGateway.
+     * @param timerInstance An @ref Utility::Timer instance used to control timeouts.
+     * @param mbDataMapping A @ref Entity::ModbusDataMapping which holds information about all Modbus data-types.
      * @param ipAddr The IP-address the internal Modbus slave will listen to.
      * @param port The port-value the internal Modbus slave will listen on.
      */

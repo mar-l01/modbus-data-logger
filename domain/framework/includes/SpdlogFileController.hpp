@@ -10,7 +10,7 @@ namespace Framework {
 
 /**
  * @brief This class represents a kind of controller for a file-logger, implemented with the 'spdlog'-framework.
- * It derives from @ref FileLoggerController, which internally controls the logging of messages. It provides
+ * It derives from @ref Logging::FileLoggerController, which internally controls the logging of messages. It provides
  * methods to
  * - start logging,
  * - stop logging,

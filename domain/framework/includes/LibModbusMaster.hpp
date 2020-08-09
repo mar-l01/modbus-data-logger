@@ -12,7 +12,7 @@ namespace Framework {
 
 /**
  * @brief This class represents a Modbus master implemented with the 'libmodbus'-framework.
- * It derives from @ref ModbusMaster, which internally represents the Modbus master.
+ * It derives from @ref Gateway::ModbusMaster, which internally represents the Modbus master.
  *
  * For further information about the 'libmodbus'-framwork see: https://github.com/stephane/libmodbus
  */

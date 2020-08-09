@@ -32,8 +32,8 @@ public:
     /**
      * @brief Configure the Modbus data mapping of the Modbus slave instance.
      *
-     * @param mbMapping A @ref ModbusDataMapping instance, which holds all necessary information about the Modbus data
-     * types.
+     * @param mbMapping A @ref Entity::ModbusDataMapping instance, which holds all necessary information about the
+     * Modbus data types.
      */
     virtual void setModbusDataMapping(const Entity::ModbusDataMapping& mbMapping) = 0;
 
@@ -64,16 +64,17 @@ public:
     /**
      * @brief Wait for an incoming request from a Modbus master. Blocks until a request was received.
      *
-     * @param request The incoming Modbus request is saved in this @ref ModbusTcpRequest instance.
-     * @return A status (see @ref ModbusReceiveStatus) informing about a successful, failed, ... connection.
+     * @param request The incoming Modbus request is saved in this @ref Entity::ModbusTcpRequest instance.
+     * @return A status informing about a successful, failed, ... connection.
      */
     virtual Gateway::ModbusReceiveStatus receive(std::shared_ptr<Entity::ModbusTcpRequest>& request) = 0;
 
     /**
      * @brief Send provided Modbus Tcp response back to the Modbus master.
      *
-     * @param response The Modbus response (see @ref ModbusTcpResponse) which should be sent to the Modbus master.
-     * @return A status (see @ref ModbusReceiveStatus) informing about a successful, failed, ... connection.
+     * @param response The Modbus response (see @ref Entity::ModbusTcpResponse) which should be sent to the Modbus
+     * master.
+     * @return A status informing about a successful, failed, ... connection.
      */
     virtual Gateway::ModbusReceiveStatus reply(std::shared_ptr<Entity::ModbusTcpResponse>& response) = 0;
 
@@ -81,7 +82,7 @@ public:
      * @brief Send a Modbus exception response back to the Modbus master
      *
      * @param mbExceptionCode The Modbus exception code which is used to send a Modbus exception response.
-     * @return A status (see @ref ModbusReceiveStatus) informing about a successful, failed, ... connection.
+     * @return A status informing about a successful, failed, ... connection.
      */
     virtual Gateway::ModbusReceiveStatus replyException(Entity::ModbusExceptionCode mbExceptionCode) = 0;
 
