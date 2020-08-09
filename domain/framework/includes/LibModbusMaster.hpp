@@ -10,29 +10,83 @@
 
 namespace Framework {
 
+/**
+ * @brief This class represents a Modbus master implemented with the 'libmodbus'-framework.
+ * It derives from @ref Gateway::ModbusMaster, which internally represents the Modbus master.
+ *
+ * For further information about the 'libmodbus'-framwork see: https://github.com/stephane/libmodbus
+ */
 class LibModbusMaster : public Gateway::ModbusMaster
 {
 public:
+    /**
+     * @brief Construct a new LibModbusMaster object.
+     */
     LibModbusMaster();
 
-    void connect(const std::string& ipAddr, const int port);
-    void reconnect();
-    void setResponseTimeout(const uint16_t timeoutInMs);
+    /**
+     * @see ModbusMaster::connect
+     */
+    void connect(const std::string& ipAddr, const int port) override;
 
-    // read operations
-    Entity::ModbusReadOperationResult<uint8_t> readCoilValues(int startAddress, int nbValues);
-    Entity::ModbusReadOperationResult<uint8_t> readDiscreteInputValues(int startAddress, int nbValues);
-    Entity::ModbusReadOperationResult<uint16_t> readHoldingRegisterValues(int startAddress, int nbValues);
-    Entity::ModbusReadOperationResult<uint16_t> readInputRegisterValues(int startAddress, int nbValues);
+    /**
+     * @see ModbusMaster::reconnect
+     */
+    void reconnect() override;
 
-    // write operations
-    Entity::ModbusOperationStatus writeSingleCoilValue(int startAddress, uint8_t coilValue);
-    Entity::ModbusOperationStatus writeSingleHoldingRegisterValue(int startAddress, uint16_t registerValue);
-    Entity::ModbusOperationStatus writeMultipleCoilValues(int startAddress, const std::vector<uint8_t>& coilValues);
-    Entity::ModbusOperationStatus writeMultipleHoldingRegisterValues(int startAddress,
-                                                                     const std::vector<uint16_t>& registerValues);
+    /**
+     * @see ModbusMaster::setResponseTimeout
+     */
+    void setResponseTimeout(const uint16_t timeoutInMs) override;
 
-    void close();
+    // --- read operations ---
+    /**
+     * @see ModbusMaster::readCoilValues
+     */
+    Entity::ModbusReadOperationResult<uint8_t> readCoilValues(int startAddress, int nbValues) override;
+
+    /**
+     * @see ModbusMaster::readDiscreteInputValues
+     */
+    Entity::ModbusReadOperationResult<uint8_t> readDiscreteInputValues(int startAddress, int nbValues) override;
+
+    /**
+     * @see ModbusMaster::readHoldingRegisterValues
+     */
+    Entity::ModbusReadOperationResult<uint16_t> readHoldingRegisterValues(int startAddress, int nbValues) override;
+
+    /**
+     * @see ModbusMaster::readInputRegisterValues
+     */
+    Entity::ModbusReadOperationResult<uint16_t> readInputRegisterValues(int startAddress, int nbValues) override;
+
+    // --- write operations ---
+    /**
+     * @see ModbusMaster::writeSingleCoilValue
+     */
+    Entity::ModbusOperationStatus writeSingleCoilValue(int startAddress, uint8_t coilValue) override;
+
+    /**
+     * @see ModbusMaster::writeSingleHoldingRegisterValue
+     */
+    Entity::ModbusOperationStatus writeSingleHoldingRegisterValue(int startAddress, uint16_t registerValue) override;
+
+    /**
+     * @see ModbusMaster::writeMultipleCoilValues
+     */
+    Entity::ModbusOperationStatus writeMultipleCoilValues(int startAddress,
+                                                          const std::vector<uint8_t>& coilValues) override;
+
+    /**
+     * @see ModbusMaster::writeMultipleHoldingRegisterValues
+     */
+    Entity::ModbusOperationStatus writeMultipleHoldingRegisterValues(
+      int startAddress, const std::vector<uint16_t>& registerValues) override;
+
+    /**
+     * @see ModbusMaster::close
+     */
+    void close() override;
 
 private:
     std::unique_ptr<modbus_t, std::function<void(modbus_t*)>> m_modbusContext;
