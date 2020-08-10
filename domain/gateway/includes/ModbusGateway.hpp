@@ -2,6 +2,11 @@
 
 #include "domain/gateway/interfaces/ModbusRequestController.hpp"
 
+namespace Logging {
+// forward declaration
+class DataLogger;
+}
+
 namespace Gateway {
 // forward declaration
 class ModbusResponseController;
@@ -22,8 +27,11 @@ public:
      *
      * @param mbResponseController A Modbus master instance (derived from @ref ModbusResponseController),
      * which will be used to forward incoming requests.
+     * @param dataLogger A data logger instance (derived from @ref Logging::DataLogger), which handles the logging of
+     * the Modbus communication
      */
-    ModbusGateway(const std::shared_ptr<ModbusResponseController>& mbResponseController);
+    ModbusGateway(const std::shared_ptr<ModbusResponseController>& mbResponseController,
+                  const std::shared_ptr<Logging::DataLogger>& dataLogger);
 
     /**
      * @see ModbusRequestController::forwardModbusRequestAndWaitForResponse
@@ -33,6 +41,7 @@ public:
 
 private:
     std::shared_ptr<ModbusResponseController> m_modbusResponseController;
+    std::shared_ptr<Logging::DataLogger> m_dataLogger;
 };
 
 }

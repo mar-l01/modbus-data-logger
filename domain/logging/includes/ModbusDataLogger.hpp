@@ -44,12 +44,12 @@ public:
     /**
      * @see DataLogger::logModbusRequest
      */
-    void logModbusRequest(const Entity::ModbusTcpRequest& mbRequest) override;
+    void logModbusRequest(const std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest) override;
 
     /**
      * @see DataLogger::logModbusResponse
      */
-    void logModbusResponse(const Entity::ModbusTcpResponse& mbResponse) override;
+    void logModbusResponse(const std::shared_ptr<Entity::ModbusTcpResponse>& mbResponse) override;
 
     // RealTimeLogger interface
     /**

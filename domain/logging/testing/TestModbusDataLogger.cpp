@@ -41,19 +41,19 @@ TEST_F(TestModbusDataLogger, logModbusRequest)
     MockFunction<void(const Entity::ModbusTcpRequest&)> signalCallback;
     auto connectionPointer = testObj->addModbusRequestListener(signalCallback.AsStdFunction());
 
-    Entity::ModbusTcpRequest expectedModbusRequest;
+    auto expectedModbusRequest = std::make_shared<Entity::ModbusTcpRequest>();
     std::shared_ptr<Entity::ModbusDataLog> receivedModbusRequest = std::make_shared<Entity::ModbusTcpRequest>();
-    EXPECT_CALL(signalCallback, Call(expectedModbusRequest)).Times(1);
+    EXPECT_CALL(signalCallback, Call(*expectedModbusRequest)).Times(1);
     EXPECT_CALL(*m_fileLoggerControllerMock, logModbusData(_)).WillOnce(SaveArg<0>(&receivedModbusRequest));
     testObj->logModbusRequest(expectedModbusRequest);
 
     // wait some time until expected function was called (runs in detached thread)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    EXPECT_EQ(*(std::dynamic_pointer_cast<Entity::ModbusTcpRequest>(receivedModbusRequest)), expectedModbusRequest);
+    EXPECT_EQ(*(std::dynamic_pointer_cast<Entity::ModbusTcpRequest>(receivedModbusRequest)), *expectedModbusRequest);
 
     // removing connection should not inform us about new data, i.e. not raise a new signal
     connectionPointer.reset();
-    EXPECT_CALL(signalCallback, Call(expectedModbusRequest)).Times(0);
+    EXPECT_CALL(signalCallback, Call(*expectedModbusRequest)).Times(0);
     EXPECT_CALL(*m_fileLoggerControllerMock, logModbusData(_)).Times(1);
     testObj->logModbusRequest(expectedModbusRequest);
 
@@ -68,19 +68,19 @@ TEST_F(TestModbusDataLogger, logModbusResponse)
     MockFunction<void(const Entity::ModbusTcpResponse&)> signalCallback;
     auto connectionPointer = testObj->addModbusResponseListener(signalCallback.AsStdFunction());
 
-    Entity::ModbusTcpResponse expectedModbusResponse;
+    auto expectedModbusResponse = std::make_shared<Entity::ModbusTcpResponse>();
     std::shared_ptr<Entity::ModbusDataLog> receivedModbusResponse = std::make_shared<Entity::ModbusTcpResponse>();
-    EXPECT_CALL(signalCallback, Call(expectedModbusResponse)).Times(1);
+    EXPECT_CALL(signalCallback, Call(*expectedModbusResponse)).Times(1);
     EXPECT_CALL(*m_fileLoggerControllerMock, logModbusData(_)).WillOnce(SaveArg<0>(&receivedModbusResponse));
     testObj->logModbusResponse(expectedModbusResponse);
 
     // wait some time until expected function was called (runs in detached thread)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    EXPECT_EQ(*(std::dynamic_pointer_cast<Entity::ModbusTcpResponse>(receivedModbusResponse)), expectedModbusResponse);
+    EXPECT_EQ(*(std::dynamic_pointer_cast<Entity::ModbusTcpResponse>(receivedModbusResponse)), *expectedModbusResponse);
 
     // removing connection should not inform us about new data, i.e. not raise a new signal
     connectionPointer.reset();
-    EXPECT_CALL(signalCallback, Call(expectedModbusResponse)).Times(0);
+    EXPECT_CALL(signalCallback, Call(*expectedModbusResponse)).Times(0);
     EXPECT_CALL(*m_fileLoggerControllerMock, logModbusData(_)).Times(1);
     testObj->logModbusResponse(expectedModbusResponse);
 

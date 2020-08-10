@@ -12,28 +12,28 @@ ModbusDataLogger::ModbusDataLogger(const std::shared_ptr<FileLoggerController>& 
     : m_fileLoggerController(fileLoggerController)
 {}
 
-void ModbusDataLogger::logModbusRequest(const Entity::ModbusTcpRequest& mbRequest)
+void ModbusDataLogger::logModbusRequest(const std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest)
 {
-    // run action in additional detached thread
-    std::thread loggingThread([this, &mbRequest]() {
+    // run action in additional detached thread (copy mbRequest to thread lambda)
+    std::thread loggingThread([this, mbRequest]() {
         // raise event
-        m_mbRequestEvent(mbRequest);
+        m_mbRequestEvent(*mbRequest);
 
         // log Modbus data
-        m_fileLoggerController->logModbusData(std::make_shared<Entity::ModbusTcpRequest>(mbRequest));
+        m_fileLoggerController->logModbusData(mbRequest);
     });
     loggingThread.detach();
 }
 
-void ModbusDataLogger::logModbusResponse(const Entity::ModbusTcpResponse& mbResponse)
+void ModbusDataLogger::logModbusResponse(const std::shared_ptr<Entity::ModbusTcpResponse>& mbResponse)
 {
-    // run action in additional detached thread
-    std::thread loggingThread([this, &mbResponse]() {
+    // run action in additional detached thread (copy mbResponse to thread lambda)
+    std::thread loggingThread([this, mbResponse]() {
         // raise event
-        m_mbResponseEvent(mbResponse);
+        m_mbResponseEvent(*mbResponse);
 
         // log Modbus data
-        m_fileLoggerController->logModbusData(std::make_shared<Entity::ModbusTcpResponse>(mbResponse));
+        m_fileLoggerController->logModbusData(mbResponse);
     });
     loggingThread.detach();
 }

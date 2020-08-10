@@ -314,12 +314,14 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
     $<TARGET_OBJECTS:mdl_utility>
+    $<TARGET_OBJECTS:mdl_logging>
     "integrationtests/TestModbusCommunication.cpp"
     "integrationtests/TestModbusReconnection.cpp"
   )
   target_include_directories(integrationtest PRIVATE
     "${PROJECT_SOURCE_DIR}"
     "/usr/include/better-enums/"
+    "/usr/include/boost_1_72_0/"
   )
   target_sources(integrationtest
     PRIVATE
