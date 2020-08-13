@@ -117,6 +117,8 @@ std::string ModbusTcpRequest::convertToLogString() const
             break;
     }
 
+    loggedString << '\n'; // new line at the end
+
     return loggedString.str();
 }
 
