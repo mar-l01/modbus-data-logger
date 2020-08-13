@@ -54,6 +54,7 @@ int main(int argc, char* argv[])
     auto fileLoggerController =
       Framework::FileLoggerControllerFactory::createFileLoggerController(Framework::LoggingFramework::SPDLOG);
     auto dataLogger = std::make_shared<Logging::ModbusDataLogger>(fileLoggerController);
+    dataLogger->startLogging();
 
     // set up Modbus gateway
     auto mbGateway = std::make_shared<Gateway::ModbusGateway>(mbMasterController, dataLogger);
@@ -80,4 +81,7 @@ int main(int argc, char* argv[])
     // close external connection in the end
     mbSlaveController->closeConnection();
     mbMasterController->closeConnection();
+
+    // stop logging
+    dataLogger->stopLogging();
 }
