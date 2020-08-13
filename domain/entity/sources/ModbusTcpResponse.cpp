@@ -159,8 +159,10 @@ std::string ModbusTcpResponse::convertToLogString() const
                 break;
         }
     } else {
-        loggedString << "\n\t" << (m_operationStatus == ModbusOperationStatus::FAIL ? "-- FAILED --" : "-- TIMEOUT --");
+        loggedString << "\t" << (m_operationStatus == ModbusOperationStatus::FAIL ? "-- FAILED --" : "-- TIMEOUT --");
     }
+
+    loggedString << '\n'; // new line at the end
 
     return loggedString.str();
 }

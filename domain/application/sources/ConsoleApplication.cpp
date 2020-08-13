@@ -1,8 +1,10 @@
+#include "domain/framework/includes/FileLoggerControllerFactory.hpp"
 #include "domain/framework/includes/FileReaderFactory.hpp"
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/logging/includes/ModbusDataLogger.hpp"
 #include "domain/utility/includes/TimerFactory.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
 
@@ -48,8 +50,14 @@ int main(int argc, char* argv[])
     mbMasterController->connect();
     mbMasterController->setTimeout(mbConfig.modbusTimeout);
 
+    // create data logger
+    auto fileLoggerController =
+      Framework::FileLoggerControllerFactory::createFileLoggerController(Framework::LoggingFramework::SPDLOG);
+    auto dataLogger = std::make_shared<Logging::ModbusDataLogger>(fileLoggerController);
+    dataLogger->startLogging();
+
     // set up Modbus gateway
-    auto mbGateway = std::make_shared<Gateway::ModbusGateway>(mbMasterController);
+    auto mbGateway = std::make_shared<Gateway::ModbusGateway>(mbMasterController, dataLogger);
 
     // create timer instance with a loop frequency of 1 ms
     std::atomic_bool timeoutStop = false;
@@ -73,4 +81,7 @@ int main(int argc, char* argv[])
     // close external connection in the end
     mbSlaveController->closeConnection();
     mbMasterController->closeConnection();
+
+    // stop logging
+    dataLogger->stopLogging();
 }

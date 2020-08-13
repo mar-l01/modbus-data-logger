@@ -7,6 +7,6 @@
 class MockDataLogger : public Logging::DataLogger
 {
 public:
-    MOCK_METHOD(void, logModbusRequest, (const Entity::ModbusTcpRequest&), (override));
-    MOCK_METHOD(void, logModbusResponse, (const Entity::ModbusTcpResponse&), (override));
+    MOCK_METHOD(void, logModbusRequest, (const std::shared_ptr<Entity::ModbusTcpRequest>&), (override));
+    MOCK_METHOD(void, logModbusResponse, (const std::shared_ptr<Entity::ModbusTcpResponse>&), (override));
 };

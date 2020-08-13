@@ -112,7 +112,7 @@ TEST_F(TestModbusTcpResponse, convertToLogString)
       "<--- Modbus Response --- \n<0004><0000><0009><ff><03><06><12><34><56><78><9a><bc>\n\tTransaction Id: "
       "4\n\tProtocol Id: 0 (TCP/IP Protocol)\n\tLength: 9\n\tUnit Id: 255\n\tFunction Code: "
       "READ_HOLDING_REGISTER_VALUES\n\tData Bytes:\n\t|--Number of bytes to follow: 6\n\t|--Holding Register (1): "
-      "4660\n\t|--Holding Register (2): 22136\n\t|--Holding Register (3): 39612");
+      "4660\n\t|--Holding Register (2): 22136\n\t|--Holding Register (3): 39612\n");
 
     auto generatedLogOutput = mbResponse.convertToLogString();
 

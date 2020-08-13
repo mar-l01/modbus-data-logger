@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 namespace Entity {
 // forward declarations
 class ModbusTcpRequest;
@@ -19,14 +21,14 @@ public:
      *
      * @param mbRequest The Modbus TCP request to be logged.
      */
-    virtual void logModbusRequest(const Entity::ModbusTcpRequest& mbRequest) = 0;
+    virtual void logModbusRequest(const std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest) = 0;
 
     /**
      * @brief Used to trigger a log of provided Modbus TCP response.
      *
      * @param mbResponse The Modbus TCP response to be logged.
      */
-    virtual void logModbusResponse(const Entity::ModbusTcpResponse& mbResponse) = 0;
+    virtual void logModbusResponse(const std::shared_ptr<Entity::ModbusTcpResponse>& mbResponse) = 0;
 };
 
 }
