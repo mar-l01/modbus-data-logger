@@ -71,7 +71,7 @@ TEST_F(TestModbusTcpRequest, convertToLogString)
     std::string expectedOutput(
       "--- Modbus Request ---> \n<0001><0000><0006><ff><03><00><04><00><0a>\n\tTransaction Id: 1\n\tProtocol Id: 0 "
       "(TCP/IP Protocol)\n\tLength: 6\n\tUnit Id: 255\n\tFunction Code: READ_HOLDING_REGISTER_VALUES\n\tData "
-      "Bytes:\n\t|--Start Address: 4\n\t|--Number of values to read: 10");
+      "Bytes:\n\t|--Start Address: 4\n\t|--Number of values to read: 10\n");
 
     auto generatedLogOutput = testObj->convertToLogString();
 
