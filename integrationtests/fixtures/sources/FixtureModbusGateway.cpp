@@ -13,7 +13,9 @@
 
 namespace Fixture {
 
-FixtureModbusGateway::FixtureModbusGateway() {}
+FixtureModbusGateway::FixtureModbusGateway(bool logOutputToConsole)
+    : m_logOutputToConsole(logOutputToConsole)
+{}
 
 void FixtureModbusGateway::setUp(const int nbReconnections)
 {
@@ -33,7 +35,8 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     mbMasterController->setTimeout(200); // set timeout to 200 ms by default
 
     // set up Modbus gateway with a fixture representing the data logger
-    auto mbGateway = std::make_shared<ModbusGateway>(mbMasterController, std::make_shared<FixtureDataLogger>());
+    auto mbGateway =
+      std::make_shared<ModbusGateway>(mbMasterController, std::make_shared<FixtureDataLogger>(m_logOutputToConsole));
 
     // create Modbus data mapping
     Entity::ModbusDataMapping mbDataMapping;

@@ -21,6 +21,8 @@ public:
 
     void checkResponseTimeoutReadHoldingRegisters();
 
+    void checkLogging();
+
 private:
     std::unique_ptr<modbus_t, std::function<void(modbus_t*)>> m_modbusContext;
 };

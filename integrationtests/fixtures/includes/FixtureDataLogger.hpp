@@ -13,10 +13,13 @@ namespace Fixture {
 class FixtureDataLogger : public virtual Logging::DataLogger
 {
 public:
-    FixtureDataLogger();
+    FixtureDataLogger(bool logOutputToConsole = false);
 
     void logModbusRequest(const std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest) override;
     void logModbusResponse(const std::shared_ptr<Entity::ModbusTcpResponse>& mbResponse) override;
+
+private:
+    bool m_logOutputToConsole;
 };
 
 }

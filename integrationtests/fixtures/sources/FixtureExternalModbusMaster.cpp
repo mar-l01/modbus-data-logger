@@ -118,4 +118,29 @@ void FixtureExternalModbusMaster::checkResponseTimeoutReadHoldingRegisters()
     EXPECT_EQ(errno, EMBXGTAR); // equals GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND
 }
 
+void FixtureExternalModbusMaster::checkLogging()
+{
+    std::vector<uint16_t> readHoldingRegisters(FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS);
+
+    std::vector<uint16_t> registersToWrite{0x1234, 0x5678, 0x9abc};
+    int nbRegisters = static_cast<int>(registersToWrite.size());
+
+    // prerequisities: set holding register values
+    auto rc =
+      modbus_write_registers(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS,
+                             nbRegisters, registersToWrite.data());
+    ASSERT_EQ(rc, nbRegisters);
+
+#define TEST_LOG_OUTPUT
+
+    // read previously written values and...
+    rc = modbus_read_registers(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS,
+                               nbRegisters, readHoldingRegisters.data());
+    ASSERT_EQ(rc, nbRegisters);
+
+    // ..check if its the expected one
+
+#undef TEST_LOG_OUTPUT
+}
+
 }
