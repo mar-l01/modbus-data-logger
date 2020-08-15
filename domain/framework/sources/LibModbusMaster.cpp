@@ -34,7 +34,9 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 
     // error handling
     if (connSuccessful == -1) {
-        SPDLOG_ERROR("Failed to connect to slave");
+        SPDLOG_ERROR("Failed to connect to slave:");
+        SPDLOG_ERROR("- IP: {0}", ipAddr);
+        SPDLOG_ERROR("- Port: {0:d}", port);
     }
 }
 
