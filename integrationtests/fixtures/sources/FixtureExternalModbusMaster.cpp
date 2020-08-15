@@ -118,4 +118,47 @@ void FixtureExternalModbusMaster::checkResponseTimeoutReadHoldingRegisters()
     EXPECT_EQ(errno, EMBXGTAR); // equals GATEWAY_TARGET_DEVICE_FAILED_TO_RESPOND
 }
 
+void FixtureExternalModbusMaster::checkLogging()
+{
+    std::vector<uint16_t> readHoldingRegisters(FixtureTestConstants::MODBUS_NUMBER_HOLDING_REGISTERS);
+
+    std::vector<uint16_t> registersToWrite{0x1234, 0x5678, 0x9abc};
+    int nbRegisters = static_cast<int>(registersToWrite.size());
+
+    // prerequisities: set holding register values
+    auto rc =
+      modbus_write_registers(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS,
+                             nbRegisters, registersToWrite.data());
+    ASSERT_EQ(rc, nbRegisters);
+
+    // capture iostream log now
+    std::stringstream buffer;
+    std::streambuf* sbuf = std::cout.rdbuf();
+    std::cout.rdbuf(buffer.rdbuf());
+
+    // read previously written values and...
+    rc = modbus_read_registers(m_modbusContext.get(), FixtureTestConstants::MODBUS_START_ADDRESS_HOLDING_REGISTERS,
+                               nbRegisters, readHoldingRegisters.data());
+    ASSERT_EQ(rc, nbRegisters);
+
+    std::string expectedOutputRequest(
+      "--- Modbus Request ---> \n<0002><0000><0006><ff><03><00><00><00><03>\n\tTransaction Id: 2\n\tProtocol Id: 0 "
+      "(TCP/IP Protocol)\n\tLength: 6\n\tUnit Id: 255\n\tFunction Code: READ_HOLDING_REGISTER_VALUES\n\tData "
+      "Bytes:\n\t|--Start Address: 0\n\t|--Number of values to read: 3\n");
+
+    std::string expectedOutputResponse(
+      "<--- Modbus Response --- \n<0002><0000><0009><ff><03><06><12><34><56><78><9a><bc>\n\tTransaction Id: "
+      "2\n\tProtocol Id: 0 (TCP/IP Protocol)\n\tLength: 9\n\tUnit Id: 255\n\tFunction Code: "
+      "READ_HOLDING_REGISTER_VALUES\n\tData Bytes:\n\t|--Number of bytes to follow: 6\n\t|--Holding Register (1): "
+      "4660\n\t|--Holding Register (2): 22136\n\t|--Holding Register (3): 39612\n");
+
+    std::string expectedCombinedStrings = expectedOutputRequest + expectedOutputResponse;
+
+    // ..check if its the expected one
+    EXPECT_STRCASEEQ(expectedCombinedStrings.c_str(), buffer.str().c_str());
+
+    // redirect cout again
+    std::cout.rdbuf(sbuf);
+}
+
 }

@@ -1,20 +1,21 @@
 #include "integrationtests/fixtures/includes/FixtureModbusGateway.hpp"
 
-#include "domain/framework/includes/FileLoggerControllerFactory.hpp"
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterController.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
-#include "domain/logging/includes/ModbusDataLogger.hpp"
 #include "domain/utility/includes/TimerFactory.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
+#include "integrationtests/fixtures/includes/FixtureDataLogger.hpp"
 #include "integrationtests/fixtures/includes/TestConstants.hpp"
 
 #include "spdlog/spdlog.h"
 
 namespace Fixture {
 
-FixtureModbusGateway::FixtureModbusGateway() {}
+FixtureModbusGateway::FixtureModbusGateway(bool logOutputToConsole)
+    : m_logOutputToConsole(logOutputToConsole)
+{}
 
 void FixtureModbusGateway::setUp(const int nbReconnections)
 {
@@ -33,13 +34,9 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     mbMasterController->connect();
     mbMasterController->setTimeout(200); // set timeout to 200 ms by default
 
-    // create data logger
-    auto fileLoggerController =
-      Framework::FileLoggerControllerFactory::createFileLoggerController(Framework::LoggingFramework::SPDLOG);
-    auto dataLogger = std::make_shared<Logging::ModbusDataLogger>(fileLoggerController);
-
-    // set up Modbus gateway
-    auto mbGateway = std::make_shared<ModbusGateway>(mbMasterController, dataLogger);
+    // set up Modbus gateway with a fixture representing the data logger
+    auto mbGateway =
+      std::make_shared<ModbusGateway>(mbMasterController, std::make_shared<FixtureDataLogger>(m_logOutputToConsole));
 
     // create Modbus data mapping
     Entity::ModbusDataMapping mbDataMapping;
