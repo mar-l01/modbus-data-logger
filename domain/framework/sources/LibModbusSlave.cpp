@@ -21,8 +21,11 @@ void LibModbusSlave::setModbusDataMapping(const Entity::ModbusDataMapping& mbMap
         mbMapping.startAddressHoldingRegisters, mbMapping.nbHoldingRegisters,
         mbMapping.startAddressInputRegisters, mbMapping.nbInputRegisters),
         [this](modbus_mapping_t* mbMapping){
-            // use custom-deleter provided by libmodbus
-            modbus_mapping_free(mbMapping);
+            if (mbMapping != nullptr)
+            {
+                // use custom-deleter provided by libmodbus
+                modbus_mapping_free(mbMapping);
+            }
         }));
     // clang-format on
 
@@ -38,8 +41,11 @@ void LibModbusSlave::bind(const std::string& ipAddr, const int port)
     // clang-format off
     m_modbusContext = std::move(std::unique_ptr<modbus_t, std::function<void(modbus_t*)>>(modbus_new_tcp(ipAddr.c_str(), port),
         [this](modbus_t* mbCtx) {
-            // use custom-deleter provided by libmodbus
-            modbus_free(mbCtx);
+            if (mbCtx != nullptr)
+            {
+                // use custom-deleter provided by libmodbus
+                modbus_free(mbCtx);
+            }
         }));
     // clang-format on
 

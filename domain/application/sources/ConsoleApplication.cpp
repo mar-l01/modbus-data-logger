@@ -78,10 +78,10 @@ int main(int argc, char* argv[])
         mbSlaveController->run();
     } while (ModbusReconnection::startUpModbusSlaveAgain && not timeoutStop);
 
+    // stop logging
+    dataLogger->stopLogging();
+
     // close external connection in the end
     mbSlaveController->closeConnection();
     mbMasterController->closeConnection();
-
-    // stop logging
-    dataLogger->stopLogging();
 }
