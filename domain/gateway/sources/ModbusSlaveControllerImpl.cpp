@@ -1,4 +1,4 @@
-#include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/gateway/includes/ModbusSlaveControllerImpl.hpp"
 
 #include "spdlog/spdlog.h"
 #include <unistd.h>
@@ -6,11 +6,11 @@
 
 namespace Gateway {
 
-ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,
-                                             const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
-                                             const std::shared_ptr<Utility::Timer>& timerInstance,
-                                             const Entity::ModbusDataMapping& mbDataMapping, const std::string& ipAddr,
-                                             const int port)
+ModbusSlaveControllerImpl::ModbusSlaveControllerImpl(const std::shared_ptr<ModbusSlave>& mbSlave,
+                                                     const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
+                                                     const std::shared_ptr<Utility::Timer>& timerInstance,
+                                                     const Entity::ModbusDataMapping& mbDataMapping,
+                                                     const std::string& ipAddr, const int port)
     : m_modbusSlave(mbSlave)
     , m_modbusRequestController(mbReqCtrl)
     , m_timer(timerInstance)
@@ -26,13 +26,13 @@ ModbusSlaveController::ModbusSlaveController(const std::shared_ptr<ModbusSlave>&
     m_modbusSlave->bind(m_ipAddress, m_port);
 }
 
-void ModbusSlaveController::waitForIncomingConnection()
+void ModbusSlaveControllerImpl::waitForIncomingConnection()
 {
     m_socket = m_modbusSlave->listen(ModbusConstants::NUMBER_CONNECTIONS_IN);
     m_modbusSlave->accept(m_socket);
 }
 
-void ModbusSlaveController::run()
+void ModbusSlaveControllerImpl::run()
 {
     ModbusReceiveStatus mbRecStatus = ModbusReceiveStatus::OK;
     auto modbusRequest = std::make_shared<Entity::ModbusTcpRequest>();
@@ -90,7 +90,7 @@ void ModbusSlaveController::run()
     }
 }
 
-void ModbusSlaveController::closeConnection()
+void ModbusSlaveControllerImpl::disconnect()
 {
     m_modbusSlave->close();
 }

@@ -2,6 +2,7 @@
 
 #include "domain/gateway/interfaces/ModbusRequestController.hpp"
 #include "domain/gateway/interfaces/ModbusSlave.hpp"
+#include "domain/gateway/interfaces/ModbusSlaveController.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
 
 #include <memory>
@@ -22,8 +23,9 @@ constexpr const int MODBUS_TCP_REQUEST_LENGTH_MAX = 260;
  * - wait for an incoming connection (if so, a connection gets established),
  * - run the Modbus slave functionality (receive request, process it, reply) and
  * - close established connection.
+ * It implements the @ref ModbusSlaveController interface to establish and close a connection.
  */
-class ModbusSlaveController
+class ModbusSlaveControllerImpl : public ModbusSlaveController
 {
 public:
     /**
@@ -37,32 +39,26 @@ public:
      * @param ipAddr The IP-address the internal Modbus slave will listen to.
      * @param port The port-value the internal Modbus slave will listen on.
      */
-    ModbusSlaveController(const std::shared_ptr<ModbusSlave>& mbSlave,
-                          const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
-                          const std::shared_ptr<Utility::Timer>& timerInstance,
-                          const Entity::ModbusDataMapping& mbDataMapping, const std::string& ipAddr, const int port);
+    ModbusSlaveControllerImpl(const std::shared_ptr<ModbusSlave>& mbSlave,
+                              const std::shared_ptr<ModbusRequestController>& mbReqCtrl,
+                              const std::shared_ptr<Utility::Timer>& timerInstance,
+                              const Entity::ModbusDataMapping& mbDataMapping, const std::string& ipAddr,
+                              const int port);
 
     /**
-     * @brief Let the @ref ModbusSlave instance listen for an incoming connection of an external Modbus master.
-     * A connection is established if the external Modbus master was able to connect.
+     * @see ModbusSlaveController::waitForIncomingConnection
      */
-    void waitForIncomingConnection();
+    void waitForIncomingConnection() override;
 
     /**
-     * @brief Run the basic Modbus slave functionality in an infinite:
-     * - wait for an incoming Modbus request
-     * - process this request
-     * - reply with a Modbus response (can also be a Modbus exception)
-     *
-     * If an error occurrs (which can not be answered by a Modbus exception), the loop gets stopped
-     * and the connection closed.
+     * @see ModbusSlaveController::run
      */
-    void run();
+    void run() override;
 
     /**
-     * @brief Close the established connection to the external Modbus master.
+     * @see ModbusSlaveController::disconnect
      */
-    void closeConnection();
+    void disconnect() override;
 
 private:
     std::shared_ptr<ModbusSlave> m_modbusSlave;

@@ -3,7 +3,7 @@
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterControllerImpl.hpp"
-#include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/gateway/includes/ModbusSlaveControllerImpl.hpp"
 #include "domain/logging/includes/ModbusDataLogger.hpp"
 #include "domain/utility/includes/TimerFactory.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
     });
 
     // create Modbus controller and start it up
-    auto mbSlaveController = std::make_unique<Gateway::ModbusSlaveController>(
+    auto mbSlaveController = std::make_unique<Gateway::ModbusSlaveControllerImpl>(
       mbSlave, mbGateway, timerInstance, mbConfig.dataMapping, mbConfig.ipAddrIntSlave, mbConfig.portIntSlave);
 
     // run Modbus slave until 'stop' was received by signal interrupt or timeout
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
     } while (ModbusReconnection::startUpModbusSlaveAgain && not timeoutStop);
 
     // close external connection in the end
-    mbSlaveController->closeConnection();
+    mbSlaveController->disconnect();
     mbMasterController->disconnect();
 
     // stop logging

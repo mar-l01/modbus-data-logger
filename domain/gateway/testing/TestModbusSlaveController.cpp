@@ -1,4 +1,4 @@
-#include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/gateway/includes/ModbusSlaveControllerImpl.hpp"
 #include "domain/gateway/testing/gmock/MockModbusRequestController.hpp"
 #include "domain/gateway/testing/gmock/MockModbusSlave.hpp"
 #include "domain/utility/testing/gmock/MockTimer.hpp"
@@ -12,10 +12,10 @@ using namespace ::testing;
 using namespace Gateway;
 using namespace Entity;
 
-class TestModbusSlaveController : public ::testing::Test
+class TestModbusSlaveControllerImpl : public ::testing::Test
 {
 protected:
-    TestModbusSlaveController()
+    TestModbusSlaveControllerImpl()
         : m_modbusSlaveMock(std::make_shared<MockModbusSlave>())
         , m_modbusRequestControllerMock(std::make_shared<MockModbusRequestController>())
         , m_timerMock(std::make_shared<MockTimer>())
@@ -28,12 +28,12 @@ protected:
         m_modbusTcpRequest->functionCode = Entity::ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES;
     }
 
-    std::shared_ptr<ModbusSlaveController> createTestObject()
+    std::shared_ptr<ModbusSlaveControllerImpl> createTestObject()
     {
         EXPECT_CALL(*m_modbusSlaveMock, setModbusDataMapping(_)).Times(1);
         EXPECT_CALL(*m_modbusSlaveMock, bind(m_ipAddr, m_port)).Times(1);
-        auto testObj = std::make_shared<ModbusSlaveController>(m_modbusSlaveMock, m_modbusRequestControllerMock,
-                                                               m_timerMock, m_modbusDataMapping, m_ipAddr, m_port);
+        auto testObj = std::make_shared<ModbusSlaveControllerImpl>(m_modbusSlaveMock, m_modbusRequestControllerMock,
+                                                                   m_timerMock, m_modbusDataMapping, m_ipAddr, m_port);
         return testObj;
     }
 
@@ -46,12 +46,12 @@ protected:
     int m_port;
 };
 
-TEST_F(TestModbusSlaveController, ctorSuccessful)
+TEST_F(TestModbusSlaveControllerImpl, ctorSuccessful)
 {
     EXPECT_NO_THROW(createTestObject());
 }
 
-TEST_F(TestModbusSlaveController, connect)
+TEST_F(TestModbusSlaveControllerImpl, connect)
 {
     auto testObj = createTestObject();
     int modbusSocket = 1;
@@ -61,7 +61,7 @@ TEST_F(TestModbusSlaveController, connect)
     testObj->waitForIncomingConnection();
 }
 
-TEST_F(TestModbusSlaveController, runOneFullLoop)
+TEST_F(TestModbusSlaveControllerImpl, runOneFullLoop)
 {
     auto testObj = createTestObject();
 
@@ -82,7 +82,7 @@ TEST_F(TestModbusSlaveController, runOneFullLoop)
     testObj->run();
 }
 
-TEST_F(TestModbusSlaveController, runReceiveLoop)
+TEST_F(TestModbusSlaveControllerImpl, runReceiveLoop)
 {
     auto testObj = createTestObject();
 
@@ -104,7 +104,7 @@ TEST_F(TestModbusSlaveController, runReceiveLoop)
     testObj->run();
 }
 
-TEST_F(TestModbusSlaveController, runFailedReceive)
+TEST_F(TestModbusSlaveControllerImpl, runFailedReceive)
 {
     auto testObj = createTestObject();
 
@@ -116,7 +116,7 @@ TEST_F(TestModbusSlaveController, runFailedReceive)
     testObj->run();
 }
 
-TEST_F(TestModbusSlaveController, runWithUnsupportedFunctionCode)
+TEST_F(TestModbusSlaveControllerImpl, runWithUnsupportedFunctionCode)
 {
     auto testObj = createTestObject();
 
@@ -136,7 +136,7 @@ TEST_F(TestModbusSlaveController, runWithUnsupportedFunctionCode)
     testObj->run();
 }
 
-TEST_F(TestModbusSlaveController, runFailedReply)
+TEST_F(TestModbusSlaveControllerImpl, runFailedReply)
 {
     auto testObj = createTestObject();
 
@@ -152,7 +152,7 @@ TEST_F(TestModbusSlaveController, runFailedReply)
     testObj->run();
 }
 
-TEST_F(TestModbusSlaveController, runTimeoutExceptionReply)
+TEST_F(TestModbusSlaveControllerImpl, runTimeoutExceptionReply)
 {
     auto testObj = createTestObject();
 
@@ -171,12 +171,12 @@ TEST_F(TestModbusSlaveController, runTimeoutExceptionReply)
     testObj->run();
 }
 
-TEST_F(TestModbusSlaveController, closeConnection)
+TEST_F(TestModbusSlaveControllerImpl, closeConnection)
 {
     auto testObj = createTestObject();
 
     EXPECT_CALL(*m_modbusSlaveMock, close()).Times(1);
-    testObj->closeConnection();
+    testObj->disconnect();
 }
 
 }
