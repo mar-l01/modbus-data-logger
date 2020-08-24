@@ -49,17 +49,18 @@ add_library(mdl_gateway OBJECT
   # header files
   "domain/gateway/includes/ModbusComponentsFactory.hpp"
   "domain/gateway/includes/ModbusSlaveController.hpp"
-  "domain/gateway/includes/ModbusMasterController.hpp"
+  "domain/gateway/includes/ModbusMasterControllerImpl.hpp"
   "domain/gateway/includes/ModbusGateway.hpp"
   "domain/gateway/interfaces/ModbusSlave.hpp"
   "domain/gateway/interfaces/ModbusMaster.hpp"
   "domain/gateway/interfaces/ModbusRequestController.hpp"
   "domain/gateway/interfaces/ModbusResponseController.hpp"
+  "domain/gateway/interfaces/ModbusMasterController.hpp"
 
   # source files
   "domain/gateway/sources/ModbusComponentsFactory.cpp"
   "domain/gateway/sources/ModbusSlaveController.cpp"
-  "domain/gateway/sources/ModbusMasterController.cpp"
+  "domain/gateway/sources/ModbusMasterControllerImpl.cpp"
   "domain/gateway/sources/ModbusGateway.cpp"
 )
 target_compile_options(mdl_gateway PUBLIC -Wall -Wextra)

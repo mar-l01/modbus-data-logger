@@ -1,6 +1,7 @@
 #pragma once
 
 #include "domain/gateway/interfaces/ModbusMaster.hpp"
+#include "domain/gateway/interfaces/ModbusMasterController.hpp"
 #include "domain/gateway/interfaces/ModbusResponseController.hpp"
 
 #include <memory>
@@ -8,9 +9,12 @@
 namespace Gateway {
 
 /**
- * @brief This class is internally used as Modbus master. It implements the @ref ModbusResponseController interface.
+ * @brief This class is internally used as Modbus master. It implements the @ref ModbusResponseController and the @ref
+ * ModbusMasterController intefaces.
  */
-class ModbusMasterController : public ModbusResponseController
+class ModbusMasterControllerImpl
+    : public ModbusResponseController
+    , public ModbusMasterController
 {
 public:
     /**
@@ -20,12 +24,13 @@ public:
      * @param ipAddr The IP-address of the external Modbus slave, which above master instance should connect to.
      * @param port The port value of the external Modbus slave, which above master instance should connect to.
      *  */
-    ModbusMasterController(const std::shared_ptr<ModbusMaster>& mbMaster, const std::string& ipAddr, const int port);
+    ModbusMasterControllerImpl(const std::shared_ptr<ModbusMaster>& mbMaster, const std::string& ipAddr,
+                               const int port);
 
     /**
-     * @brief If called, it tries to establish a connection to the external Modbus slave.
+     * @see ModbusMasterController::connect
      */
-    void connect();
+    void connect() override;
 
     /**
      * @brief Set given timeout value, as Modbus message timeout.
@@ -41,9 +46,9 @@ public:
       std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest) override;
 
     /**
-     * @brief Close the established connection to an external Modbus slave.
+     * @see ModbusMasterController::disconnect
      */
-    void closeConnection();
+    void disconnect() override;
 
 private:
     std::shared_ptr<ModbusMaster> m_modbusMaster;
