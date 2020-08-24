@@ -151,6 +151,33 @@ target_link_libraries(modbus_data_logger PRIVATE
   ${CMAKE_USR_LIB_ARCH}/libpthread.so
 )
 
+# build target as library
+add_library(lib_modbus_data_logger
+  $<TARGET_OBJECTS:mdl_framework>
+  $<TARGET_OBJECTS:mdl_gateway>
+  $<TARGET_OBJECTS:mdl_entity>
+  $<TARGET_OBJECTS:mdl_utility>
+  $<TARGET_OBJECTS:mdl_logging>
+
+  # header files
+  "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
+  "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
+
+  # source files
+  "domain/application/sources/ModbusDataLoggerFacadeImpl.cpp"
+)
+target_compile_options(lib_modbus_data_logger PUBLIC -Wall -Wextra -pthread)
+target_include_directories(lib_modbus_data_logger PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+  "/usr/include/better-enums/"
+  "/usr/include/nlohmann/"
+  "/usr/include/boost_1_72_0/"
+)
+target_link_libraries(lib_modbus_data_logger PRIVATE
+  ${CMAKE_USR_LIB_ARCH}/libmodbus.so
+  ${CMAKE_USR_LIB_ARCH}/libpthread.so
+)
+
 ##################################################################
 # TESTING
 ##################################################################

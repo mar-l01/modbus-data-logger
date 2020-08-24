@@ -1,6 +1,8 @@
 #pragma once
 
-#include "application/interfaces/ModbusDataLoggerFacade.hpp"
+#include "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
+
+#include <memory>
 #include <string>
 
 namespace Gateway {
@@ -19,7 +21,9 @@ namespace Application {
 class ModbusDataLoggerFacadeImpl : public ModbusDataLoggerFacade
 {
 public:
-    ModbusDataLoggerFacadeImpl(const std::string& mbConfigFilepath);
+    ModbusDataLoggerFacadeImpl(const std::shared_ptr<Gateway::ModbusMasterController>& mbMasterController,
+                               const std::shared_ptr<Gateway::ModbusSlaveController>& mbSlaveController,
+                               const std::shared_ptr<Logging::ModbusDataLogger>& dataLogger);
 
     /**
      * @see ModbusDataLoggerFacade::startModbusCommunication
@@ -42,11 +46,9 @@ public:
     void stopLogger() override;
 
 private:
-    std::unique_ptr<Gateway::ModbusSlaveController> m_mbSlaveController;
     std::shared_ptr<Gateway::ModbusMasterController> m_mbMasterController;
+    std::shared_ptr<Gateway::ModbusSlaveController> m_mbSlaveController;
     std::shared_ptr<Logging::ModbusDataLogger> m_dataLogger;
-
-    void createModbusGateway(const std::string& mbConfigFilepath);
 };
 
 }

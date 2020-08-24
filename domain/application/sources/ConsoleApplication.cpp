@@ -10,6 +10,7 @@
 
 #include "spdlog/spdlog.h"
 #include <signal.h>
+#include <thread>
 
 namespace ModbusReconnection {
 bool startUpModbusSlaveAgain = true;
