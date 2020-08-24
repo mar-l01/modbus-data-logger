@@ -3,10 +3,10 @@
 namespace Application {
 
 /**
- * @brief This interface will be provided to an optional GUI-application. It will be able to
- * start/stop the Modbus gateway communication as well as the logging.
+ * @brief This interface represents the facade of the ModbusDataLogger application.
+ * It allows to start/stop the Modbus gateway communication as well as the logging.
  */
-class ModbusDataLoggerGateway
+class ModbusDataLoggerFacade
 {
 public:
     /**

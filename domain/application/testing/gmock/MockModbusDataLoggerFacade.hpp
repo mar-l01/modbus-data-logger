@@ -1,10 +1,10 @@
 #pragma once
 
-#include "domain/application/interfaces/ModbusDataLoggerGateway.hpp"
+#include "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
 
 #include "gmock/gmock.h"
 
-class MockModbusDataLoggerGateway : public Application::ModbusDataLoggerGateway
+class MockModbusDataLoggerFacade : public Application::ModbusDataLoggerFacade
 {
 public:
     MOCK_METHOD(void, startModbusCommunication, (), (override));
