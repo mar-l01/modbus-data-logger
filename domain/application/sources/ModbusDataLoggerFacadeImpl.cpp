@@ -18,6 +18,7 @@ ModbusDataLoggerFacadeImpl::ModbusDataLoggerFacadeImpl(
 void ModbusDataLoggerFacadeImpl::startModbusCommunication()
 {
     m_mbMasterController->connect();
+    m_mbSlaveController->waitForIncomingConnection();
 }
 
 void ModbusDataLoggerFacadeImpl::stopModbusCommunication()

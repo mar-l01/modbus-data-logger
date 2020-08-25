@@ -22,21 +22,23 @@ return_codes = []
 
 # run unittests
 rc = subprocess.call(build_dir + "/framework_test")
-return_codes.append((rc, "[Framework] --> {}".format(PASSED if rc == 0 else FAILED)))
+return_codes.append((rc, "[Framework]   --> {}".format(PASSED if rc == 0 else FAILED)))
 rc = subprocess.call(build_dir + "/gateway_test")
-return_codes.append((rc, "[Gateway]   --> {}".format(PASSED if rc == 0 else FAILED)))
+return_codes.append((rc, "[Gateway]     --> {}".format(PASSED if rc == 0 else FAILED)))
 rc = subprocess.call(build_dir + "/entity_test")
-return_codes.append((rc, "[Entity]    --> {}".format(PASSED if rc == 0 else FAILED)))
+return_codes.append((rc, "[Entity]      --> {}".format(PASSED if rc == 0 else FAILED)))
 rc = subprocess.call(build_dir + "/utility_test")
-return_codes.append((rc, "[Utility]   --> {}".format(PASSED if rc == 0 else FAILED)))
+return_codes.append((rc, "[Utility]     --> {}".format(PASSED if rc == 0 else FAILED)))
 rc = subprocess.call(build_dir + "/logging_test")
-return_codes.append((rc, "[Logging]   --> {}".format(PASSED if rc == 0 else FAILED)))
+return_codes.append((rc, "[Logging]     --> {}".format(PASSED if rc == 0 else FAILED)))
+rc = subprocess.call(build_dir + "/application_test")
+return_codes.append((rc, "[Application] --> {}".format(PASSED if rc == 0 else FAILED)))
 
 # print summarized information about all unittests at the end
-print("\n====== TEST RESULTS ======")
+print("\n======= TEST RESULTS =======")
 for test_rc in return_codes:
     print("= {} =".format(test_rc[1]))
-print("==========================")
+print("============================")
 
 # exit script depending on test-result with error or not
 for (exit_code, _) in return_codes:

@@ -204,28 +204,6 @@ if (${CMAKE_ENABLE_TESTING})
 
   #################### END: Google Test Integration ####################
 
-  # build application unittests
-  add_executable(application_test
-    $<TARGET_OBJECTS:lib_mdl>
-    $<TARGET_OBJECTS:mdl_framework>
-    $<TARGET_OBJECTS:mdl_gateway>
-    $<TARGET_OBJECTS:mdl_entity>
-    $<TARGET_OBJECTS:mdl_logging>
-    "domain/application/testing/TestModbusDataLoggerFacadeImpl.cpp"
-  )
-  target_include_directories(application_test PRIVATE
-    "${PROJECT_SOURCE_DIR}"
-  )
-  target_link_libraries(application_test
-    PRIVATE
-      ${CMAKE_USR_LIB_ARCH}/libmodbus.so
-      gtest
-      gmock
-      gtest_main
-  )
-
-  add_test(NAME application_test COMMAND $<TARGET_FILE:application_test>)
-
   # build framework unittests
   add_executable(framework_test
     $<TARGET_OBJECTS:mdl_framework>
@@ -353,6 +331,28 @@ if (${CMAKE_ENABLE_TESTING})
   )
 
   add_test(NAME logging_test COMMAND $<TARGET_FILE:logging_test>)
+
+    # build application unittests
+    add_executable(application_test
+    $<TARGET_OBJECTS:lib_mdl>
+    $<TARGET_OBJECTS:mdl_framework>
+    $<TARGET_OBJECTS:mdl_gateway>
+    $<TARGET_OBJECTS:mdl_entity>
+    $<TARGET_OBJECTS:mdl_logging>
+    "domain/application/testing/TestModbusDataLoggerFacadeImpl.cpp"
+  )
+  target_include_directories(application_test PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+  )
+  target_link_libraries(application_test
+    PRIVATE
+      ${CMAKE_USR_LIB_ARCH}/libmodbus.so
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME application_test COMMAND $<TARGET_FILE:application_test>)
 
    # build integrationtest
   add_executable(integrationtest

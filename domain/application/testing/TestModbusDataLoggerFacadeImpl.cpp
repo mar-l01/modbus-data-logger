@@ -42,6 +42,7 @@ TEST_F(TestModbusDataLoggerFacadeImpl, startModbusCommunication)
     auto testObj = createTestObject();
 
     EXPECT_CALL(*m_modbusMasterControllerMock, connect()).Times(1);
+    EXPECT_CALL(*m_modbusSlaveControllerMock, waitForIncomingConnection()).Times(1);
     testObj->startModbusCommunication();
 }
 
