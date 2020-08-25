@@ -1,10 +1,9 @@
 #include "domain/entity/includes/ModbusTcpConstants.hpp"
-#include "domain/gateway/includes/ModbusMasterController.hpp"
+#include "domain/gateway/includes/ModbusMasterControllerImpl.hpp"
 #include "domain/gateway/testing/gmock/MockModbusMaster.hpp"
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
-
 
 namespace {
 
@@ -12,18 +11,18 @@ using namespace ::testing;
 using namespace Gateway;
 using namespace Entity;
 
-class TestModbusMasterController : public ::testing::Test
+class TestModbusMasterControllerImpl : public ::testing::Test
 {
 protected:
-    TestModbusMasterController()
+    TestModbusMasterControllerImpl()
         : m_modbusMasterMock(std::make_shared<MockModbusMaster>())
         , m_ipAddr("127.0.0.1")
         , m_port(502)
     {}
 
-    std::shared_ptr<ModbusMasterController> createTestObject()
+    std::shared_ptr<ModbusMasterControllerImpl> createTestObject()
     {
-        auto testObj = std::make_shared<ModbusMasterController>(m_modbusMasterMock, m_ipAddr, m_port);
+        auto testObj = std::make_shared<ModbusMasterControllerImpl>(m_modbusMasterMock, m_ipAddr, m_port);
 
         return testObj;
     }
@@ -87,12 +86,12 @@ protected:
     int m_port;
 };
 
-TEST_F(TestModbusMasterController, ctorSuccessful)
+TEST_F(TestModbusMasterControllerImpl, ctorSuccessful)
 {
     EXPECT_NO_THROW(createTestObject());
 }
 
-TEST_F(TestModbusMasterController, connect)
+TEST_F(TestModbusMasterControllerImpl, connect)
 {
     auto testObj = createTestObject();
 
@@ -100,7 +99,7 @@ TEST_F(TestModbusMasterController, connect)
     testObj->connect();
 }
 
-TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc1)
+TEST_F(TestModbusMasterControllerImpl, getExternalModbusSlaveResponseFc1)
 {
     auto testObj = createTestObject();
     auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::READ_COIL_VALUES);
@@ -110,7 +109,7 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc1)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc2)
+TEST_F(TestModbusMasterControllerImpl, getExternalModbusSlaveResponseFc2)
 {
     auto testObj = createTestObject();
     auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::READ_DISCRETE_INPUT_VALUES);
@@ -121,7 +120,7 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc2)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc3)
+TEST_F(TestModbusMasterControllerImpl, getExternalModbusSlaveResponseFc3)
 {
     auto testObj = createTestObject();
     auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES);
@@ -132,7 +131,7 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc3)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc4)
+TEST_F(TestModbusMasterControllerImpl, getExternalModbusSlaveResponseFc4)
 {
     auto testObj = createTestObject();
     auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::READ_INPUT_REGISTER_VALUES);
@@ -143,7 +142,7 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc4)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc5)
+TEST_F(TestModbusMasterControllerImpl, getExternalModbusSlaveResponseFc5)
 {
     auto testObj = createTestObject();
     auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::WRITE_SINGLE_COIL_VALUE);
@@ -153,7 +152,7 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc5)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc6)
+TEST_F(TestModbusMasterControllerImpl, getExternalModbusSlaveResponseFc6)
 {
     auto testObj = createTestObject();
     auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::WRITE_SINGLE_HOLDING_REGISTER_VALUE);
@@ -164,7 +163,7 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc6)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc16)
+TEST_F(TestModbusMasterControllerImpl, getExternalModbusSlaveResponseFc16)
 {
     auto testObj = createTestObject();
     auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::WRITE_MULTIPLE_COIL_VALUES);
@@ -174,7 +173,7 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc16)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc15)
+TEST_F(TestModbusMasterControllerImpl, getExternalModbusSlaveResponseFc15)
 {
     auto testObj = createTestObject();
     auto mbReq =
@@ -186,7 +185,7 @@ TEST_F(TestModbusMasterController, getExternalModbusSlaveResponseFc15)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, reconnectIfTimeout)
+TEST_F(TestModbusMasterControllerImpl, reconnectIfTimeout)
 {
     auto testObj = createTestObject();
     auto mbReq = createModbusTcpRequestWithGivenFunctionCode(ModbusFunctionCode::READ_HOLDING_REGISTER_VALUES);
@@ -200,12 +199,12 @@ TEST_F(TestModbusMasterController, reconnectIfTimeout)
     testObj->getExternalModbusSlaveResponse(mbReq);
 }
 
-TEST_F(TestModbusMasterController, closeConnection)
+TEST_F(TestModbusMasterControllerImpl, closeConnection)
 {
     auto testObj = createTestObject();
 
     EXPECT_CALL(*m_modbusMasterMock, close()).Times(1);
-    testObj->closeConnection();
+    testObj->disconnect();
 }
 
 }

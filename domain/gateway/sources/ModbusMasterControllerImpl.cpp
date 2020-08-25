@@ -1,27 +1,27 @@
-#include "domain/gateway/includes/ModbusMasterController.hpp"
+#include "domain/gateway/includes/ModbusMasterControllerImpl.hpp"
 
 #include "domain/entity/includes/ModbusTcpConstants.hpp"
 
 namespace Gateway {
 
-ModbusMasterController::ModbusMasterController(const std::shared_ptr<ModbusMaster>& mbMaster, const std::string& ipAddr,
-                                               const int port)
+ModbusMasterControllerImpl::ModbusMasterControllerImpl(const std::shared_ptr<ModbusMaster>& mbMaster,
+                                                       const std::string& ipAddr, const int port)
     : m_modbusMaster(mbMaster)
     , m_ipAddress(ipAddr)
     , m_port(port)
 {}
 
-void ModbusMasterController::connect()
+void ModbusMasterControllerImpl::connect()
 {
     m_modbusMaster->connect(m_ipAddress, m_port);
 }
 
-void ModbusMasterController::setTimeout(const uint16_t timeoutInMs)
+void ModbusMasterControllerImpl::setTimeout(const uint16_t timeoutInMs)
 {
     m_modbusMaster->setResponseTimeout(timeoutInMs);
 }
 
-std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::getExternalModbusSlaveResponse(
+std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterControllerImpl::getExternalModbusSlaveResponse(
   std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest)
 {
     // call respective method of Modbus master instance to obtain the reply
@@ -40,12 +40,12 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::getExternalMo
     return modbusTcpResponse;
 }
 
-void ModbusMasterController::closeConnection()
+void ModbusMasterControllerImpl::disconnect()
 {
     m_modbusMaster->close();
 }
 
-std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMasterMethod(
+std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterControllerImpl::callModbusMasterMethod(
   std::shared_ptr<Entity::ModbusTcpRequest>& mbRequest)
 {
     std::shared_ptr<Entity::ModbusTcpResponse> mbTcpResponse;
@@ -136,10 +136,10 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterController::callModbusMas
     return mbTcpResponse;
 }
 
-void ModbusMasterController::tryReconnecting()
+void ModbusMasterControllerImpl::tryReconnecting()
 {
     // close connection if timeout was received due to another cause
-    closeConnection();
+    disconnect();
     m_modbusMaster->reconnect();
 }
 

@@ -2,7 +2,7 @@
 
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
-#include "domain/gateway/includes/ModbusMasterController.hpp"
+#include "domain/gateway/includes/ModbusMasterControllerImpl.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
 #include "domain/utility/includes/TimerFactory.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
@@ -29,8 +29,8 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
 
     // create Modbus master controller and connect to external Modbusslave
     auto mbMasterController =
-      std::make_shared<ModbusMasterController>(mbMaster, FixtureTestConstants::MODBUS_IP_ADDRESS_EXTERNAL_SLAVE,
-                                               FixtureTestConstants::MODBUS_PORT_EXTERNAL_SLAVE);
+      std::make_shared<ModbusMasterControllerImpl>(mbMaster, FixtureTestConstants::MODBUS_IP_ADDRESS_EXTERNAL_SLAVE,
+                                                   FixtureTestConstants::MODBUS_PORT_EXTERNAL_SLAVE);
     mbMasterController->connect();
     mbMasterController->setTimeout(200); // set timeout to 200 ms by default
 
@@ -80,7 +80,7 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
 
     // close external connection in the end
     mbSlaveController->closeConnection();
-    mbMasterController->closeConnection();
+    mbMasterController->disconnect();
 }
 
 }

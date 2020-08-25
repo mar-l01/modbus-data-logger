@@ -2,7 +2,7 @@
 #include "domain/framework/includes/FileReaderFactory.hpp"
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
-#include "domain/gateway/includes/ModbusMasterController.hpp"
+#include "domain/gateway/includes/ModbusMasterControllerImpl.hpp"
 #include "domain/gateway/includes/ModbusSlaveController.hpp"
 #include "domain/logging/includes/ModbusDataLogger.hpp"
 #include "domain/utility/includes/TimerFactory.hpp"
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
     // create Modbus master controller and connect to external Modbusslave
     auto mbMasterController =
-      std::make_shared<Gateway::ModbusMasterController>(mbMaster, mbConfig.ipAddrExtSlave, mbConfig.portExtSlave);
+      std::make_shared<Gateway::ModbusMasterControllerImpl>(mbMaster, mbConfig.ipAddrExtSlave, mbConfig.portExtSlave);
     mbMasterController->connect();
     mbMasterController->setTimeout(mbConfig.modbusTimeout);
 
@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 
     // close external connection in the end
     mbSlaveController->closeConnection();
-    mbMasterController->closeConnection();
+    mbMasterController->disconnect();
 
     // stop logging
     dataLogger->stopLogging();
