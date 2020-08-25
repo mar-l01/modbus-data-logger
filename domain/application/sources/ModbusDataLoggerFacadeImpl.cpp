@@ -19,6 +19,8 @@ void ModbusDataLoggerFacadeImpl::startModbusCommunication()
 {
     m_mbMasterController->connect();
     m_mbSlaveController->waitForIncomingConnection();
+
+    // TODO(mar-l01, 28.08.2020): How to include run() method of ModbusSlaveController here?
 }
 
 void ModbusDataLoggerFacadeImpl::stopModbusCommunication()
