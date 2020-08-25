@@ -3,7 +3,7 @@
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterControllerImpl.hpp"
-#include "domain/gateway/includes/ModbusSlaveController.hpp"
+#include "domain/gateway/includes/ModbusSlaveControllerImpl.hpp"
 #include "domain/utility/includes/TimerFactory.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
 #include "integrationtests/fixtures/includes/FixtureDataLogger.hpp"
@@ -59,7 +59,7 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     });
 
     // create Modbus slave controller
-    auto mbSlaveController = std::make_unique<ModbusSlaveController>(
+    auto mbSlaveController = std::make_unique<ModbusSlaveControllerImpl>(
       mbSlave, mbGateway, timerInstance, mbDataMapping, FixtureTestConstants::MODBUS_IP_ADDRESS_INTERNAL_SLAVE,
       FixtureTestConstants::MODBUS_PORT_INTERNAL_SLAVE);
 
@@ -79,7 +79,7 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     timerInstance->stop();
 
     // close external connection in the end
-    mbSlaveController->closeConnection();
+    mbSlaveController->disconnect();
     mbMasterController->disconnect();
 }
 
