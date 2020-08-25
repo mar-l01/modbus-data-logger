@@ -13,7 +13,7 @@ class ModbusMasterController;
 
 namespace Logging {
 // forward declaration
-class ModbusDataLogger;
+class FileLogger;
 }
 
 namespace Application {
@@ -23,7 +23,7 @@ class ModbusDataLoggerFacadeImpl : public ModbusDataLoggerFacade
 public:
     ModbusDataLoggerFacadeImpl(const std::shared_ptr<Gateway::ModbusMasterController>& mbMasterController,
                                const std::shared_ptr<Gateway::ModbusSlaveController>& mbSlaveController,
-                               const std::shared_ptr<Logging::ModbusDataLogger>& dataLogger);
+                               const std::shared_ptr<Logging::FileLogger>& fileLogger);
 
     /**
      * @see ModbusDataLoggerFacade::startModbusCommunication
@@ -48,7 +48,7 @@ public:
 private:
     std::shared_ptr<Gateway::ModbusMasterController> m_mbMasterController;
     std::shared_ptr<Gateway::ModbusSlaveController> m_mbSlaveController;
-    std::shared_ptr<Logging::ModbusDataLogger> m_dataLogger;
+    std::shared_ptr<Logging::FileLogger> m_fileLogger;
 };
 
 }

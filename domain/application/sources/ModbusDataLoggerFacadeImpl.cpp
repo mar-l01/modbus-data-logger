@@ -1,18 +1,18 @@
 #include "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
 
-#include "domain/gateway/includes/ModbusMasterController.hpp"
-#include "domain/gateway/includes/ModbusSlaveController.hpp"
-#include "domain/logging/includes/ModbusDataLogger.hpp"
+#include "domain/gateway/interfaces/ModbusMasterController.hpp"
+#include "domain/gateway/interfaces/ModbusSlaveController.hpp"
+#include "domain/logging/interfaces/FileLogger.hpp"
 
 namespace Application {
 
 ModbusDataLoggerFacadeImpl::ModbusDataLoggerFacadeImpl(
   const std::shared_ptr<Gateway::ModbusMasterController>& mbMasterController,
   const std::shared_ptr<Gateway::ModbusSlaveController>& mbSlaveController,
-  const std::shared_ptr<Logging::ModbusDataLogger>& dataLogger)
+  const std::shared_ptr<Logging::FileLogger>& fileLogger)
     : m_mbMasterController(mbMasterController)
     , m_mbSlaveController(mbSlaveController)
-    , m_dataLogger(dataLogger)
+    , m_fileLogger(fileLogger)
 {}
 
 void ModbusDataLoggerFacadeImpl::startModbusCommunication()
@@ -22,18 +22,18 @@ void ModbusDataLoggerFacadeImpl::startModbusCommunication()
 
 void ModbusDataLoggerFacadeImpl::stopModbusCommunication()
 {
-    m_mbSlaveController->closeConnection();
-    m_mbMasterController->closeConnection();
+    m_mbSlaveController->disconnect();
+    m_mbMasterController->disconnect();
 }
 
 void ModbusDataLoggerFacadeImpl::startLogger()
 {
-    m_dataLogger->startLogging();
+    m_fileLogger->startLogging();
 }
 
 void ModbusDataLoggerFacadeImpl::stopLogger()
 {
-    m_dataLogger->stopLogging();
+    m_fileLogger->stopLogging();
 }
 
 }
