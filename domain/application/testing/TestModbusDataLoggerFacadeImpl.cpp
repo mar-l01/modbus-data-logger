@@ -1,6 +1,6 @@
 #include "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
-#include "domain/gateway/testing/gmock/MockModbusRequestController.hpp"
-#include "domain/gateway/testing/gmock/MockModbusResponseController.hpp"
+#include "domain/gateway/testing/gmock/MockModbusMasterController.hpp"
+#include "domain/gateway/testing/gmock/MockModbusSlaveController.hpp"
 #include "domain/logging/testing/gmock/MockFileLogger.hpp"
 
 #include "gtest/gtest.h"
@@ -16,19 +16,19 @@ class TestModbusDataLoggerFacadeImpl : public ::testing::Test
 {
 protected:
     TestModbusDataLoggerFacadeImpl()
-        : m_modbusRequestControllerMock(std::make_shared<MockModbusRequestController>())
-        , m_modbusResponseControllerMock(std::make_shared<MockModbusResponseController>())
+        : m_modbusMasterControllerMock(std::make_shared<MockModbusMasterController>())
+        , m_modbusSlaveControllerMock(std::make_shared<MockModbusSlaveController>())
         , m_fileLoggerMock(std::make_shared<MockFileLogger>())
     {}
 
     std::shared_ptr<ModbusDataLoggerFacadeImpl> createTestObject()
     {
-        return std::make_shared<ModbusDataLoggerFacadeImpl>(m_modbusRequestControllerMock,
-                                                            m_modbusResponseControllerMock, m_fileLoggerMock);
+        return std::make_shared<ModbusDataLoggerFacadeImpl>(m_modbusMasterControllerMock, m_modbusSlaveControllerMock,
+                                                            m_fileLoggerMock);
     }
 
-    std::shared_ptr<MockModbusRequestController> m_modbusRequestControllerMock;
-    std::shared_ptr<MockModbusResponseController> m_modbusResponseControllerMock;
+    std::shared_ptr<MockModbusMasterController> m_modbusMasterControllerMock;
+    std::shared_ptr<MockModbusSlaveController> m_modbusSlaveControllerMock;
     std::shared_ptr<MockFileLogger> m_fileLoggerMock;
 };
 
@@ -41,7 +41,7 @@ TEST_F(TestModbusDataLoggerFacadeImpl, startModbusCommunication)
 {
     auto testObj = createTestObject();
 
-    EXPECT_CALL(*m_modbusRequestControllerMock, connect()).Times(1);
+    EXPECT_CALL(*m_modbusMasterControllerMock, connect()).Times(1);
     testObj->startModbusCommunication();
 }
 
@@ -49,8 +49,8 @@ TEST_F(TestModbusDataLoggerFacadeImpl, stopModbusCommunication)
 {
     auto testObj = createTestObject();
 
-    EXPECT_CALL(*m_modbusRequestControllerMock, closeConnection()).Times(1);
-    EXPECT_CALL(*m_modbusResponseControllerMock, closeConnection()).Times(1);
+    EXPECT_CALL(*m_modbusSlaveControllerMock, disconnect()).Times(1);
+    EXPECT_CALL(*m_modbusMasterControllerMock, disconnect()).Times(1);
     testObj->stopModbusCommunication();
 }
 

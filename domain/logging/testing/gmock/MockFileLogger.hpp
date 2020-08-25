@@ -1,5 +1,6 @@
 #pragma once
 
+#include "domain/entity/includes/ModbusLoggerConfiguration.hpp"
 #include "domain/logging/interfaces/FileLogger.hpp"
 
 #include "gmock/gmock.h"
