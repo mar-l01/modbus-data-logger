@@ -22,12 +22,12 @@ public:
     /**
      * @brief Start logging the Modbus communication
      */
-    virtual void startLogger();
+    virtual void startLogger() = 0;
 
     /**
      * @brief Stop logging the Modbus communication
      */
-    virtual void stopLogger();
+    virtual void stopLogger() = 0;
 };
 
 }
