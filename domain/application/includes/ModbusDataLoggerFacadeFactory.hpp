@@ -16,6 +16,15 @@ namespace Application {
  */
 struct FrameworkDependencies
 {
+    FrameworkDependencies(Framework::LoggingFramework logFramework, Framework::FileReaderFramework fReaderFramework,
+                          Gateway::ModbusComponentsFramework mbMasterFramework,
+                          Gateway::ModbusComponentsFramework mbSlaveFramework)
+        : loggingFramework(logFramework)
+        , fileReaderFramework(fReaderFramework)
+        , modbusMasterFramework(mbMasterFramework)
+        , modbusSlaveFramework(mbSlaveFramework)
+    {}
+
     Framework::LoggingFramework loggingFramework;
     Framework::FileReaderFramework fileReaderFramework;
     Gateway::ModbusComponentsFramework modbusMasterFramework;
@@ -27,6 +36,7 @@ struct FrameworkDependencies
  */
 class ModbusDataLoggerFacadeFactory
 {
+public:
     /**
      * @brief Create a ModbusDataLoggerFacade which has all components to run the Modbus data logger application.
      *

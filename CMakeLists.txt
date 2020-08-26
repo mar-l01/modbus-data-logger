@@ -344,10 +344,13 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
     $<TARGET_OBJECTS:mdl_logging>
+    $<TARGET_OBJECTS:mdl_utility>
     "domain/application/testing/TestModbusDataLoggerFacadeImpl.cpp"
+    "domain/application/testing/TestModbusDataLoggerFacadeFactory.cpp"
   )
   target_include_directories(application_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
+    "/usr/include/better-enums/"
   )
   target_link_libraries(application_test
     PRIVATE
