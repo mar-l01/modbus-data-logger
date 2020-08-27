@@ -162,13 +162,18 @@ add_library(lib_mdl OBJECT
   # header files
   "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
   "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
+  "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
 
   # source files
   "domain/application/sources/ModbusDataLoggerFacadeImpl.cpp"
+  "domain/application/sources/ModbusDataLoggerFacadeFactory.cpp"
 )
 target_compile_options(lib_mdl PUBLIC -Wall -Wextra)
 target_include_directories(lib_mdl PRIVATE
   "${PROJECT_SOURCE_DIR}"
+  "/usr/include/better-enums/"
+  "/usr/include/nlohmann/"
+  "/usr/include/boost_1_72_0/"
 )
 
 ##################################################################
@@ -339,10 +344,13 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
     $<TARGET_OBJECTS:mdl_logging>
+    $<TARGET_OBJECTS:mdl_utility>
     "domain/application/testing/TestModbusDataLoggerFacadeImpl.cpp"
+    "domain/application/testing/TestModbusDataLoggerFacadeFactory.cpp"
   )
   target_include_directories(application_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
+    "/usr/include/better-enums/"
   )
   target_link_libraries(application_test
     PRIVATE
