@@ -2,6 +2,7 @@
 
 #include "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
 
+#include <future>
 #include <memory>
 #include <string>
 
@@ -49,6 +50,10 @@ private:
     std::shared_ptr<Gateway::ModbusMasterController> m_mbMasterController;
     std::shared_ptr<Gateway::ModbusSlaveController> m_mbSlaveController;
     std::shared_ptr<Logging::FileLogger> m_fileLogger;
+
+    std::thread m_mbSlaveThread;
+    std::promise<void> m_threadStopSignal;
+    void runModbusSlaveProcess(std::future<void> futureObj);
 };
 
 }
