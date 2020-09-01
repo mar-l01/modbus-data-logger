@@ -52,7 +52,7 @@ TEST_F(TestModbusDataLoggerFacadeImpl, startModbusCommunication)
     EXPECT_CALL(*m_timerMock, callOnTimeout(_)).WillOnce(SaveArg<0>(&timeoutCallback));
     testObj->startModbusCommunication();
 
-    // invoke callback to simulate timeout
+    // invoke callback to simulate timeout and stop created thread
     timeoutCallback();
 }
 

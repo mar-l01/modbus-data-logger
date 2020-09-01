@@ -40,6 +40,7 @@ void ModbusDataLoggerFacadeImpl::stopModbusCommunication()
     // trigger stop of Modbus process loop and wait for thread to be stopped
     m_threadStopSignal.set_value();
     m_mbSlaveThread.join();
+    SPDLOG_INFO("Stopped Modbus communication!");
 
     // disconnect from communication partners
     m_mbSlaveController->disconnect();
