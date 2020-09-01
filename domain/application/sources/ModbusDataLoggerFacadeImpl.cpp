@@ -5,6 +5,8 @@
 #include "domain/logging/interfaces/FileLogger.hpp"
 #include "domain/utility/interfaces/Timer.hpp"
 
+#include "spdlog/spdlog.h"
+
 namespace Application {
 
 ModbusDataLoggerFacadeImpl::ModbusDataLoggerFacadeImpl(
@@ -24,6 +26,13 @@ void ModbusDataLoggerFacadeImpl::startModbusCommunication()
     // run Modbus slave process loop in additional thread
     auto futureObj = m_threadStopSignal.get_future();
     m_mbSlaveThread = std::thread(&ModbusDataLoggerFacadeImpl::runModbusSlaveProcess, this, std::move(futureObj));
+
+    // set action to be invoked once application timeout was received
+    m_timer->callOnTimeout([this]() {
+        m_threadStopSignal.set_value();
+        SPDLOG_INFO("Timeout reached!");
+        m_mbSlaveThread.join();
+    });
 }
 
 void ModbusDataLoggerFacadeImpl::stopModbusCommunication()
