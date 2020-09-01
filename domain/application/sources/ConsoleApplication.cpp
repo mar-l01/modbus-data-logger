@@ -63,7 +63,8 @@ int main(int argc, char* argv[])
     // create timer instance with a loop frequency of 1 ms
     std::atomic_bool timeoutStop = false;
     std::shared_ptr<Utility::Timer> timerInstance = Utility::TimerFactory::createLoopTimer(1);
-    timerInstance->callOnTimeout(mbConfig.applicationTimeout, [&timeoutStop]() {
+    timerInstance->setTimeoutInMs(mbConfig.applicationTimeout);
+    timerInstance->callOnTimeout([&timeoutStop]() {
         timeoutStop = true;
         SPDLOG_INFO("Timeout reached!");
     });

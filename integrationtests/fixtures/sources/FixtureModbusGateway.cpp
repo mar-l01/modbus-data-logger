@@ -53,7 +53,8 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     int applicationTimeout = FixtureTestConstants::APPLICATION_TIMEOUT_IN_MS; // 2 seconds timeout
     std::atomic_bool timeoutStop = false;
     std::shared_ptr<Utility::Timer> timerInstance = Utility::TimerFactory::createLoopTimer(1);
-    timerInstance->callOnTimeout(applicationTimeout, [&timeoutStop]() {
+    timerInstance->setTimeoutInMs(applicationTimeout);
+    timerInstance->callOnTimeout([&timeoutStop]() {
         timeoutStop = true;
         SPDLOG_INFO("Timeout reached!");
     });

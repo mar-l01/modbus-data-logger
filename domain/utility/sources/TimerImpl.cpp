@@ -13,7 +13,12 @@ TimerImpl::TimerImpl()
     , m_frequencyInMs(1) // default initialization to 1 ms
 {}
 
-void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>& callback)
+void TimerImpl::setTimeoutInMs(const unsigned int timeoutInMs)
+{
+    m_timeoutInMs = timeoutInMs;
+}
+
+void TimerImpl::callOnTimeout(const std::function<void()>& callback)
 {
     if (m_isRunning) {
         SPDLOG_ERROR("Registering callback not possible because timer is currently running");
@@ -26,7 +31,7 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
     m_stopTimer = false;
 
     // start extra thread to wait until timeout is reached
-    std::thread waitThread([this, timeoutInMs, callback]() {
+    std::thread waitThread([this, callback]() {
         auto startTime = std::chrono::steady_clock::now();
 
         for (;;) {
@@ -39,7 +44,7 @@ void TimerImpl::callOnTimeout(const int timeoutInMs, const std::function<void()>
                 m_restartTimer = false;
             } else if (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() -
                                                                              startTime)
-                           .count() >= timeoutInMs ||
+                           .count() >= m_timeoutInMs ||
                        m_stopTimer) {
                 // stop if timeout is reached or timer shall be stopped
                 break;
