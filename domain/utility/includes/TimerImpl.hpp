@@ -19,9 +19,14 @@ public:
     TimerImpl();
 
     /**
+     * @see Timer::setTimeoutInMs
+     */
+    void setTimeoutInMs(const unsigned int timeoutInMs) override;
+
+    /**
      * @see Timer::callOnTimeout
      */
-    void callOnTimeout(const int timeoutInMs, const std::function<void()>& callback) override;
+    void callOnTimeout(const std::function<void()>& callback) override;
 
     /**
      * @see Timer::restart
@@ -44,6 +49,7 @@ private:
     std::atomic_bool m_isRunning;
     std::atomic_bool m_restartTimer;
     std::atomic_bool m_stopTimer;
+    unsigned int m_timeoutInMs;
     int m_frequencyInMs;
 };
 

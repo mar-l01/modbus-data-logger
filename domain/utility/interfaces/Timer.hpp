@@ -11,12 +11,19 @@ class Timer
 {
 public:
     /**
-     * @brief Once given timeout occurred, the provided callback function will be invoked.
+     * @brief Set the timeout on which a callback should be invoked (if given)
      *
      * @param timeoutInMs Timeout value which triggers the callback.
-     * @param callback Callback function which gets invoked once the time has expired.
      */
-    virtual void callOnTimeout(const int timeoutInMs, const std::function<void()>& callback) = 0;
+    virtual void setTimeoutInMs(const unsigned int timeoutInMs) = 0;
+
+    /**
+     * @brief Once the timeout occurred, the provided callback function will be invoked.
+     *
+     * @param callback Callback function which gets invoked once the time has expired.
+     * @ref setTimeoutInMs
+     */
+    virtual void callOnTimeout(const std::function<void()>& callback) = 0;
 
     /**
      * @brief Restart the timer.
