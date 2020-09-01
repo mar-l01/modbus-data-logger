@@ -11,7 +11,6 @@
 #include "spdlog/spdlog.h"
 #include <string>
 
-
 namespace Application {
 
 std::shared_ptr<ModbusDataLoggerFacade> ModbusDataLoggerFacadeFactory::createModbusDataLoggerFacade(
@@ -56,6 +55,7 @@ std::shared_ptr<ModbusDataLoggerFacade> ModbusDataLoggerFacadeFactory::createMod
     // create timer instance with a loop frequency of 1 ms
     std::shared_ptr<Utility::Timer> timerInstance = Utility::TimerFactory::createLoopTimer(1);
     assertNotNullptr(timerInstance, __LINE__);
+    timerInstance->setTimeoutInMs(mbConfig.applicationTimeout);
 
     // create Modbus slave controller and start it up
     auto mbSlaveController = std::make_shared<Gateway::ModbusSlaveControllerImpl>(
