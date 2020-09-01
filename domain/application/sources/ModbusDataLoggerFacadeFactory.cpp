@@ -11,6 +11,7 @@
 #include "spdlog/spdlog.h"
 #include <string>
 
+
 namespace Application {
 
 std::shared_ptr<ModbusDataLoggerFacade> ModbusDataLoggerFacadeFactory::createModbusDataLoggerFacade(
@@ -53,13 +54,7 @@ std::shared_ptr<ModbusDataLoggerFacade> ModbusDataLoggerFacadeFactory::createMod
     assertNotNullptr(mbGateway, __LINE__);
 
     // create timer instance with a loop frequency of 1 ms
-    std::atomic_bool timeoutStop = false;
     std::shared_ptr<Utility::Timer> timerInstance = Utility::TimerFactory::createLoopTimer(1);
-    timerInstance->setTimeoutInMs(mbConfig.applicationTimeout);
-    timerInstance->callOnTimeout([&timeoutStop]() {
-        timeoutStop = true;
-        SPDLOG_INFO("Timeout reached!");
-    });
     assertNotNullptr(timerInstance, __LINE__);
 
     // create Modbus slave controller and start it up
@@ -70,7 +65,7 @@ std::shared_ptr<ModbusDataLoggerFacade> ModbusDataLoggerFacadeFactory::createMod
     // create facade (cast required components to their interface type)
     std::shared_ptr<ModbusDataLoggerFacade> mbDataLoggerFacade = std::make_shared<ModbusDataLoggerFacadeImpl>(
       std::dynamic_pointer_cast<Gateway::ModbusMasterController>(mbMasterController),
-      std::dynamic_pointer_cast<Gateway::ModbusSlaveController>(mbSlaveController), dataLogger);
+      std::dynamic_pointer_cast<Gateway::ModbusSlaveController>(mbSlaveController), dataLogger, timerInstance);
     assertNotNullptr(mbDataLoggerFacade, __LINE__);
 
     return mbDataLoggerFacade;

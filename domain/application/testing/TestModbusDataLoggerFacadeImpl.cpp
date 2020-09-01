@@ -2,6 +2,7 @@
 #include "domain/gateway/testing/gmock/MockModbusMasterController.hpp"
 #include "domain/gateway/testing/gmock/MockModbusSlaveController.hpp"
 #include "domain/logging/testing/gmock/MockFileLogger.hpp"
+#include "domain/utility/testing/gmock/MockTimer.hpp"
 
 #include "gtest/gtest.h"
 
@@ -11,6 +12,7 @@ using namespace ::testing;
 using namespace Application;
 using namespace Gateway;
 using namespace Logging;
+using namespace Utility;
 
 class TestModbusDataLoggerFacadeImpl : public ::testing::Test
 {
@@ -19,17 +21,19 @@ protected:
         : m_modbusMasterControllerMock(std::make_shared<MockModbusMasterController>())
         , m_modbusSlaveControllerMock(std::make_shared<MockModbusSlaveController>())
         , m_fileLoggerMock(std::make_shared<MockFileLogger>())
+        , m_timerMock(std::make_shared<MockTimer>())
     {}
 
     std::shared_ptr<ModbusDataLoggerFacadeImpl> createTestObject()
     {
         return std::make_shared<ModbusDataLoggerFacadeImpl>(m_modbusMasterControllerMock, m_modbusSlaveControllerMock,
-                                                            m_fileLoggerMock);
+                                                            m_fileLoggerMock, m_timerMock);
     }
 
     std::shared_ptr<MockModbusMasterController> m_modbusMasterControllerMock;
     std::shared_ptr<MockModbusSlaveController> m_modbusSlaveControllerMock;
     std::shared_ptr<MockFileLogger> m_fileLoggerMock;
+    std::shared_ptr<MockTimer> m_timerMock;
 };
 
 TEST_F(TestModbusDataLoggerFacadeImpl, ctorSuccessful)
