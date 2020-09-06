@@ -59,7 +59,7 @@ private:
     std::shared_ptr<Utility::Timer> m_timer;
 
     std::thread m_mbSlaveThread;
-    std::promise<void> m_threadStopSignal;
+    std::shared_ptr<std::promise<void>> m_threadStopSignal;
     void runModbusSlaveProcess(std::future<void> futureObj);
     void closeConnectionToModbusComponents();
 };
