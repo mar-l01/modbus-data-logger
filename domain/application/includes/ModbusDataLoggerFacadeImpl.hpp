@@ -61,6 +61,7 @@ private:
     std::thread m_mbSlaveThread;
     std::promise<void> m_threadStopSignal;
     void runModbusSlaveProcess(std::future<void> futureObj);
+    void closeConnectionToModbusComponents();
 };
 
 }
