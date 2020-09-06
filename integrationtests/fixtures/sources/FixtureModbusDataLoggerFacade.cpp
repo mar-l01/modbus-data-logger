@@ -42,10 +42,12 @@ void FixtureModbusDataLoggerFacade::setUp()
       Framework::FileLoggerControllerFactory::createFileLoggerController(Framework::LoggingFramework::SPDLOG);
     assertNotNullptr(fileLoggerController, __LINE__);
     auto dataLogger = std::make_shared<Logging::ModbusDataLogger>(fileLoggerController);
-    Entity::ModbusLoggerConfiguration mbLogConfig;
-    mbLogConfig.logFilePath = "integrationtest/logs/modbus_log.txt";
-    dataLogger->changeLogFileConfiguration(mbLogConfig);
     assertNotNullptr(dataLogger, __LINE__);
+
+    // set log file
+    Entity::ModbusLoggerConfiguration mbLogConfig;
+    mbLogConfig.logFilePath = FixtureTestConstants::LOG_FILE_PATH;
+    dataLogger->changeLogFileConfiguration(mbLogConfig);
 
     // set up Modbus gateway
     auto mbGateway = std::make_shared<Gateway::ModbusGateway>(mbMasterController, dataLogger);
