@@ -76,4 +76,9 @@ void FixtureModbusDataLoggerFacade::setUp()
     assertNotNullptr(m_mbDataLoggerFacade, __LINE__);
 }
 
+std::shared_ptr<Application::ModbusDataLoggerFacade> FixtureModbusDataLoggerFacade::getFixture() const
+{
+    return m_mbDataLoggerFacade;
+}
+
 } // namespace Fixture
