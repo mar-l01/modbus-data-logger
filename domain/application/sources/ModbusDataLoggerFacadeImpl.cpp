@@ -27,17 +27,17 @@ void ModbusDataLoggerFacadeImpl::startModbusCommunication()
     auto futureObj = m_threadStopSignal.get_future();
     m_mbSlaveThread = std::thread(&ModbusDataLoggerFacadeImpl::runModbusSlaveProcess, this, std::move(futureObj));
 
-    // set action to be invoked once application timeout was received
+    // stop Modbus communication on application timeout
     m_timer->callOnTimeout([this]() {
-        m_threadStopSignal.set_value();
         SPDLOG_INFO("Timeout reached!");
-        m_mbSlaveThread.join();
+        stopModbusCommunication();
     });
 }
 
 void ModbusDataLoggerFacadeImpl::stopModbusCommunication()
 {
     // trigger stop of Modbus process loop and wait for thread to be stopped
+    m_timer->stop();
     m_threadStopSignal.set_value();
     m_mbSlaveThread.join();
     SPDLOG_INFO("Stopped Modbus communication!");
@@ -65,5 +65,4 @@ void ModbusDataLoggerFacadeImpl::runModbusSlaveProcess(std::future<void> futureO
         m_mbSlaveController->run();
     } while (futureObj.wait_for(std::chrono::milliseconds(0)) == std::future_status::timeout);
 }
-
 }
