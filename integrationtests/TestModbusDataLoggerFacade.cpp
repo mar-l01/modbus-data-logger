@@ -43,10 +43,10 @@ TEST_F(TestModbusDataLoggerFacade, startAndStopCommunication)
     // then: stop communication (use additional thread to not block main thread)
     std::thread stopComThread(&Application::ModbusDataLoggerFacade::stopModbusCommunication, getFixture());
 
-    // wait for above threads to join
+    // clean-up
     mbExtMaster.tearDown();
-    mbExtSlaveThread.join();
     stopComThread.join();
+    mbExtSlaveThread.join();
 
     // then: facade is not running, not able to connect from external side
     bool expectConnectionFailure = true;

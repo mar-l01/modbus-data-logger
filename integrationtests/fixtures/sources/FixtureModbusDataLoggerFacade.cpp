@@ -1,6 +1,7 @@
 #include "integrationtests/fixtures/includes/FixtureModbusDataLoggerFacade.hpp"
 
 #include "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
+#include "domain/entity/includes/ModbusLoggerConfiguration.hpp"
 #include "domain/framework/includes/FileLoggerControllerFactory.hpp"
 #include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
@@ -41,6 +42,9 @@ void FixtureModbusDataLoggerFacade::setUp()
       Framework::FileLoggerControllerFactory::createFileLoggerController(Framework::LoggingFramework::SPDLOG);
     assertNotNullptr(fileLoggerController, __LINE__);
     auto dataLogger = std::make_shared<Logging::ModbusDataLogger>(fileLoggerController);
+    Entity::ModbusLoggerConfiguration mbLogConfig;
+    mbLogConfig.logFilePath = "integrationtest/logs/modbus_log.txt";
+    dataLogger->changeLogFileConfiguration(mbLogConfig);
     assertNotNullptr(dataLogger, __LINE__);
 
     // set up Modbus gateway
