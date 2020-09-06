@@ -373,6 +373,7 @@ if (${CMAKE_ENABLE_TESTING})
     "integrationtests/TestModbusCommunication.cpp"
     "integrationtests/TestModbusReconnection.cpp"
     "integrationtests/TestModbusLogging.cpp"
+    "integrationtests/TestModbusDataLoggerFacade.cpp"
   )
   target_include_directories(integrationtest PRIVATE
     "${PROJECT_SOURCE_DIR}"
