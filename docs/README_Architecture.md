@@ -20,4 +20,5 @@ The application to develop will be integrated into the environment as shown in F
 
 ### General Architecture
 The implementation of the application follows the architecture shown in Figure 2.
-<img width="683" alt="CurrentArchitecture" src="https://user-images.githubusercontent.com/9079869/92468705-ddcfd480-f1d3-11ea-9c77-caaaf33f21b9.png"> *Figure 2: General Architecture*
+<img width="683" alt="CurrentArchitecture" src="https://user-images.githubusercontent.com/9079869/92468705-ddcfd480-f1d3-11ea-9c77-caaaf33f21b9.png">
+*Figure 2: General Architecture*
