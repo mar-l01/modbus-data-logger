@@ -116,6 +116,7 @@ TEST_F(TestModbusDataLoggerFacade, startAndStopLogging)
 
     // when: start logging
     getFixture()->startLogger();
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     // then: communication is logged
     mbExtMaster.checkWriteReadRequestRegisters();
