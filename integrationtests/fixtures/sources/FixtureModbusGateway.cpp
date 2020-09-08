@@ -32,7 +32,7 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
       std::make_shared<ModbusMasterControllerImpl>(mbMaster, FixtureTestConstants::MODBUS_IP_ADDRESS_EXTERNAL_SLAVE,
                                                    FixtureTestConstants::MODBUS_PORT_EXTERNAL_SLAVE);
     mbMasterController->connect();
-    mbMasterController->setTimeout(200); // set timeout to 200 ms by default
+    mbMasterController->setTimeout(FixtureTestConstants::MODBUS_TIMEOUT_IN_MS); // set timeout to 200 ms by default
 
     // set up Modbus gateway with a fixture representing the data logger
     auto mbGateway =

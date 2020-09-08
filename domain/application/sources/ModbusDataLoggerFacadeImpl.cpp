@@ -17,6 +17,7 @@ ModbusDataLoggerFacadeImpl::ModbusDataLoggerFacadeImpl(
     , m_mbSlaveController(mbSlaveController)
     , m_fileLogger(fileLogger)
     , m_timer(timer)
+    , m_threadStopSignal(std::make_shared<std::promise<void>>())
 {}
 
 void ModbusDataLoggerFacadeImpl::startModbusCommunication()
@@ -24,27 +25,20 @@ void ModbusDataLoggerFacadeImpl::startModbusCommunication()
     m_mbMasterController->connect();
 
     // run Modbus slave process loop in additional thread
-    auto futureObj = m_threadStopSignal.get_future();
+    auto futureObj = m_threadStopSignal->get_future();
     m_mbSlaveThread = std::thread(&ModbusDataLoggerFacadeImpl::runModbusSlaveProcess, this, std::move(futureObj));
 
-    // set action to be invoked once application timeout was received
+    // stop Modbus communication on application timeout
     m_timer->callOnTimeout([this]() {
-        m_threadStopSignal.set_value();
         SPDLOG_INFO("Timeout reached!");
-        m_mbSlaveThread.join();
+        closeConnectionToModbusComponents();
     });
 }
 
 void ModbusDataLoggerFacadeImpl::stopModbusCommunication()
 {
-    // trigger stop of Modbus process loop and wait for thread to be stopped
-    m_threadStopSignal.set_value();
-    m_mbSlaveThread.join();
-    SPDLOG_INFO("Stopped Modbus communication!");
-
-    // disconnect from communication partners
-    m_mbSlaveController->disconnect();
-    m_mbMasterController->disconnect();
+    m_timer->stop();
+    closeConnectionToModbusComponents();
 }
 
 void ModbusDataLoggerFacadeImpl::startLogger()
@@ -63,7 +57,23 @@ void ModbusDataLoggerFacadeImpl::runModbusSlaveProcess(std::future<void> futureO
     do {
         m_mbSlaveController->waitForIncomingConnection();
         m_mbSlaveController->run();
-    } while (futureObj.wait_for(std::chrono::milliseconds(0)) == std::future_status::timeout);
+    } while (futureObj.wait_for(std::chrono::milliseconds(10)) == std::future_status::timeout);
+}
+
+void ModbusDataLoggerFacadeImpl::closeConnectionToModbusComponents()
+{
+    // trigger stop of Modbus process loop and wait for thread to be stopped
+    try {
+        m_threadStopSignal->set_value();
+    } catch (const std::future_error& futureError) {
+        SPDLOG_ERROR("Failed to set promise value: '{}'!", futureError.what());
+    }
+    m_mbSlaveThread.join();
+    SPDLOG_INFO("Stopped Modbus communication!");
+
+    // disconnect from communication partners
+    m_mbSlaveController->disconnect();
+    m_mbMasterController->disconnect();
 }
 
 }

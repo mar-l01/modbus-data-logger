@@ -47,12 +47,14 @@ TEST_F(TestModbusDataLoggerFacadeImpl, startModbusCommunication)
     std::function<void()> timeoutCallback; // capture callback to invoke it later
 
     EXPECT_CALL(*m_modbusMasterControllerMock, connect()).Times(1);
-    EXPECT_CALL(*m_modbusSlaveControllerMock, waitForIncomingConnection()).Times(1);
-    EXPECT_CALL(*m_modbusSlaveControllerMock, run()).Times(1);
+    EXPECT_CALL(*m_modbusSlaveControllerMock, waitForIncomingConnection()).Times(AnyNumber());
+    EXPECT_CALL(*m_modbusSlaveControllerMock, run()).Times(AnyNumber());
     EXPECT_CALL(*m_timerMock, callOnTimeout(_)).WillOnce(SaveArg<0>(&timeoutCallback));
     testObj->startModbusCommunication();
 
     // invoke callback to simulate timeout and stop created thread
+    EXPECT_CALL(*m_modbusSlaveControllerMock, disconnect()).Times(1);
+    EXPECT_CALL(*m_modbusMasterControllerMock, disconnect()).Times(1);
     timeoutCallback();
 }
 
@@ -62,11 +64,12 @@ TEST_F(TestModbusDataLoggerFacadeImpl, stopModbusCommunication)
 
     // pre-condition: application has to be started
     EXPECT_CALL(*m_modbusMasterControllerMock, connect()).Times(1);
-    EXPECT_CALL(*m_modbusSlaveControllerMock, waitForIncomingConnection()).Times(1);
-    EXPECT_CALL(*m_modbusSlaveControllerMock, run()).Times(1);
+    EXPECT_CALL(*m_modbusSlaveControllerMock, waitForIncomingConnection()).Times(AnyNumber());
+    EXPECT_CALL(*m_modbusSlaveControllerMock, run()).Times(AnyNumber());
     EXPECT_CALL(*m_timerMock, callOnTimeout(_)).Times(1);
     testObj->startModbusCommunication();
 
+    EXPECT_CALL(*m_timerMock, stop()).Times(1);
     EXPECT_CALL(*m_modbusSlaveControllerMock, disconnect()).Times(1);
     EXPECT_CALL(*m_modbusMasterControllerMock, disconnect()).Times(1);
     testObj->stopModbusCommunication();

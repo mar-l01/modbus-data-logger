@@ -364,6 +364,7 @@ if (${CMAKE_ENABLE_TESTING})
 
    # build integrationtest
   add_executable(integrationtest
+    $<TARGET_OBJECTS:lib_mdl>
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
@@ -372,6 +373,7 @@ if (${CMAKE_ENABLE_TESTING})
     "integrationtests/TestModbusCommunication.cpp"
     "integrationtests/TestModbusReconnection.cpp"
     "integrationtests/TestModbusLogging.cpp"
+    "integrationtests/TestModbusDataLoggerFacade.cpp"
   )
   target_include_directories(integrationtest PRIVATE
     "${PROJECT_SOURCE_DIR}"
@@ -384,6 +386,7 @@ if (${CMAKE_ENABLE_TESTING})
       "integrationtests/fixtures/sources/FixtureExternalModbusSlave.cpp"
       "integrationtests/fixtures/sources/FixtureModbusGateway.cpp"
       "integrationtests/fixtures/sources/FixtureDataLogger.cpp"
+      "integrationtests/fixtures/sources/FixtureModbusDataLoggerFacade.cpp"
 )
   target_link_libraries(integrationtest
     PRIVATE

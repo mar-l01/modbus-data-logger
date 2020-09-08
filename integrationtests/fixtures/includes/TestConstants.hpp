@@ -27,5 +27,7 @@ constexpr Entity::ModbusDataMapping MODBUS_DATA_MAPPING = {MODBUS_START_ADDRESS_
                                                            MODBUS_NUMBER_HOLDING_REGISTERS,
                                                            MODBUS_NUMBER_INPUT_REGISTERS};
 
+constexpr const int MODBUS_TIMEOUT_IN_MS = 200;
 constexpr const int APPLICATION_TIMEOUT_IN_MS = 2000;
+constexpr const char* LOG_FILE_PATH = "integrationtests/logs/modbus_log.txt";
 }
