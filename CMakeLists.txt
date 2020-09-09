@@ -176,8 +176,8 @@ target_link_libraries(modbus_data_logger PRIVATE
   ${CMAKE_USR_LIB_ARCH}/libpthread.so
 )
 
-project(mdllib VERSION 1.0.1 DESCRIPTION "mylib description")
-add_library(mdllib SHARED
+project(mdl VERSION 0.0.1 DESCRIPTION "mylib description")
+add_library(mdl SHARED
   # application
   "domain/application/sources/ModbusDataLoggerFacadeImpl.cpp"
   "domain/application/sources/ModbusDataLoggerFacadeFactory.cpp"
@@ -211,23 +211,23 @@ add_library(mdllib SHARED
   "domain/framework/sources/SpdlogFileController.cpp"
   "domain/framework/sources/FileLoggerControllerFactory.cpp"
 )
-set_target_properties(mdllib PROPERTIES
+set_target_properties(mdl PROPERTIES
   VERSION ${PROJECT_VERSION}
   PUBLIC_HEADER "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
 )
-target_include_directories(mdllib PRIVATE
+target_include_directories(mdl PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/usr/include/better-enums/"
   "/usr/include/nlohmann/"
   "/usr/include/boost_1_72_0/"
 )
 include(GNUInstallDirs)
-install(TARGETS mdllib
+install(TARGETS mdl
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
-configure_file(mdllib.pc.in mdllib.pc @ONLY)
-install(FILES ${CMAKE_BINARY_DIR}/mdllib.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+configure_file(mdl.pc.in mdl.pc @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/mdl.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
 
 ##################################################################
 # TESTING
