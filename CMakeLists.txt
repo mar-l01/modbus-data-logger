@@ -130,6 +130,31 @@ target_include_directories(mdl_logging PRIVATE
   "/usr/include/boost_1_72_0/"
 )
 
+# build application object-library
+add_library(mdl_application OBJECT
+  $<TARGET_OBJECTS:mdl_framework>
+  $<TARGET_OBJECTS:mdl_gateway>
+  $<TARGET_OBJECTS:mdl_entity>
+  $<TARGET_OBJECTS:mdl_utility>
+  $<TARGET_OBJECTS:mdl_logging>
+
+  # header files
+  "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
+  "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
+  "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
+
+  # source files
+  "domain/application/sources/ModbusDataLoggerFacadeImpl.cpp"
+  "domain/application/sources/ModbusDataLoggerFacadeFactory.cpp"
+)
+target_compile_options(mdl_application PUBLIC -Wall -Wextra)
+target_include_directories(mdl_application PRIVATE
+  "${PROJECT_SOURCE_DIR}"
+  "/usr/include/better-enums/"
+  "/usr/include/nlohmann/"
+  "/usr/include/boost_1_72_0/"
+)
+
 # build executable target
 add_executable(modbus_data_logger
   $<TARGET_OBJECTS:mdl_framework>
@@ -151,30 +176,58 @@ target_link_libraries(modbus_data_logger PRIVATE
   ${CMAKE_USR_LIB_ARCH}/libpthread.so
 )
 
-# build target as library
-add_library(lib_mdl OBJECT
-  $<TARGET_OBJECTS:mdl_framework>
-  $<TARGET_OBJECTS:mdl_gateway>
-  $<TARGET_OBJECTS:mdl_entity>
-  $<TARGET_OBJECTS:mdl_utility>
-  $<TARGET_OBJECTS:mdl_logging>
-
-  # header files
-  "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
-  "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
-  "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
-
-  # source files
+project(mdllib VERSION 1.0.1 DESCRIPTION "mylib description")
+add_library(mdllib SHARED
+  # application
   "domain/application/sources/ModbusDataLoggerFacadeImpl.cpp"
   "domain/application/sources/ModbusDataLoggerFacadeFactory.cpp"
+
+  # logging
+  "domain/logging/sources/ModbusDataLogger.cpp"
+
+  # utility
+  "domain/utility/sources/TimerImpl.cpp"
+  "domain/utility/sources/TimerFactory.cpp"
+
+  # entity
+  "domain/entity/sources/ModbusDataMapping.cpp"
+  "domain/entity/sources/ModbusTcpMessageFrame.cpp"
+  "domain/entity/sources/ModbusTcpRequest.cpp"
+  "domain/entity/sources/ModbusTcpResponse.cpp"
+  "domain/entity/sources/ModbusConfiguration.cpp"
+  "domain/entity/sources/ModbusLoggerConfiguration.cpp"
+
+  # gateway
+  "domain/gateway/sources/ModbusComponentsFactory.cpp"
+  "domain/gateway/sources/ModbusMasterControllerImpl.cpp"
+  "domain/gateway/sources/ModbusSlaveControllerImpl.cpp"
+  "domain/gateway/sources/ModbusGateway.cpp"
+
+  # framework
+  "domain/framework/sources/LibModbusSlave.cpp"
+  "domain/framework/sources/LibModbusMaster.cpp"
+  "domain/framework/sources/JsonFileReader.cpp"
+  "domain/framework/sources/FileReaderFactory.cpp"
+  "domain/framework/sources/SpdlogFileController.cpp"
+  "domain/framework/sources/FileLoggerControllerFactory.cpp"
 )
-target_compile_options(lib_mdl PUBLIC -Wall -Wextra)
-target_include_directories(lib_mdl PRIVATE
+set_target_properties(mdllib PROPERTIES
+  VERSION ${PROJECT_VERSION}
+  PUBLIC_HEADER "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
+)
+target_include_directories(mdllib PRIVATE
   "${PROJECT_SOURCE_DIR}"
   "/usr/include/better-enums/"
   "/usr/include/nlohmann/"
   "/usr/include/boost_1_72_0/"
 )
+include(GNUInstallDirs)
+install(TARGETS mdllib
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+configure_file(mdllib.pc.in mdllib.pc @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/mdllib.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
 
 ##################################################################
 # TESTING
@@ -339,7 +392,7 @@ if (${CMAKE_ENABLE_TESTING})
 
     # build application unittests
     add_executable(application_test
-    $<TARGET_OBJECTS:lib_mdl>
+    $<TARGET_OBJECTS:mdl_application>
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
@@ -364,7 +417,7 @@ if (${CMAKE_ENABLE_TESTING})
 
    # build integrationtest
   add_executable(integrationtest
-    $<TARGET_OBJECTS:lib_mdl>
+    $<TARGET_OBJECTS:mdl_application>
     $<TARGET_OBJECTS:mdl_framework>
     $<TARGET_OBJECTS:mdl_gateway>
     $<TARGET_OBJECTS:mdl_entity>
