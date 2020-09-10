@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_CXX_STANDARD 17)
 
-project(modbus-data-logger-project)
+project(modbus_data_logger VERSION 0.0.1 DESCRIPTION "modbus-data-logger console application")
 
 ##################################################################
 # BUILD APPLICATION
@@ -176,7 +176,7 @@ target_link_libraries(modbus_data_logger PRIVATE
   ${CMAKE_USR_LIB_ARCH}/libpthread.so
 )
 
-project(mdl VERSION 0.0.1 DESCRIPTION "mylib description")
+project(mdl VERSION 0.0.1 DESCRIPTION "modbus-data-logger shared library")
 add_library(mdl SHARED
   # application
   "domain/application/sources/ModbusDataLoggerFacadeImpl.cpp"
