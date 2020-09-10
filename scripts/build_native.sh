@@ -13,8 +13,8 @@ printHelp()
 {
    echo ""
    echo "Usage: $0 [-a] [-t] [-d|-r]"
-   echo -a "\t -d If '-a' is given, application is built for given target architecture (by default: x86_64-linux-gnu)"
-   echo -e "\t -t If '-t' is given, application is built in 'Debug' mode together with its unittests"
+   echo -a "\t -a If '-a' is given, application is built for given target architecture (by default: x86_64-linux-gnu)"
+   echo -t "\t -t If '-t' is given, application is built in 'Debug' mode together with its unittests"
    echo -d "\t -d If '-d' is given, application is built in 'Debug' mode"
    echo -r "\t -r If '-r' is given, application is built in 'Release' mode"
 
@@ -71,6 +71,7 @@ cmake -G Ninja \
    -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
    -DCMAKE_ENABLE_TESTING=${UNITTESTS_ENABLED} \
    -DCMAKE_USR_LIB_ARCH=${USR_LIB_ARCH} \
+   -DCMAKE_BUILD_OBJECT=ConsoleApplication \
    ../../..
 
 # build project using ninja
