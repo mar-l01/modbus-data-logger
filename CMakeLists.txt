@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(VERSION_NB 0.0.1)
-project(modbus_data_logger VERSION ${VERSION_NB} DESCRIPTION "A console application capable of logging Modbus communication data.")
-project(mdl VERSION ${VERSION_NB} DESCRIPTION "A shared library which can be included by third-party applications.")
+project(modbus_data_logger VERSION 0.1.0 DESCRIPTION "A console application capable of logging Modbus communication data.")
 
 ##################################################################
 # COMMON REQUIREMENTS
@@ -185,7 +183,8 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
 # BUILD AS SHARED LIBRARY
 ##################################################################
 elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
-  add_library(mdl SHARED
+  include(GNUInstallDirs)
+  add_library(mbdl SHARED
     # application
     "domain/application/sources/ModbusDataLoggerFacadeImpl.cpp"
     "domain/application/sources/ModbusDataLoggerFacadeFactory.cpp"
@@ -219,27 +218,26 @@ elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
     "domain/framework/sources/SpdlogFileController.cpp"
     "domain/framework/sources/FileLoggerControllerFactory.cpp"
   )
-  set_target_properties(mdl PROPERTIES
+  set_target_properties(mbdl PROPERTIES
     VERSION ${PROJECT_VERSION}
     PUBLIC_HEADER "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
   )
-  target_include_directories(mdl PRIVATE
+  target_include_directories(mbdl PRIVATE
     "${PROJECT_SOURCE_DIR}"
     "/usr/include/better-enums/"
     "/usr/include/nlohmann/"
     "/usr/include/boost_1_72_0/"
   )
-  target_link_libraries(mdl PRIVATE
+  target_link_libraries(mbdl PRIVATE
     ${CMAKE_USR_LIB_ARCH}/libmodbus.so
     ${CMAKE_USR_LIB_ARCH}/libpthread.so
   )
-  include(GNUInstallDirs)
-  install(TARGETS mdl
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  install(TARGETS mbdl
+    LIBRARY DESTINATION ${PROJECT_DIR}/builds/build_shared/debug/${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${PROJECT_DIR}/builds/build_shared/debug/${CMAKE_INSTALL_INCLUDEDIR}
   )
-  configure_file(mdl.pc.in mdl.pc @ONLY)
-  install(FILES ${CMAKE_BINARY_DIR}/mdl.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+  configure_file(libmbdl.pc.in libmbdl.pc @ONLY)
+  install(FILES ${CMAKE_BINARY_DIR}/libmbdl.pc DESTINATION /usr/${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
 endif()
 
 ##################################################################

@@ -1,0 +1,12 @@
+prefix=/workspaces/modbus-data-logger/builds/build_shared/debug/
+exec_prefix=${prefix}
+libdir=${prefix}
+includedir=${prefix}
+
+Name: libmbdl
+Description: A shared library which can be included by third-party applications.
+Version: @PROJECT_VERSION@
+
+Requires:
+Libs: -L${libdir} -llibmbdl
+Cflags: -I${includedir}/libmbdl
