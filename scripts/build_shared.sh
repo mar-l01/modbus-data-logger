@@ -65,3 +65,7 @@ cmake -G Ninja \
 # build project using ninja
 cd ${BUILD_DIR}
 ninja
+
+# install components to file system
+cd ${BUILD_DIR}
+cmake -P cmake_install.cmake

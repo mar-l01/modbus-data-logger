@@ -8,6 +8,12 @@ The _CMakeLists.txt_ file uses this package to locate the _libmbdl_ library. Run
 $ sudo apt-get install pkg-config
 ```
 
+### Build shared library
+Run script _build_shared.py_ in _scripts/_ directory to build the modbus-data-logger as shared library. For example, to build it in release mode run following command, which will build the shared library and install the required components to the respective parts in the filesystem:
+```sh
+$ python scripts/build_shared.py -r
+```
+
 ### Include it into your CMakeLists.txt file
 Add following lines to your _CMakeLists.txt_ file, which will search for the _libmbdl_ library on your system:
 ```sh
