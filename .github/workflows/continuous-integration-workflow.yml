@@ -37,3 +37,6 @@ jobs:
 
     - name: Run integrationtests
       run: python scripts/run_integrationtests.py
+
+    - name: Build application as shared library in release mode
+      run: python scripts/build_shared.py -r
