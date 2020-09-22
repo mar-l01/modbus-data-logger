@@ -218,12 +218,10 @@ elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
     "domain/framework/sources/SpdlogFileController.cpp"
     "domain/framework/sources/FileLoggerControllerFactory.cpp"
   )
-  set_target_properties(mbdl PROPERTIES
-    VERSION ${PROJECT_VERSION}
-    PUBLIC_HEADER "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
-  )
   target_include_directories(mbdl PRIVATE
     "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/application/interfaces/"
+    "${PROJECT_SOURCE_DIR}/application/includes/"
     "/usr/include/better-enums/"
     "/usr/include/nlohmann/"
     "/usr/include/boost_1_72_0/"
@@ -232,12 +230,21 @@ elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
     ${CMAKE_USR_LIB_ARCH}/libmodbus.so
     ${CMAKE_USR_LIB_ARCH}/libpthread.so
   )
+  set(MBDL_PUBLIC_HEADERS
+    "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
+    "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
+    "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
+  )
+  set_target_properties(mbdl PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    PUBLIC_HEADER "${MBDL_PUBLIC_HEADERS}"
+  )
   install(TARGETS mbdl
-    LIBRARY DESTINATION ${PROJECT_DIR}/builds/build_shared/debug/${CMAKE_INSTALL_LIBDIR}
-    PUBLIC_HEADER DESTINATION ${PROJECT_DIR}/builds/build_shared/debug/${CMAKE_INSTALL_INCLUDEDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}/mbdl
   )
   configure_file(libmbdl.pc.in libmbdl.pc @ONLY)
-  install(FILES ${CMAKE_BINARY_DIR}/libmbdl.pc DESTINATION /usr/${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+  install(FILES ${CMAKE_BINARY_DIR}/libmbdl.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR})
 endif()
 
 ##################################################################

@@ -1,12 +1,18 @@
 #pragma once
 
-#include "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
-#include "domain/framework/includes/FileLoggerControllerFactory.hpp"
-#include "domain/framework/includes/FileReaderFactory.hpp"
-#include "domain/gateway/includes/ModbusComponentsFactory.hpp"
-
+#include "ModbusDataLoggerFacade.hpp"
+#include "ModbusDataLoggerFrameworks.hpp"
 #include <memory>
 #include <string>
+
+namespace Framework {
+class FileLoggerControllerFactory;
+class FileReaderFactory;
+}
+
+namespace Gateway {
+class ModbusComponentsFactory;
+}
 
 namespace Application {
 

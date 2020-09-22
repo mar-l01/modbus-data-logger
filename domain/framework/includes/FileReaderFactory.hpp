@@ -1,19 +1,11 @@
 #pragma once
 
+#include "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
 #include "domain/framework/interfaces/ConfigurationFileReader.hpp"
 
 #include <memory>
 
 namespace Framework {
-
-/**
- * @brief A list of different frameworks to read different file formats.
- */
-enum class FileReaderFramework
-{
-    NLOHMANN_JSON,
-    OTHER_READER_FRAMEWORK
-};
 
 /**
  * @brief Factory to create a file reader for a respective data-format, e.g. json.

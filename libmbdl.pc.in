@@ -1,7 +1,7 @@
-prefix=/workspaces/modbus-data-logger/builds/build_shared/debug/
-exec_prefix=${prefix}
-libdir=${prefix}
-includedir=${prefix}
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=@CMAKE_INSTALL_PREFIX@
+libdir=${exec_prefix}/@CMAKE_INSTALL_LIBDIR@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
 
 Name: libmbdl
 Description: A shared library which can be included by third-party applications.
