@@ -42,4 +42,4 @@ jobs:
       run: chmod +x scripts/build_shared.sh
 
     - name: Build application as shared library in release mode
-      run: python scripts/build_shared.py -r
+      run: scripts/build_shared.sh -r
