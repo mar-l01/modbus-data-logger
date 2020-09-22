@@ -146,6 +146,7 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
     "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
     "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
     "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
+    "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
 
     # source files
     "domain/application/sources/ModbusDataLoggerFacadeImpl.cpp"
@@ -154,6 +155,8 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
   target_compile_options(mdl_application PUBLIC -Wall -Wextra)
   target_include_directories(mdl_application PRIVATE
     "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/application/interfaces/"
+    "${PROJECT_SOURCE_DIR}/application/includes/"
     "/usr/include/better-enums/"
     "/usr/include/nlohmann/"
     "/usr/include/boost_1_72_0/"
@@ -171,6 +174,8 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
   target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra -pthread)
   target_include_directories(modbus_data_logger PRIVATE
     "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/application/interfaces/"
+    "${PROJECT_SOURCE_DIR}/application/includes/"
     "/usr/include/better-enums/"
     "/usr/include/nlohmann/"
     "/usr/include/boost_1_72_0/"
