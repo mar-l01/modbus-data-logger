@@ -1,7 +1,13 @@
 #pragma once
 
+#ifdef _SHARED_LIBRARY_
 #include "ModbusDataLoggerFacade.hpp"
 #include "ModbusDataLoggerFrameworks.hpp"
+#else
+#include "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
+#include "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
+#endif
+
 #include <memory>
 #include <string>
 

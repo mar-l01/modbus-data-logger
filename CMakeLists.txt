@@ -155,8 +155,6 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
   target_compile_options(mdl_application PUBLIC -Wall -Wextra)
   target_include_directories(mdl_application PRIVATE
     "${PROJECT_SOURCE_DIR}"
-    "${PROJECT_SOURCE_DIR}/application/interfaces/"
-    "${PROJECT_SOURCE_DIR}/application/includes/"
     "/usr/include/better-enums/"
     "/usr/include/nlohmann/"
     "/usr/include/boost_1_72_0/"
@@ -174,8 +172,6 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
   target_compile_options(modbus_data_logger PUBLIC -Wall -Wextra -pthread)
   target_include_directories(modbus_data_logger PRIVATE
     "${PROJECT_SOURCE_DIR}"
-    "${PROJECT_SOURCE_DIR}/application/interfaces/"
-    "${PROJECT_SOURCE_DIR}/application/includes/"
     "/usr/include/better-enums/"
     "/usr/include/nlohmann/"
     "/usr/include/boost_1_72_0/"
@@ -235,6 +231,7 @@ elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
     ${CMAKE_USR_LIB_ARCH}/libmodbus.so
     ${CMAKE_USR_LIB_ARCH}/libpthread.so
   )
+  target_compile_definitions(mbdl PUBLIC _SHARED_LIBRARY_)
   set(MBDL_PUBLIC_HEADERS
     "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
     "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
