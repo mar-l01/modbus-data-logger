@@ -59,6 +59,7 @@ cmake -G Ninja \
    -DCMAKE_ENABLE_TESTING=OFF \
    -DCMAKE_USR_LIB_ARCH=${USR_LIB_ARCH} \
    -DCMAKE_BUILD_OBJECT=SharedLibrary \
+   -DCMAKE_INSTALL_DATAROOTDIR=/usr/share/pkgconfig/ \
    ../../..
 
 # build project using ninja
