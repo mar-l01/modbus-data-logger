@@ -221,8 +221,8 @@ elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
   )
   target_include_directories(mbdl PRIVATE
     "${PROJECT_SOURCE_DIR}"
-    "${PROJECT_SOURCE_DIR}/application/interfaces/"
-    "${PROJECT_SOURCE_DIR}/application/includes/"
+    "${PROJECT_SOURCE_DIR}/domain/application/interfaces/"
+    "${PROJECT_SOURCE_DIR}/domain/application/includes/"
     "/usr/include/better-enums/"
     "/usr/include/nlohmann/"
     "/usr/include/boost_1_72_0/"
@@ -231,6 +231,7 @@ elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
     ${CMAKE_USR_LIB_ARCH}/libmodbus.so
     ${CMAKE_USR_LIB_ARCH}/libpthread.so
   )
+  target_compile_options(mbdl PUBLIC -Wall -Wextra)
   target_compile_definitions(mbdl PUBLIC _SHARED_LIBRARY_)
   set(MBDL_PUBLIC_HEADERS
     "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
