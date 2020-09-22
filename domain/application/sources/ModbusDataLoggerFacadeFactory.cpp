@@ -1,6 +1,9 @@
 #include "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
 
 #include "domain/application/includes/ModbusDataLoggerFacadeImpl.hpp"
+#include "domain/framework/includes/FileLoggerControllerFactory.hpp"
+#include "domain/framework/includes/FileReaderFactory.hpp"
+#include "domain/gateway/includes/ModbusComponentsFactory.hpp"
 #include "domain/gateway/includes/ModbusGateway.hpp"
 #include "domain/gateway/includes/ModbusMasterControllerImpl.hpp"
 #include "domain/gateway/includes/ModbusSlaveControllerImpl.hpp"

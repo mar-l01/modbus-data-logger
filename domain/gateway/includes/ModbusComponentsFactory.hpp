@@ -1,20 +1,12 @@
 #pragma once
 
+#include "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
 #include "domain/gateway/interfaces/ModbusMaster.hpp"
 #include "domain/gateway/interfaces/ModbusSlave.hpp"
 
 #include <memory>
 
 namespace Gateway {
-
-/**
- * @brief A list of different frameworks to be used to create a Modbus slave or master
- */
-enum class ModbusComponentsFramework
-{
-    LIBMODBUS,
-    OTHER_MODBUS_FRAMEWORK
-};
 
 /**
  * @brief Factory to create a Modbus slave and a Modbus master using a defined framework, e.g. 'libmodbus'.

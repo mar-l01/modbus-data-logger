@@ -32,6 +32,26 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "label": "Build Shared DEBUG",
+            "type": "shell",
+            "command": "scripts/build_shared.sh -d",
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build Shared RELEASE",
+            "type": "shell",
+            "command": "scripts/build_shared.sh -r",
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

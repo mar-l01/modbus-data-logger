@@ -37,3 +37,9 @@ jobs:
 
     - name: Run integrationtests
       run: python scripts/run_integrationtests.py
+
+    - name: Make build-script executable
+      run: chmod +x scripts/build_shared.sh
+
+    - name: Build application as shared library in release mode
+      run: scripts/build_shared.sh -r

@@ -1,19 +1,11 @@
 #pragma once
 
+#include "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
 #include "domain/logging/interfaces/FileLoggerController.hpp"
 
 #include <memory>
 
 namespace Framework {
-
-/**
- * @brief A list of different frameworks which can be used for logging
- */
-enum class LoggingFramework
-{
-    SPDLOG,
-    OTHER_LOGGING_FRAMEWORK
-};
 
 /**
  * @brief Factory to create a file logger controller using e.g. spdlog framework.
