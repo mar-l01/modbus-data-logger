@@ -46,7 +46,10 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
     "${PROJECT_SOURCE_DIR}"
     "/usr/include/better-enums/"
   )
-  target_link_libraries(mdl_framework PRIVATE ${CMAKE_USR_LIB_ARCH}/libmodbus.so)
+  target_link_libraries(mdl_framework PRIVATE
+    ${CMAKE_USR_LIB_ARCH}/libmodbus.so
+    stdc++fs
+  )
 
   # build gateway object-library
   add_library(mdl_gateway OBJECT
@@ -179,6 +182,7 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
   target_link_libraries(modbus_data_logger PRIVATE
     ${CMAKE_USR_LIB_ARCH}/libmodbus.so
     ${CMAKE_USR_LIB_ARCH}/libpthread.so
+    stdc++fs
   )
 ##################################################################
 # BUILD AS SHARED LIBRARY
