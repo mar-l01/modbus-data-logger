@@ -347,6 +347,7 @@ if (${CMAKE_ENABLE_TESTING})
       gtest
       gmock
       gtest_main
+      stdc++fs
   )
 
   add_test(NAME gateway_test COMMAND $<TARGET_FILE:gateway_test>)
@@ -436,6 +437,7 @@ if (${CMAKE_ENABLE_TESTING})
       gtest
       gmock
       gtest_main
+      stdc++fs
   )
 
   add_test(NAME application_test COMMAND $<TARGET_FILE:application_test>)
@@ -472,6 +474,7 @@ if (${CMAKE_ENABLE_TESTING})
       gtest
       gmock
       gtest_main
+      stdc++fs
   )
 
   add_test(NAME integrationtest COMMAND $<TARGET_FILE:integrationtest>)
