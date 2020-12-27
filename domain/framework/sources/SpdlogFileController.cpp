@@ -2,12 +2,20 @@
 
 #include "domain/entity/interfaces/ModbusDataLog.hpp"
 
+#include <filesystem>
+
 namespace Framework {
 
 SpdlogFileController::SpdlogFileController() {}
 
 void SpdlogFileController::startLogger()
 {
+    // check if directory of given logger file exists (removing file name results in directory to check)
+    const auto loggerDirectory = std::filesystem::path(m_mbLoggerConfig.logFilePath).remove_filename();
+    if (!std::filesystem::exists(loggerDirectory)) {
+        std::filesystem::create_directories(loggerDirectory);
+    }
+
     try {
         // create rotating file logger using this factory method
         m_mbDataLogger =

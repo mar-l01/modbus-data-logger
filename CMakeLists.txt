@@ -46,7 +46,10 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
     "${PROJECT_SOURCE_DIR}"
     "/usr/include/better-enums/"
   )
-  target_link_libraries(mdl_framework PRIVATE ${CMAKE_USR_LIB_ARCH}/libmodbus.so)
+  target_link_libraries(mdl_framework PRIVATE
+    ${CMAKE_USR_LIB_ARCH}/libmodbus.so
+    stdc++fs
+  )
 
   # build gateway object-library
   add_library(mdl_gateway OBJECT
@@ -179,6 +182,7 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
   target_link_libraries(modbus_data_logger PRIVATE
     ${CMAKE_USR_LIB_ARCH}/libmodbus.so
     ${CMAKE_USR_LIB_ARCH}/libpthread.so
+    stdc++fs
   )
 ##################################################################
 # BUILD AS SHARED LIBRARY
@@ -343,6 +347,7 @@ if (${CMAKE_ENABLE_TESTING})
       gtest
       gmock
       gtest_main
+      stdc++fs
   )
 
   add_test(NAME gateway_test COMMAND $<TARGET_FILE:gateway_test>)
@@ -432,6 +437,7 @@ if (${CMAKE_ENABLE_TESTING})
       gtest
       gmock
       gtest_main
+      stdc++fs
   )
 
   add_test(NAME application_test COMMAND $<TARGET_FILE:application_test>)
@@ -468,6 +474,7 @@ if (${CMAKE_ENABLE_TESTING})
       gtest
       gmock
       gtest_main
+      stdc++fs
   )
 
   add_test(NAME integrationtest COMMAND $<TARGET_FILE:integrationtest>)
