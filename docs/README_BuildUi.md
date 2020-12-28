@@ -2,5 +2,9 @@
 The UI can be build by using the script provided in _ui/_ directory.
 
 ### Requirements
+#### Adjust DISPLAY environment variable
 It is important to adapt the IP-address given in the _.devcontainer/devcontainer.json_ file's _"DISPLAY"_ variable of the _"containerEnv"_ part. Keep the _:0.0_ part which is appended to the IP address.
+
+#### Install X11 Server
+To be able to show the UI application window inside the container, a X11 server needs to be installed on the host system. For example, on a Windows host, one can install _VcXsrv_ (from sourceforge: https://sourceforge.net/projects/vcxsrv/).
 
