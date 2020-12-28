@@ -19,5 +19,16 @@
 		"files.trimTrailingWhitespace": true,
 		"files.insertFinalNewline": true,
 		"files.eol": "\n"
-	}
+	},
+
+	"containerEnv": {
+		"DISPLAY": "192.168.178.32:0.0", // use IP address of local pc adapter
+		"LIBGL_ALWAYS_INDIRECT" : "1", // solves issues like "libGL error: No matching fbConfigs or visuals found"
+		"QMLSCENE_DEVICE": "softwarecontext" // solves issues like "QGLXContext: Failed to create dummy context"
+	},
+
+	"runArgs": [
+		"--network=host",
+		"--privileged"
+	]
 }
