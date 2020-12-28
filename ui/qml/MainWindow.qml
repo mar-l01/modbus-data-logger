@@ -1,10 +1,11 @@
-import QtQuick 2.15
+import QtQuick 2.11
 
 Rectangle {
-    id: window
-    width: 320
-    height: 480
-    focus: true
-    color: "#272822"
+    id: rectangleId
+    width: 400
+    height: 400
+    color: "red"
+    border.color: "black"
+    border.width: 5
+    radius: 10
 }
-
