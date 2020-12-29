@@ -43,3 +43,9 @@ jobs:
 
     - name: Build application as shared library in release mode
       run: scripts/build_shared.sh -r
+
+    - name: Build UI application with unittests
+      run: gui/scripts/build_ui.sh -t
+
+    - name: Run UI unittests
+      run: python gui/scripts/run_unittests.py
