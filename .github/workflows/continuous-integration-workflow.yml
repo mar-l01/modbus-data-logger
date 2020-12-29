@@ -44,6 +44,9 @@ jobs:
     - name: Build application as shared library in release mode
       run: scripts/build_shared.sh -r
 
+    - name: Make build-script executable
+      run: chmod +x gui/scripts/build_ui.sh
+
     - name: Build UI application with unittests
       run: gui/scripts/build_ui.sh -t
 
