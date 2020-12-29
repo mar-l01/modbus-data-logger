@@ -1,9 +1,12 @@
+#include "ui/views/includes/InitialView.hpp"
 #include <QGuiApplication>
+#include <QQmlContext>
 #include <QQmlEngine>
 #include <QQuickView>
 
 int main(int argc, char* argv[])
 {
+    // create application main window
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setApplicationName("Modbus Data-Logger");
 
@@ -17,6 +20,13 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    const auto rootContext = view.rootContext();
+
+    // instantiate views
+    Views::InitialView initialView;
+    rootContext->setContextProperty("initialView", &initialView);
+
+    // show application main window
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.show();
 

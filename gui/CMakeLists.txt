@@ -38,6 +38,9 @@ add_executable(ui_application
     "resources.qrc"
 )
 target_compile_options(ui_application PUBLIC -Wall -Wextra)
+target_include_directories(ui_application PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+)
 target_link_libraries(ui_application PRIVATE
     Qt5::Core
     Qt5::Qml
