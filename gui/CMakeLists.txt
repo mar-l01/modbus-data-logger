@@ -51,3 +51,59 @@ target_link_libraries(ui_application PRIVATE
     Qt5::Quick
     ${LIBMBDL_LIBDIR}/libmbdl.so.${LIBMBDL_VERSION}
 )
+
+##################################################################
+# TESTING
+##################################################################
+
+if (${CMAKE_ENABLE_TESTING})
+  enable_testing()
+
+  ################# START: Google Test Integration #################
+  # from: https://github.com/google/googletest/blob/master/googletest/README.md#incorporating-into-an-existing-cmake-project
+
+  # Download and unpack googletest at configure time
+  configure_file(../CMakeLists.txt.in googletest-download/CMakeLists.txt)
+  execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
+  if(result)
+    message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+  endif()
+  execute_process(COMMAND ${CMAKE_COMMAND} --build .
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download )
+  if(result)
+    message(FATAL_ERROR "Build step for googletest failed: ${result}")
+  endif()
+
+  # Add googletest directly to our build. This defines
+  # the gtest and gtest_main targets.
+  add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
+                  ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
+                  EXCLUDE_FROM_ALL)
+
+  #################### END: Google Test Integration ####################
+
+  # build framework unittests
+  add_executable(views_test
+    $<TARGET_OBJECTS:ui_views>
+    "ui/views/testing/TestInitialView.cpp"
+  )
+  target_include_directories(views_test
+    PRIVATE
+      "${PROJECT_SOURCE_DIR}"
+      "${PROJECT_SOURCE_DIR}/.."
+  )
+  target_link_libraries(views_test
+    PRIVATE
+      Qt5::Core
+      ${LIBMBDL_LIBDIR}/libmbdl.so.${LIBMBDL_VERSION}
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME views_test COMMAND $<TARGET_FILE:views_test>)
+
+ endif ()
