@@ -3,7 +3,7 @@
 # set up some variables required
 SCRIPT_PATH=`realpath $0`
 SCRIPT_DIR=`dirname ${SCRIPT_PATH}`
-BUILD_DIR="${SCRIPT_DIR}/builds/build_native/"
+BUILD_DIR="${SCRIPT_DIR}/../builds/build_native/"
 
 # create build directory if it is not present
 if [ ! -d "${BUILD_DIR}" ]; then
