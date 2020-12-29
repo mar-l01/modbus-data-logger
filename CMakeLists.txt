@@ -234,6 +234,7 @@ elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
   target_link_libraries(mbdl PRIVATE
     ${CMAKE_USR_LIB_ARCH}/libmodbus.so
     ${CMAKE_USR_LIB_ARCH}/libpthread.so
+    stdc++fs
   )
   target_compile_options(mbdl PUBLIC -Wall -Wextra)
   target_compile_definitions(mbdl PUBLIC _SHARED_LIBRARY_)
