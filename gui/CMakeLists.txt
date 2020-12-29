@@ -14,6 +14,8 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
 endif()
 
 find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
+find_package(PkgConfig)
+pkg_check_modules(LIBMBDL REQUIRED libmbdl>=0.1.0)
 
 # build views object-library
 add_library(ui_views OBJECT
@@ -26,6 +28,7 @@ add_library(ui_views OBJECT
 target_compile_options(ui_views PUBLIC -Wall -Wextra)
 target_include_directories(ui_views PRIVATE
     "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/.."
 )
 target_link_libraries(ui_views PRIVATE
     Qt5::Core
@@ -40,9 +43,11 @@ add_executable(ui_application
 target_compile_options(ui_application PUBLIC -Wall -Wextra)
 target_include_directories(ui_application PRIVATE
     "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/.."
 )
 target_link_libraries(ui_application PRIVATE
     Qt5::Core
     Qt5::Qml
     Qt5::Quick
+    ${LIBMBDL_LIBDIR}/libmbdl.so.${LIBMBDL_VERSION}
 )

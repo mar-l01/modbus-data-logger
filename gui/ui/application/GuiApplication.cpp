@@ -1,3 +1,6 @@
+#include "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
+#include "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
+
 #include "ui/views/includes/InitialView.hpp"
 #include <QGuiApplication>
 #include <QQmlContext>
@@ -20,10 +23,18 @@ int main(int argc, char* argv[])
         return -1;
     }
 
+    // create facade
+    const auto configFile = "resources/mbdl_config.json";
+    const Application::FrameworkDependencies frameworkDependencies(
+      Framework::LoggingFramework::SPDLOG, Framework::FileReaderFramework::NLOHMANN_JSON,
+      Gateway::ModbusComponentsFramework::LIBMODBUS, Gateway::ModbusComponentsFramework::LIBMODBUS);
+    const auto mbDataLoggerFacade =
+      Application::ModbusDataLoggerFacadeFactory::createModbusDataLoggerFacade(configFile, frameworkDependencies);
+
     const auto rootContext = view.rootContext();
 
     // instantiate views
-    Views::InitialView initialView;
+    Views::InitialView initialView(mbDataLoggerFacade);
     rootContext->setContextProperty("initialView", &initialView);
 
     // show application main window
