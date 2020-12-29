@@ -22,6 +22,3 @@ Download the _.exe_ file using above link and follow the installation commands. 
 
 <img width="500" alt="Extra Settings" src="https://user-images.githubusercontent.com/9079869/103296473-75149e00-49f6-11eb-86aa-dd73a2020a63.JPG">
 *Figure 1: Extra Settings checkbox*
-
-
-
