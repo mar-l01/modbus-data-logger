@@ -1,5 +1,14 @@
 ## Building the UI
-The UI can be build by using the script provided in _ui/_ directory.
+The UI application can either be built by calling the script contained in the _gui/_ directory or by using VSCodes _Build Task_.
+
+#### Command line
+Within VSCodes integrated terminal run following command from within the _gui/_ directory:
+```sh
+$ ./build_ui.sh
+```
+
+### VSCode Build Task
+Within VSCode go to __Terminal__ > __Run Build Tasks...__ and here you can select _Build UI_, to build the UI application.
 
 ### Requirements
 #### Adjust DISPLAY environment variable
