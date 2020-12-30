@@ -2,8 +2,6 @@
 
 #include "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
 
-#include <QDebug>
-
 namespace Views {
 
 InitialView::InitialView(const std::shared_ptr<Application::ModbusDataLoggerFacade>& mbDataLoggerFacade,
@@ -15,16 +13,16 @@ InitialView::InitialView(const std::shared_ptr<Application::ModbusDataLoggerFaca
 
 void InitialView::startModbusApplication()
 {
-    qDebug() << "Starting Modbus application";
     m_mbDataLoggerFacade->startModbusCommunication();
+
     m_isMbAppRunning = true;
     emit mbAppRunningChanged();
 }
 
 void InitialView::stopModbusApplication()
 {
-    qDebug() << "Stopping Modbus application";
     m_mbDataLoggerFacade->stopModbusCommunication();
+
     m_isMbAppRunning = false;
     emit mbAppRunningChanged();
 }

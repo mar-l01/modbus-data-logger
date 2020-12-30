@@ -85,6 +85,8 @@ if (${CMAKE_ENABLE_TESTING})
 
   #################### END: Google Test Integration ####################
 
+  find_package(Qt5 COMPONENTS Test REQUIRED)
+
   # build framework unittests
   add_executable(views_test
     $<TARGET_OBJECTS:ui_views>
@@ -98,6 +100,7 @@ if (${CMAKE_ENABLE_TESTING})
   target_link_libraries(views_test
     PRIVATE
       Qt5::Core
+      Qt5::Test
       ${LIBMBDL_LIBDIR}/libmbdl.so.${LIBMBDL_VERSION}
       gtest
       gmock
