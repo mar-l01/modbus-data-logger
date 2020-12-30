@@ -9,7 +9,6 @@ Rectangle {
     Button {
         property var strStart: "Start"
         property var strStop: "Stop"
-        property var buttonColor: "#9acd32"
 
         id: startButton
         anchors {
@@ -20,7 +19,6 @@ Rectangle {
         }
         width: 100
         height: 50
-        background: Rectangle {color: startButton.buttonColor}
         text: strStart
         onClicked: onStartButtonClicked()
 
