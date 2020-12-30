@@ -1,7 +1,7 @@
 #include "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
 #include "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
-
 #include "ui/views/includes/InitialView.hpp"
+
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QQmlEngine>
@@ -14,17 +14,10 @@ int main(int argc, char* argv[])
     QCoreApplication::setApplicationName("Modbus Data-Logger");
 
     QGuiApplication app(argc, argv);
-
     QQuickView view;
-    view.connect(view.engine(), &QQmlEngine::quit, &app, &QCoreApplication::quit);
-    view.setSource(QUrl("qrc:/qml/MainWindow.qml"));
-
-    if (view.status() == QQuickView::Error) {
-        return -1;
-    }
 
     // create facade
-    const auto configFile = "resources/mbdl_config.json";
+    const auto configFile = "../resources/mbdl_config.json";
     const Application::FrameworkDependencies frameworkDependencies(
       Framework::LoggingFramework::SPDLOG, Framework::FileReaderFramework::NLOHMANN_JSON,
       Gateway::ModbusComponentsFramework::LIBMODBUS, Gateway::ModbusComponentsFramework::LIBMODBUS);
@@ -33,11 +26,18 @@ int main(int argc, char* argv[])
 
     const auto rootContext = view.rootContext();
 
-    // instantiate views
+    // instantiate view models
     Views::InitialView initialView(mbDataLoggerFacade);
     rootContext->setContextProperty("initialView", &initialView);
 
-    // show application main window
+    // show main window
+    view.connect(view.engine(), &QQmlEngine::quit, &app, &QCoreApplication::quit);
+    view.setSource(QUrl("qrc:/qml/MainWindow.qml"));
+
+    if (view.status() == QQuickView::Error) {
+        return -1;
+    }
+
     view.setResizeMode(QQuickView::SizeRootObjectToView);
     view.show();
 

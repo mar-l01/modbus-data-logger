@@ -38,7 +38,7 @@ target_link_libraries(ui_views PRIVATE
 add_executable(ui_application
     $<TARGET_OBJECTS:ui_views>
     "ui/application/GuiApplication.cpp"
-    "resources.qrc"
+    "ui/resources.qrc"
 )
 target_compile_options(ui_application PUBLIC -Wall -Wextra)
 target_include_directories(ui_application PRIVATE
