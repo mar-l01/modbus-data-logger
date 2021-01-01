@@ -4,6 +4,7 @@
 #include "domain/logging/testing/gmock/MockFileLogger.hpp"
 #include "domain/utility/testing/gmock/MockTimer.hpp"
 
+#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 namespace {

@@ -75,6 +75,7 @@ private:
     std::shared_ptr<std::promise<void>> m_threadStopSignal;
     void runModbusSlaveProcess(std::future<void> futureObj);
     void closeConnectionToModbusComponents();
+    void updateApplicationState(const ApplicationState newApplicationState);
 };
 
 }

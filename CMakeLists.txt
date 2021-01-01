@@ -431,6 +431,7 @@ if (${CMAKE_ENABLE_TESTING})
   target_include_directories(application_test PRIVATE
     "${PROJECT_SOURCE_DIR}"
     "/usr/include/better-enums/"
+    "/usr/include/boost_1_72_0/"
   )
   target_link_libraries(application_test
     PRIVATE
