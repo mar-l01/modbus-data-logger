@@ -38,7 +38,7 @@ target_link_libraries(ui_views PRIVATE
 add_executable(ui_application
     $<TARGET_OBJECTS:ui_views>
     "ui/application/GuiApplication.cpp"
-    "resources.qrc"
+    "ui/resources.qrc"
 )
 target_compile_options(ui_application PUBLIC -Wall -Wextra)
 target_include_directories(ui_application PRIVATE
@@ -85,6 +85,8 @@ if (${CMAKE_ENABLE_TESTING})
 
   #################### END: Google Test Integration ####################
 
+  find_package(Qt5 COMPONENTS Test REQUIRED)
+
   # build framework unittests
   add_executable(views_test
     $<TARGET_OBJECTS:ui_views>
@@ -98,6 +100,7 @@ if (${CMAKE_ENABLE_TESTING})
   target_link_libraries(views_test
     PRIVATE
       Qt5::Core
+      Qt5::Test
       ${LIBMBDL_LIBDIR}/libmbdl.so.${LIBMBDL_VERSION}
       gtest
       gmock
