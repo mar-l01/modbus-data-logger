@@ -11,9 +11,9 @@ Rectangle {
         property var iconStop: "qrc:/icon/stop_icon"
 
         id: startButton
-        width: source.width / 3
-        height: source.height / 3
         source: iconStart
+        width: sourceSize.width
+        height: sourceSize.height
         fillMode: Image.PreserveAspectFit
         anchors {
             top: parent.top
