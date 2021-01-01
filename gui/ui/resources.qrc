@@ -1,5 +1,9 @@
 <RCC>
-    <qresource prefix="/">
-        <file>resources/qml/MainWindow.qml</file>
+    <qresource prefix="/qml">
+        <file alias="MainWindow">resources/qml/MainWindow.qml</file>
+    </qresource>
+    <qresource prefix="/icon">
+        <file alias="start_icon">resources/images/start_icon.png</file>
+        <file alias="stop_icon">resources/images/stop_icon.png</file>
     </qresource>
 </RCC>

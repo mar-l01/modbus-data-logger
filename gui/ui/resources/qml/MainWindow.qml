@@ -6,26 +6,30 @@ Rectangle {
     width: 300
     height: 150
 
-    Button {
-        property var strStart: "Start"
-        property var strStop: "Stop"
+    Image {
+        property var iconStart: "qrc:/icon/start_icon"
+        property var iconStop: "qrc:/icon/stop_icon"
 
         id: startButton
+        width: source.width / 3
+        height: source.height / 3
+        source: iconStart
+        fillMode: Image.PreserveAspectFit
         anchors {
             top: parent.top
             left: parent.left
-            leftMargin: 100
-            topMargin: 50
+            leftMargin: (parent.width - width) / 2
+            topMargin: (parent.height - height) / 2
         }
-        width: 100
-        height: 50
-        text: strStart
-        onClicked: onStartButtonClicked()
-        background: Rectangle { color: "yellow" }
+
+        MouseArea {
+            id: buttonMouseArea
+            anchors.fill: parent
+            onClicked: startButton.onStartButtonClicked()
+        }
 
         function onStartButtonClicked() {
-            startButton.enabled = false
-            startButton.background.color = "green"
+            buttonMouseArea.enabled = false
 
             if (initialView.isMbAppRunning) {
                 initialView.stopModbusApplication()
@@ -37,9 +41,8 @@ Rectangle {
         Connections {
             target: initialView
             onMbAppRunningChanged: {
-                startButton.text = initialView.isMbAppRunning ? startButton.strStop : startButton.strStart
-                startButton.enabled = true
-                startButton.background.color = "orange"
+                startButton.source = initialView.isMbAppRunning ? startButton.iconStop : startButton.iconStart
+                buttonMouseArea.enabled = true
             }
         }
     }
