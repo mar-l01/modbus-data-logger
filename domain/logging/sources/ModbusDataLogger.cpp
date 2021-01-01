@@ -38,16 +38,16 @@ void ModbusDataLogger::logModbusResponse(const std::shared_ptr<Entity::ModbusTcp
     loggingThread.detach();
 }
 
-std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusRequestListener(
-  SignalCallback<Entity::ModbusTcpRequest> signalCallback)
+std::shared_ptr<Framework::ScopedConnection> ModbusDataLogger::addModbusRequestListener(
+  Framework::SignalCallback<Entity::ModbusTcpRequest> signalCallback)
 {
-    return std::make_shared<ScopedConnection>(m_mbRequestEvent.connect(signalCallback));
+    return std::make_shared<Framework::ScopedConnection>(m_mbRequestEvent.connect(signalCallback));
 }
 
-std::shared_ptr<ScopedConnection> ModbusDataLogger::addModbusResponseListener(
-  SignalCallback<Entity::ModbusTcpResponse> signalCallback)
+std::shared_ptr<Framework::ScopedConnection> ModbusDataLogger::addModbusResponseListener(
+  Framework::SignalCallback<Entity::ModbusTcpResponse> signalCallback)
 {
-    return std::make_shared<ScopedConnection>(m_mbResponseEvent.connect(signalCallback));
+    return std::make_shared<Framework::ScopedConnection>(m_mbResponseEvent.connect(signalCallback));
 }
 
 void ModbusDataLogger::startLogging()

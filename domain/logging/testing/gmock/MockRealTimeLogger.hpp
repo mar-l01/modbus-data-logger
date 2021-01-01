@@ -7,8 +7,8 @@
 class MockRealTimeLogger : public Logging::RealTimeLogger
 {
 public:
-    MOCK_METHOD(std::shared_ptr<Logging::ScopedConnection>, addModbusRequestListener,
-                (Logging::SignalCallback<Entity::ModbusTcpRequest> signalCallback), (override));
-    MOCK_METHOD(std::shared_ptr<Logging::ScopedConnection>, addModbusResponseListener,
-                (Logging::SignalCallback<Entity::ModbusTcpResponse> signalCallback), (override));
+    MOCK_METHOD(std::shared_ptr<Framework:: ::ScopedConnection>, addModbusRequestListener,
+                (Framework:: ::SignalCallback<Entity::ModbusTcpRequest> signalCallback), (override));
+    MOCK_METHOD(std::shared_ptr<Framework:: ::ScopedConnection>, addModbusResponseListener,
+                (Framework:: ::SignalCallback<Entity::ModbusTcpResponse> signalCallback), (override));
 };
