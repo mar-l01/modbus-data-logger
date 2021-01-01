@@ -12,4 +12,6 @@ public:
     MOCK_METHOD(void, startLogger, (), (override));
     MOCK_METHOD(void, stopLogger, (), (override));
     MOCK_METHOD(Application::ApplicationState, getCurrentApplicationState, (), (override));
+    MOCK_METHOD(std::shared_ptr<ScopedConnection>, addApplicationStateListener,
+                (SignalCallback<ApplicationState>)(override));
 };

@@ -57,6 +57,12 @@ ApplicationState ModbusDataLoggerFacadeImpl::getCurrentApplicationState()
     return m_currentApplicationState;
 }
 
+std::shared_ptr<Framework::ScopedConnection> ModbusDataLoggerFacadeImpl::addApplicationStateListener(
+  Framework::SignalCallback<ApplicationState> signalCallback)
+{
+    return std::make_shared<Framework::ScopedConnection>(m_currentApplicationStateEvent.connect(signalCallback));
+}
+
 void ModbusDataLoggerFacadeImpl::runModbusSlaveProcess(std::future<void> futureObj)
 {
     // run Modbus slave until 'stopModbusCommunication()' was triggered

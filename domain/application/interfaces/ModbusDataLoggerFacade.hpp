@@ -1,5 +1,7 @@
 #pragma once
 
+#include "domain/framework/includes/SignalEvent.hpp"
+
 namespace Application {
 
 /**
@@ -50,6 +52,13 @@ public:
      * @brief Get the current application state
      */
     virtual ApplicationState getCurrentApplicationState() = 0;
+
+    /**
+     * @brief Subscribe to changes in the application state. Hold the returned pointer
+     * as long as you want to be notified about changes.
+     */
+    virtual std::shared_ptr<Framework::ScopedConnection> addApplicationStateListener(
+      Framework::SignalCallback<ApplicationState> signalCallback) = 0;
 };
 
 }
