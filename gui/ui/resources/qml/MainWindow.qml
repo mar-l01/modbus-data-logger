@@ -21,9 +21,11 @@ Rectangle {
         height: 50
         text: strStart
         onClicked: onStartButtonClicked()
+        background: Rectangle { color: "yellow" }
 
         function onStartButtonClicked() {
             startButton.enabled = false
+            startButton.background.color = "green"
 
             if (initialView.isMbAppRunning) {
                 initialView.stopModbusApplication()
@@ -37,6 +39,7 @@ Rectangle {
             onMbAppRunningChanged: {
                 startButton.text = initialView.isMbAppRunning ? startButton.strStop : startButton.strStart
                 startButton.enabled = true
+                startButton.background.color = "orange"
             }
         }
     }

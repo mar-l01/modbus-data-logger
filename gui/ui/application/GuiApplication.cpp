@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 
     // show main window
     view.connect(view.engine(), &QQmlEngine::quit, &app, &QCoreApplication::quit);
-    view.setSource(QUrl("qrc:/qml/MainWindow.qml"));
+    view.setSource(QUrl("qrc:/resources/qml/MainWindow.qml"));
 
     if (view.status() == QQuickView::Error) {
         return -1;
