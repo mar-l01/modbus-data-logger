@@ -3,6 +3,23 @@
 namespace Application {
 
 /**
+ * @brief Enum that holds different application states, which will be set in following order:
+ * - start application -----------------> STARTING
+ * - application is up -----------------> STARTED
+ * - external Modbus device connected --> RUNNING
+ * - stop application ------------------> STOPPING
+ * - application is stopped ------------> STOPPED
+ */
+enum class APPLICATION_STATE : unsigned char
+{
+    STARTING = 0,
+    STARTED,
+    RUNNING,
+    STOPPING,
+    STOPPED
+};
+
+/**
  * @brief This interface represents the facade of the ModbusDataLogger application.
  * It allows to start/stop the Modbus gateway communication as well as the logging.
  */

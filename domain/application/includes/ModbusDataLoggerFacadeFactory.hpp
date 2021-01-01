@@ -44,23 +44,6 @@ struct FrameworkDependencies
 };
 
 /**
- * @brief Enum that holds different application states, which will be set in following order:
- * - start application -----------------> STARTING
- * - application is up -----------------> STARTED
- * - external Modbus device connected --> RUNNING
- * - stop application ------------------> STOPPING
- * - application is stopped ------------> STOPPED
- */
-enum class APPLICATION_STATE : unsigned char
-{
-    STARTING = 0,
-    STARTED,
-    RUNNING,
-    STOPPING,
-    STOPPED
-};
-
-/**
  * @brief Factory to create a @ref ModbusDataLoggerFacade which holds all necessary dependencies to run the application.
  */
 class ModbusDataLoggerFacadeFactory
