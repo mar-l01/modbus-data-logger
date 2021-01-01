@@ -34,6 +34,7 @@ void ModbusDataLoggerFacadeImpl::startModbusCommunication()
     // stop Modbus communication on application timeout
     m_timer->callOnTimeout([this]() {
         SPDLOG_INFO("Timeout reached!");
+        updateApplicationState(ApplicationState::STOPPING);
         closeConnectionToModbusComponents();
     });
 }
