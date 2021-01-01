@@ -10,7 +10,7 @@ namespace Application {
  * - stop application ------------------> STOPPING
  * - application is stopped ------------> STOPPED
  */
-enum class APPLICATION_STATE : unsigned char
+enum class ApplicationState : unsigned char
 {
     STARTING = 0,
     STARTED,
@@ -45,6 +45,11 @@ public:
      * @brief Stop logging the Modbus communication
      */
     virtual void stopLogger() = 0;
+
+    /**
+     * @brief Get the current application state
+     */
+    virtual ApplicationState getCurrentApplicationState() = 0;
 };
 
 }

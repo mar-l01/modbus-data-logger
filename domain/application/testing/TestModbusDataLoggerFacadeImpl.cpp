@@ -91,4 +91,11 @@ TEST_F(TestModbusDataLoggerFacadeImpl, stopLogger)
     testObj->stopLogger();
 }
 
+TEST_F(TestModbusDataLoggerFacadeImpl, defaultApplicationState)
+{
+    auto testObj = createTestObject();
+
+    EXPECT_EQ(ApplicationState::STOPPED, testObj->getCurrentApplicationState());
+}
+
 }

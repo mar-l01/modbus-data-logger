@@ -17,6 +17,7 @@ ModbusDataLoggerFacadeImpl::ModbusDataLoggerFacadeImpl(
     , m_mbSlaveController(mbSlaveController)
     , m_fileLogger(fileLogger)
     , m_timer(timer)
+    , m_currentApplicationState(ApplicationState::STOPPED)
     , m_threadStopSignal(std::make_shared<std::promise<void>>())
 {}
 
@@ -49,6 +50,11 @@ void ModbusDataLoggerFacadeImpl::startLogger()
 void ModbusDataLoggerFacadeImpl::stopLogger()
 {
     m_fileLogger->stopLogging();
+}
+
+ApplicationState ModbusDataLoggerFacadeImpl::getCurrentApplicationState()
+{
+    return m_currentApplicationState;
 }
 
 void ModbusDataLoggerFacadeImpl::runModbusSlaveProcess(std::future<void> futureObj)
