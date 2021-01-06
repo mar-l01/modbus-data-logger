@@ -34,7 +34,6 @@ void ModbusDataLoggerFacadeImpl::startModbusCommunication()
     // stop Modbus communication on application timeout
     m_timer->callOnTimeout([this]() {
         SPDLOG_INFO("Timeout reached!");
-        updateApplicationState(ApplicationState::STOPPING);
         closeConnectionToModbusComponents();
     });
 }
@@ -42,7 +41,6 @@ void ModbusDataLoggerFacadeImpl::startModbusCommunication()
 void ModbusDataLoggerFacadeImpl::stopModbusCommunication()
 {
     m_timer->stop();
-    updateApplicationState(ApplicationState::STOPPING);
     closeConnectionToModbusComponents();
 }
 
@@ -81,6 +79,7 @@ void ModbusDataLoggerFacadeImpl::runModbusSlaveProcess(std::future<void> futureO
 void ModbusDataLoggerFacadeImpl::closeConnectionToModbusComponents()
 {
     // trigger stop of Modbus process loop and wait for thread to be stopped
+    updateApplicationState(ApplicationState::STOPPING);
     try {
         m_threadStopSignal->set_value();
     } catch (const std::future_error& futureError) {
