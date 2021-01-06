@@ -1,12 +1,12 @@
 #pragma once
 
+#include "domain/framework/includes/SignalEvent.hpp"
 #include "domain/logging/interfaces/DataLogger.hpp"
 #include "domain/logging/interfaces/FileLogger.hpp"
 #include "domain/logging/interfaces/FileLoggerController.hpp"
 #include "domain/logging/interfaces/RealTimeLogger.hpp"
 
 #include "spdlog/sinks/rotating_file_sink.h"
-#include <boost/signals2/signal.hpp>
 
 namespace Entity {
 // forward declarations
@@ -16,9 +16,6 @@ class ModbusLoggerConfiguration;
 }
 
 namespace Logging {
-
-template<typename T>
-using SignalEvent = boost::signals2::signal<void(const T&)>;
 
 /**
  * @brief This class implements several interfaces, which are used for logging a Modbus communication:
@@ -55,14 +52,14 @@ public:
     /**
      * @see RealTimeLogger::addModbusRequestListener
      */
-    std::shared_ptr<ScopedConnection> addModbusRequestListener(
-      SignalCallback<Entity::ModbusTcpRequest> signalCallback) override;
+    std::shared_ptr<Framework::ScopedConnection> addModbusRequestListener(
+      Framework::SignalCallback<Entity::ModbusTcpRequest> signalCallback) override;
 
     /**
      * @see RealTimeLogger::addModbusResponseListener
      */
-    std::shared_ptr<ScopedConnection> addModbusResponseListener(
-      SignalCallback<Entity::ModbusTcpResponse> signalCallback) override;
+    std::shared_ptr<Framework::ScopedConnection> addModbusResponseListener(
+      Framework::SignalCallback<Entity::ModbusTcpResponse> signalCallback) override;
 
     // FileLogger interface
     /**
@@ -81,8 +78,8 @@ public:
     void changeLogFileConfiguration(const Entity::ModbusLoggerConfiguration& mbLogConfig) override;
 
 private:
-    SignalEvent<Entity::ModbusTcpRequest> m_mbRequestEvent;
-    SignalEvent<Entity::ModbusTcpResponse> m_mbResponseEvent;
+    Framework::SignalEvent<Entity::ModbusTcpRequest> m_mbRequestEvent;
+    Framework::SignalEvent<Entity::ModbusTcpResponse> m_mbResponseEvent;
     const std::shared_ptr<FileLoggerController> m_fileLoggerController;
 };
 

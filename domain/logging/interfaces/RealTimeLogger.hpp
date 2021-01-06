@@ -1,6 +1,7 @@
 #pragma once
 
-#include <boost/signals2/connection.hpp>
+#include "domain/framework/includes/SignalEvent.hpp"
+
 #include <functional>
 #include <memory>
 
@@ -11,10 +12,6 @@ class ModbusTcpResponse;
 }
 
 namespace Logging {
-
-using ScopedConnection = boost::signals2::scoped_connection;
-template<typename T>
-using SignalCallback = const std::function<void(const T&)>&;
 
 /**
  * @brief This interface is used for real-time notifications about the exchanged Modbus data.
@@ -32,8 +29,8 @@ public:
      * @return A shared-pointer instance of a scoped connection which the client must hold as long as it wants to be
      * informed about new data.
      */
-    virtual std::shared_ptr<ScopedConnection> addModbusRequestListener(
-      SignalCallback<Entity::ModbusTcpRequest> signalCallback) = 0;
+    virtual std::shared_ptr<Framework::ScopedConnection> addModbusRequestListener(
+      Framework::SignalCallback<Entity::ModbusTcpRequest> signalCallback) = 0;
 
     /**
      * @brief Add a listener, which gets informed once a new Modbus TCP response was received.
@@ -42,8 +39,8 @@ public:
      * @return A shared-pointer instance of a scoped connection which the client must hold as long as it wants to be
      * informed about new data.
      */
-    virtual std::shared_ptr<ScopedConnection> addModbusResponseListener(
-      SignalCallback<Entity::ModbusTcpResponse> signalCallback) = 0;
+    virtual std::shared_ptr<Framework::ScopedConnection> addModbusResponseListener(
+      Framework::SignalCallback<Entity::ModbusTcpResponse> signalCallback) = 0;
 };
 
 }
