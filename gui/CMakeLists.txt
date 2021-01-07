@@ -29,6 +29,7 @@ target_compile_options(ui_views PUBLIC -Wall -Wextra)
 target_include_directories(ui_views PRIVATE
     "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/.."
+    "/usr/include/boost_1_72_0/"
 )
 target_link_libraries(ui_views PRIVATE
     Qt5::Core
@@ -44,6 +45,7 @@ target_compile_options(ui_application PUBLIC -Wall -Wextra)
 target_include_directories(ui_application PRIVATE
     "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/.."
+    "/usr/include/boost_1_72_0/"
 )
 target_link_libraries(ui_application PRIVATE
     Qt5::Core
@@ -96,6 +98,7 @@ if (${CMAKE_ENABLE_TESTING})
     PRIVATE
       "${PROJECT_SOURCE_DIR}"
       "${PROJECT_SOURCE_DIR}/.."
+      "/usr/include/boost_1_72_0/"
   )
   target_link_libraries(views_test
     PRIVATE

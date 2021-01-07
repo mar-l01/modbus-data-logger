@@ -52,16 +52,30 @@ public:
      */
     void stopLogger() override;
 
+    /**
+     * @see ModbusDataLoggerFacade::getCurrentApplicationState
+     */
+    ApplicationState getCurrentApplicationState() override;
+
+    /**
+     * @see ModbusDataLoggerFacade::addApplicationStateListener
+     */
+    std::shared_ptr<Framework::ScopedConnection> addApplicationStateListener(
+      Framework::SignalCallback<ApplicationState> signalCallback) override;
+
 private:
     std::shared_ptr<Gateway::ModbusMasterController> m_mbMasterController;
     std::shared_ptr<Gateway::ModbusSlaveController> m_mbSlaveController;
     std::shared_ptr<Logging::FileLogger> m_fileLogger;
     std::shared_ptr<Utility::Timer> m_timer;
+    ApplicationState m_currentApplicationState;
+    Framework::SignalEvent<ApplicationState> m_currentApplicationStateEvent;
 
     std::thread m_mbSlaveThread;
     std::shared_ptr<std::promise<void>> m_threadStopSignal;
     void runModbusSlaveProcess(std::future<void> futureObj);
     void closeConnectionToModbusComponents();
+    void updateApplicationState(const ApplicationState newApplicationState);
 };
 
 }
