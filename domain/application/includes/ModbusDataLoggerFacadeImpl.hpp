@@ -2,9 +2,10 @@
 
 #include "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
 
-#include <future>
 #include <memory>
+#include <mutex>
 #include <string>
+#include <thread>
 
 namespace Gateway {
 // forward declarations
@@ -71,11 +72,13 @@ private:
     ApplicationState m_currentApplicationState;
     Framework::SignalEvent<ApplicationState> m_currentApplicationStateEvent;
 
+    std::mutex m_mutex;
     std::thread m_mbSlaveThread;
-    std::shared_ptr<std::promise<void>> m_threadStopSignal;
-    void runModbusSlaveProcess(std::future<void> futureObj);
+    void runModbusSlaveProcess();
     void closeConnectionToModbusComponents();
+
     void updateApplicationState(const ApplicationState newApplicationState);
+    bool isApplicationState(ApplicationState cmpApplicationState);
 };
 
 }
