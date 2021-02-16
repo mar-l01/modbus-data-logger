@@ -97,14 +97,15 @@ TEST_F(TestModbusDataLoggerFacade, startAndStopCommunication)
     // then: stop communication (use additional thread to not block main thread)
     std::thread stopComThread(&Application::ModbusDataLoggerFacade::stopModbusCommunication, getFixture());
 
-    // clean-up
+    // make sure, STOPPING was set before closing connection
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     mbExtMaster.tearDown();
+
+    // clean-up
     stopComThread.join();
     mbExtSlaveThread.join();
 
-    // then: facade is not running, not able to connect from external side
-    bool expectConnectionFailure = true;
-    mbExtMaster.setUp(expectConnectionFailure);
+    EXPECT_EQ(ApplicationState::STOPPED, getFixture()->getCurrentApplicationState());
 }
 
 TEST_F(TestModbusDataLoggerFacade, startAndStopLogging)
@@ -139,11 +140,20 @@ TEST_F(TestModbusDataLoggerFacade, startAndStopLogging)
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     checkLoggedContent();
 
-    // clean-up
+    // ---------- stop communication ----------
+    // given: external Modbus components connected, facade is running
+    // then: stop communication (use additional thread to not block main thread)
     std::thread stopComThread(&Application::ModbusDataLoggerFacade::stopModbusCommunication, getFixture());
+
+    // make sure, STOPPING was set before closing connection
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     mbExtMaster.tearDown();
+
+    // clean-up
     stopComThread.join();
     mbExtSlaveThread.join();
+
+    EXPECT_EQ(ApplicationState::STOPPED, getFixture()->getCurrentApplicationState());
 }
 
 TEST_F(TestModbusDataLoggerFacade, checkApplicationStateChanges)
@@ -168,13 +178,13 @@ TEST_F(TestModbusDataLoggerFacade, checkApplicationStateChanges)
         InSequence inSeq;
         EXPECT_CALL(applicationStateListener, Call(ApplicationState::STARTING));
         EXPECT_CALL(applicationStateListener, Call(ApplicationState::STARTED));
+        EXPECT_CALL(applicationStateListener, Call(ApplicationState::RUNNING));
     }
     mbDataLoggerFacadeFixture->startModbusCommunication();
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
     // then: external Modbus master is able to connect, full communication possible -> RUNNING
     FixtureExternalModbusMaster mbExtMaster;
-    EXPECT_CALL(applicationStateListener, Call(ApplicationState::RUNNING));
     mbExtMaster.setUp();
     std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
