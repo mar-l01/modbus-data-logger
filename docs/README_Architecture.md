@@ -19,6 +19,6 @@ The application to develop will be integrated into the environment as shown in F
 *Figure 1: Context View*
 
 ### General Architecture
-The implementation of the application follows the architecture shown in Figure 2.
-<img width="683" alt="CurrentArchitecture" src="https://user-images.githubusercontent.com/9079869/92468705-ddcfd480-f1d3-11ea-9c77-caaaf33f21b9.png">
+The implementation of the application - when integrated into another application as shared library, for instance - follows the architecture shown in Figure 2. For simplicity and readability issues, all relations of the factory classes are omitted in the architecture figure below.
+<img width="683" alt="CurrentArchitecture" src="https://user-images.githubusercontent.com/9079869/108619956-ceaead00-7428-11eb-83d2-92897cb513ee.png">
 *Figure 2: General Architecture*
