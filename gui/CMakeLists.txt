@@ -17,6 +17,24 @@ find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(LIBMBDL REQUIRED libmbdl>=0.1.0)
 
+# build facade wrapper object-library
+add_library(ui_facade OBJECT
+    # header files
+    "ui/facade/includes/ModbusDataLoggerFacadeUIWrapper.hpp"
+
+    # source files
+    "ui/facade/sources/ModbusDataLoggerFacadeUIWrapper.cpp"
+)
+target_compile_options(ui_facade PUBLIC -Wall -Wextra)
+target_include_directories(ui_facade PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/.."
+    "/usr/include/boost_1_72_0/"
+)
+target_link_libraries(ui_facade PRIVATE
+    Qt5::Core
+)
+
 # build views object-library
 add_library(ui_views OBJECT
     # header files
