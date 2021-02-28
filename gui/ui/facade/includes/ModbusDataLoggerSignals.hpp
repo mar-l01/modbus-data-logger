@@ -9,12 +9,12 @@ namespace Facade {
  * the domain facade. Throwing one of them will trigger a call to the corresponding method
  * of the domain facade in a thread-safety manner.
  */
-class ModbusDataLoggerManager : public QObject
+class ModbusDataLoggerSignals : public QObject
 {
     Q_OBJECT
 
 public:
-    ModbusDataLoggerManager() {}
+    ModbusDataLoggerSignals() {}
 
 signals:
     void startModbusCommunication();

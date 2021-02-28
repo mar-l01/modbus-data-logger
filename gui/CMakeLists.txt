@@ -22,7 +22,7 @@ add_library(ui_facade OBJECT
     # header files
     "ui/facade/includes/ModbusDataLoggerFacadeUIWrapper.hpp"
     "ui/facade/includes/ModbusDataLoggerThreadController.hpp"
-    "ui/facade/includes/ModbusDataLoggerManager.hpp"
+    "ui/facade/includes/ModbusDataLoggerSignals.hpp"
 
     # source files
     "ui/facade/sources/ModbusDataLoggerFacadeUIWrapper.cpp"
