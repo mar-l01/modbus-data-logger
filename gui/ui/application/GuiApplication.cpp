@@ -1,5 +1,8 @@
 #include "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
 #include "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
+#include "ui/facade/includes/ModbusDataLoggerFacadeUIWrapper.hpp"
+#include "ui/facade/includes/ModbusDataLoggerSignals.hpp"
+#include "ui/facade/includes/ModbusDataLoggerThreadController.hpp"
 #include "ui/views/includes/InitialView.hpp"
 
 #include <QGuiApplication>
@@ -19,6 +22,9 @@ int main(int argc, char* argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setApplicationName("Modbus Data-Logger");
 
+    // register domain scoped-enum to make it available in signal slot connections
+    qRegisterMetaType<Application::ApplicationState>("Application::ApplicationState");
+
     QGuiApplication app(argc, argv);
     QQuickView view;
 
@@ -26,13 +32,22 @@ int main(int argc, char* argv[])
     const Application::FrameworkDependencies frameworkDependencies(
       Framework::LoggingFramework::SPDLOG, Framework::FileReaderFramework::NLOHMANN_JSON,
       Gateway::ModbusComponentsFramework::LIBMODBUS, Gateway::ModbusComponentsFramework::LIBMODBUS);
-    const auto mbDataLoggerFacade =
+    auto mbDataLoggerFacade =
       Application::ModbusDataLoggerFacadeFactory::createModbusDataLoggerFacade(mbConfigFile, frameworkDependencies);
+
+    // create UI wrapper for above facade, and wrapper for all signals to interact with this facade
+    auto mbDataLoggerSignals = std::make_shared<Facade::ModbusDataLoggerSignals>();
+    auto mbDataLoggerFacadeUIWrapper =
+      std::make_unique<Facade::ModbusDataLoggerFacadeUIWrapper>(std::move(mbDataLoggerFacade), mbDataLoggerSignals);
+
+    // move wrapper facade into worker thread context
+    Facade::ModbusDataLoggerThreadController mbDataLoggerThreadController(std::move(mbDataLoggerFacadeUIWrapper),
+                                                                          mbDataLoggerSignals);
 
     const auto rootContext = view.rootContext();
 
     // instantiate view models
-    Views::InitialView initialView(mbDataLoggerFacade);
+    Views::InitialView initialView(mbDataLoggerSignals);
     rootContext->setContextProperty("initialView", &initialView);
 
     // show main window

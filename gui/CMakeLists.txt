@@ -58,6 +58,7 @@ target_link_libraries(ui_views PRIVATE
 
 # build executable
 add_executable(ui_application
+    $<TARGET_OBJECTS:ui_facade>
     $<TARGET_OBJECTS:ui_views>
     "ui/application/GuiApplication.cpp"
     "ui/resources.qrc"

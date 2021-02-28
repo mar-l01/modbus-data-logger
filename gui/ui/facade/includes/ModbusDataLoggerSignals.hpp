@@ -1,5 +1,7 @@
 #pragma once
 
+#include "domain/application/interfaces/ModbusDataLoggerFacade.hpp"
+
 #include <QObject>
 
 namespace Facade {
@@ -17,6 +19,7 @@ public:
     ModbusDataLoggerSignals() {}
 
 signals:
+    // signals to trigger a method of the facade
     void startModbusCommunication();
     void stopModbusCommunication();
     void startLogger();
@@ -24,6 +27,9 @@ signals:
     void getCurrentApplicationState();
     void startListenForApplicationStateChanges();
     void stopListenForApplicationStateChanges();
+
+    // signals to get informed about changes of the facade
+    void applicationStateChanged(Application::ApplicationState state);
 };
 
 }

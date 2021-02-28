@@ -11,6 +11,7 @@ enum class ApplicationState : unsigned char;
 }
 
 namespace Facade {
+class ModbusDataLoggerSignals;
 
 /**
  * @brief This class is used as wrapper for the facade-pattern implemented in the domain.
@@ -23,8 +24,8 @@ class ModbusDataLoggerFacadeUIWrapper : public QObject
     Q_OBJECT
 
 public:
-    ModbusDataLoggerFacadeUIWrapper(std::shared_ptr<Application::ModbusDataLoggerFacade> mbDataLoggerFacade,
-                                    QObject* parent = nullptr);
+    ModbusDataLoggerFacadeUIWrapper(std::shared_ptr<Application::ModbusDataLoggerFacade>&& mbDataLoggerFacade,
+                                    const std::shared_ptr<ModbusDataLoggerSignals>& mbDataLoggerSignals);
 
 public slots:
     /**
@@ -67,7 +68,10 @@ signals:
 
 private:
     std::shared_ptr<Application::ModbusDataLoggerFacade> m_mbDataLoggerFacade;
+    std::shared_ptr<ModbusDataLoggerSignals> m_mbDataLoggerSignals;
     std::shared_ptr<Framework::ScopedConnection> m_applicationStateConnection;
 };
 
 }
+
+Q_DECLARE_METATYPE(Application::ApplicationState)
