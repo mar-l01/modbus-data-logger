@@ -30,7 +30,7 @@ void ModbusDataLoggerFacadeUIWrapper::onStopLogger()
     m_mbDataLoggerFacade->stopLogger();
 }
 
-void ModbusDataLoggerFacadeUIWrapper::onEmitCurrentApplicationState()
+void ModbusDataLoggerFacadeUIWrapper::onGetCurrentApplicationState()
 {
     auto currentApplicationState = m_mbDataLoggerFacade->getCurrentApplicationState();
     emit applicationStateChanged(currentApplicationState);

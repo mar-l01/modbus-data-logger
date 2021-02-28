@@ -50,7 +50,7 @@ public slots:
     /**
      * @brief Get the current application state
      */
-    void onEmitCurrentApplicationState();
+    void onGetCurrentApplicationState();
 
     /**
      * @brief Get informed about changes in the application state

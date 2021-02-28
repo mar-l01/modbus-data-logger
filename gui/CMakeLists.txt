@@ -21,9 +21,11 @@ pkg_check_modules(LIBMBDL REQUIRED libmbdl>=0.1.0)
 add_library(ui_facade OBJECT
     # header files
     "ui/facade/includes/ModbusDataLoggerFacadeUIWrapper.hpp"
+    "ui/facade/includes/ModbusDataLoggerThreadController.hpp"
 
     # source files
     "ui/facade/sources/ModbusDataLoggerFacadeUIWrapper.cpp"
+    "ui/facade/sources/ModbusDataLoggerThreadController.cpp"
 )
 target_compile_options(ui_facade PUBLIC -Wall -Wextra)
 target_include_directories(ui_facade PRIVATE
