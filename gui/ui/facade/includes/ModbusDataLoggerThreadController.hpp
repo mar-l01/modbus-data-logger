@@ -7,26 +7,20 @@
 namespace Facade {
 
 class ModbusDataLoggerFacadeUIWrapper;
+class ModbusDataLoggerManager;
 
 class ModbusDataLoggerThreadController : public QObject
 {
     Q_OBJECT
 
 public:
-    ModbusDataLoggerThreadController(std::unique_ptr<ModbusDataLoggerFacadeUIWrapper>&& mbDataLoggerFacadeUIWrapper);
+    ModbusDataLoggerThreadController(std::unique_ptr<ModbusDataLoggerFacadeUIWrapper>&& mbDataLoggerFacadeUIWrapper,
+                                     const std::shared_ptr<ModbusDataLoggerManager> mbDataLoggerManager);
     ~ModbusDataLoggerThreadController();
-
-signals:
-    void startModbusCommunication();
-    void stopModbusCommunication();
-    void startLogger();
-    void stopLogger();
-    void getCurrentApplicationState();
-    void startListenForApplicationStateChanges();
-    void stopListenForApplicationStateChanges();
 
 private:
     std::unique_ptr<ModbusDataLoggerFacadeUIWrapper> m_mbDataLoggerFacadeUIWrapper;
+    std::shared_ptr<ModbusDataLoggerManager> m_mbDataLoggerManager;
     QThread m_workerThread;
 };
 
