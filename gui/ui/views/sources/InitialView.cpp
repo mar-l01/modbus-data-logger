@@ -16,8 +16,8 @@ InitialView::InitialView(const std::shared_ptr<Facade::ModbusDataLoggerSignals>&
 
 void InitialView::startModbusApplication()
 {
-    emit m_mbDataLoggerSignals->startModbusCommunication();
     emit m_mbDataLoggerSignals->startListenForApplicationStateChanges();
+    emit m_mbDataLoggerSignals->startModbusCommunication();
 
     m_isMbAppRunning = true;
     emit mbAppRunningChanged();
