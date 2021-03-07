@@ -42,9 +42,11 @@ target_link_libraries(ui_facade PRIVATE
 add_library(ui_views OBJECT
     # header files
     "ui/views/includes/InitialView.hpp"
+    "ui/views/includes/LoggingView.hpp"
 
     # source files
     "ui/views/sources/InitialView.cpp"
+    "ui/views/sources/LoggingView.cpp"
 )
 target_compile_options(ui_views PUBLIC -Wall -Wextra)
 target_include_directories(ui_views PRIVATE
