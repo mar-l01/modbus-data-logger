@@ -21,6 +21,8 @@ if not os.path.isdir(build_dir):
 return_codes = []
 
 # run unittests
+rc = subprocess.call(build_dir + "/facade_test")
+return_codes.append((rc, "[Facade]  --> {}".format(PASSED if rc == 0 else FAILED)))
 rc = subprocess.call(build_dir + "/views_test")
 return_codes.append((rc, "[Views]   --> {}".format(PASSED if rc == 0 else FAILED)))
 

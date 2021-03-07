@@ -1,4 +1,4 @@
-#include "domain/application/testing/gmock/MockModbusDataLoggerFacade.hpp"
+#include "ui/facade/includes/ModbusDataLoggerSignals.hpp"
 #include "ui/views/includes/InitialView.hpp"
 
 #include "gtest/gtest.h"
@@ -9,20 +9,21 @@
 namespace {
 
 using namespace Views;
+using namespace Facade;
 
 class TestInitialView : public ::testing::Test
 {
 protected:
     TestInitialView()
-        : m_mbDataLoggerFacadeMock(std::make_shared<MockModbusDataLoggerFacade>())
+        : m_mbDataLoggerSignals(std::make_shared<ModbusDataLoggerSignals>())
     {}
 
     std::shared_ptr<InitialView> createTestObject()
     {
-        return std::make_shared<InitialView>(m_mbDataLoggerFacadeMock);
+        return std::make_shared<InitialView>(m_mbDataLoggerSignals);
     }
 
-    std::shared_ptr<MockModbusDataLoggerFacade> m_mbDataLoggerFacadeMock;
+    std::shared_ptr<ModbusDataLoggerSignals> m_mbDataLoggerSignals;
 };
 
 TEST_F(TestInitialView, ctorSuccessful)
@@ -33,21 +34,35 @@ TEST_F(TestInitialView, ctorSuccessful)
 TEST_F(TestInitialView, startModbusApplication)
 {
     auto testObj = createTestObject();
+    QSignalSpy mbApplicationStateChangedSignalSpy(m_mbDataLoggerSignals.get(),
+                                                  &ModbusDataLoggerSignals::startListenForApplicationStateChanges);
+    QSignalSpy mbStartCommunicationSignalSpy(m_mbDataLoggerSignals.get(),
+                                             &ModbusDataLoggerSignals::startModbusCommunication);
     QSignalSpy mbRunningSignalSpy(testObj.get(), &InitialView::mbAppRunningChanged);
 
-    EXPECT_CALL(*m_mbDataLoggerFacadeMock, startModbusCommunication());
     testObj->startModbusApplication();
-    EXPECT_EQ(mbRunningSignalSpy.count(), 1); // make sure signal was emitted exactly one time
+
+    // make sure signals were emitted exactly one time
+    EXPECT_EQ(mbApplicationStateChangedSignalSpy.count(), 1);
+    EXPECT_EQ(mbStartCommunicationSignalSpy.count(), 1);
+    EXPECT_EQ(mbRunningSignalSpy.count(), 1);
 }
 
 TEST_F(TestInitialView, stopModbusApplication)
 {
     auto testObj = createTestObject();
+    QSignalSpy mbStopCommunicationSignalSpy(m_mbDataLoggerSignals.get(),
+                                            &ModbusDataLoggerSignals::stopModbusCommunication);
+    QSignalSpy mbApplicationStateChangedSignalSpy(m_mbDataLoggerSignals.get(),
+                                                  &ModbusDataLoggerSignals::stopListenForApplicationStateChanges);
     QSignalSpy mbRunningSignalSpy(testObj.get(), &InitialView::mbAppRunningChanged);
 
-    EXPECT_CALL(*m_mbDataLoggerFacadeMock, stopModbusCommunication());
     testObj->stopModbusApplication();
-    EXPECT_EQ(mbRunningSignalSpy.count(), 1); // make sure signal was emitted exactly one time
+
+    // make sure signals were emitted exactly one time
+    EXPECT_EQ(mbStopCommunicationSignalSpy.count(), 1);
+    EXPECT_EQ(mbApplicationStateChangedSignalSpy.count(), 1);
+    EXPECT_EQ(mbRunningSignalSpy.count(), 1);
 }
 
 }

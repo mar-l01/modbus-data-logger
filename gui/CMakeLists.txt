@@ -17,6 +17,27 @@ find_package(Qt5 COMPONENTS Core Qml Quick REQUIRED)
 find_package(PkgConfig)
 pkg_check_modules(LIBMBDL REQUIRED libmbdl>=0.1.0)
 
+# build facade wrapper object-library
+add_library(ui_facade OBJECT
+    # header files
+    "ui/facade/includes/ModbusDataLoggerFacadeUIWrapper.hpp"
+    "ui/facade/includes/ModbusDataLoggerThreadController.hpp"
+    "ui/facade/includes/ModbusDataLoggerSignals.hpp"
+
+    # source files
+    "ui/facade/sources/ModbusDataLoggerFacadeUIWrapper.cpp"
+    "ui/facade/sources/ModbusDataLoggerThreadController.cpp"
+)
+target_compile_options(ui_facade PUBLIC -Wall -Wextra)
+target_include_directories(ui_facade PRIVATE
+    "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/.."
+    "/usr/include/boost_1_72_0/"
+)
+target_link_libraries(ui_facade PRIVATE
+    Qt5::Core
+)
+
 # build views object-library
 add_library(ui_views OBJECT
     # header files
@@ -37,6 +58,7 @@ target_link_libraries(ui_views PRIVATE
 
 # build executable
 add_executable(ui_application
+    $<TARGET_OBJECTS:ui_facade>
     $<TARGET_OBJECTS:ui_views>
     "ui/application/GuiApplication.cpp"
     "ui/resources.qrc"
@@ -89,9 +111,33 @@ if (${CMAKE_ENABLE_TESTING})
 
   find_package(Qt5 COMPONENTS Test REQUIRED)
 
-  # build framework unittests
+    # build facade unittests
+    add_executable(facade_test
+    $<TARGET_OBJECTS:ui_facade>
+    "ui/facade/testing/TestModbusDataLoggerFacadeUIWrapper.cpp"
+  )
+  target_include_directories(facade_test
+    PRIVATE
+      "${PROJECT_SOURCE_DIR}"
+      "${PROJECT_SOURCE_DIR}/.."
+      "/usr/include/boost_1_72_0/"
+  )
+  target_link_libraries(facade_test
+    PRIVATE
+      Qt5::Core
+      Qt5::Test
+      ${LIBMBDL_LIBDIR}/libmbdl.so.${LIBMBDL_VERSION}
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME facade_test COMMAND $<TARGET_FILE:facade_test>)
+
+  # build views unittests
   add_executable(views_test
     $<TARGET_OBJECTS:ui_views>
+    $<TARGET_OBJECTS:ui_facade>
     "ui/views/testing/TestInitialView.cpp"
   )
   target_include_directories(views_test
