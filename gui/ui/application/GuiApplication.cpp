@@ -4,6 +4,7 @@
 #include "ui/facade/includes/ModbusDataLoggerSignals.hpp"
 #include "ui/facade/includes/ModbusDataLoggerThreadController.hpp"
 #include "ui/views/includes/InitialView.hpp"
+#include "ui/views/includes/LoggingView.hpp"
 
 #include <QGuiApplication>
 #include <QQmlContext>
@@ -45,7 +46,9 @@ int main(int argc, char* argv[])
 
     // instantiate view models
     Views::InitialView initialView(mbDataLoggerSignals);
+    Views::LoggingView loggingView(mbDataLoggerSignals);
     rootContext->setContextProperty("initialView", &initialView);
+    rootContext->setContextProperty("loggingView", &loggingView);
 
     // show main window
     view.connect(view.engine(), &QQmlEngine::quit, &app, &QCoreApplication::quit);
