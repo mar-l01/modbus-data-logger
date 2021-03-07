@@ -10,7 +10,10 @@ ModbusDataLoggerFacadeUIWrapper::ModbusDataLoggerFacadeUIWrapper(
   const std::shared_ptr<ModbusDataLoggerSignals>& mbDataLoggerSignals)
     : m_mbDataLoggerFacade(std::move(mbDataLoggerFacade))
     , m_mbDataLoggerSignals(mbDataLoggerSignals)
-{}
+{
+    // register domain scoped-enum to make it available in signal slot connections
+    qRegisterMetaType<Application::ApplicationState>("Application::ApplicationState");
+}
 
 void ModbusDataLoggerFacadeUIWrapper::onStartModbusCommunication()
 {
