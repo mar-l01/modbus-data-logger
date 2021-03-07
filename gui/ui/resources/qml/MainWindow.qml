@@ -9,12 +9,16 @@ Rectangle {
     Image {
         property var iconStart: "qrc:/icon/start_icon"
         property var iconStop: "qrc:/icon/stop_icon"
+        property var buttonEnabled: 1.0
+        property var buttonDisabled: 0.5
 
-        id: startButton
+        id: button
         source: iconStart
         width: sourceSize.width
         height: sourceSize.height
         fillMode: Image.PreserveAspectFit
+        opacity: buttonEnabled
+
         anchors {
             top: parent.top
             left: parent.left
@@ -25,24 +29,30 @@ Rectangle {
         MouseArea {
             id: buttonMouseArea
             anchors.fill: parent
-            onClicked: startButton.onStartButtonClicked()
+            onClicked: button.onStartButtonClicked()
         }
 
         function onStartButtonClicked() {
-            buttonMouseArea.enabled = false
-
-            if (initialView.isMbAppRunning) {
-                initialView.stopModbusApplication()
-            } else {
+            if (initialView.isStartButtonVisible) {
                 initialView.startModbusApplication()
+            } else {
+                initialView.stopModbusApplication()
             }
         }
 
         Connections {
             target: initialView
-            onMbAppRunningChanged: {
-                startButton.source = initialView.isMbAppRunning ? startButton.iconStop : startButton.iconStart
-                buttonMouseArea.enabled = true
+            onStartButtonVisibilityChanged: {
+                button.source = initialView.isStartButtonVisible ? button.iconStart : button.iconStop
+                button.opacity = initialView.isButtonEnabled ? button.buttonEnabled : button.buttonDisabled
+            }
+        }
+
+        Connections {
+            target: initialView
+            onIsButtonEnabledChanged: {
+                button.enabled = initialView.isButtonEnabled
+                button.opacity = initialView.isButtonEnabled ? button.buttonEnabled : button.buttonDisabled
             }
         }
     }
