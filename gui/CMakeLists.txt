@@ -114,6 +114,7 @@ if (${CMAKE_ENABLE_TESTING})
   # build framework unittests
   add_executable(views_test
     $<TARGET_OBJECTS:ui_views>
+    $<TARGET_OBJECTS:ui_facade>
     "ui/views/testing/TestInitialView.cpp"
   )
   target_include_directories(views_test
