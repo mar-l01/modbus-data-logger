@@ -22,9 +22,6 @@ int main(int argc, char* argv[])
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     QCoreApplication::setApplicationName("Modbus Data-Logger");
 
-    // register domain scoped-enum to make it available in signal slot connections
-    qRegisterMetaType<Application::ApplicationState>("Application::ApplicationState");
-
     QGuiApplication app(argc, argv);
     QQuickView view;
 
