@@ -2,13 +2,15 @@
 
 #include "ui/facade/includes/ModbusDataLoggerSignals.hpp"
 
-#include <QDebug>
-
 namespace Views {
+
+using Application::ApplicationState;
 
 InitialView::InitialView(const std::shared_ptr<Facade::ModbusDataLoggerSignals>& mbDataLoggerSignals)
     : m_mbDataLoggerSignals(mbDataLoggerSignals)
     , m_isMbAppRunning(false)
+    , m_isButtonEnabled(true)
+    , m_isStartButtonVisible(true)
 {
     connect(m_mbDataLoggerSignals.get(), &Facade::ModbusDataLoggerSignals::applicationStateChanged, this,
             &InitialView::onApplicationStateChanged);
@@ -32,9 +34,50 @@ void InitialView::stopModbusApplication()
     emit mbAppRunningChanged();
 }
 
-void InitialView::onApplicationStateChanged(Application::ApplicationState applicationState)
+void InitialView::onApplicationStateChanged(ApplicationState applicationState)
 {
-    qDebug() << "New application state: " << static_cast<int>(applicationState);
+    switch (applicationState) {
+        case ApplicationState::STARTING:
+            setStartButtonVisibility(true);
+            enableButton(false);
+            break;
+
+        case ApplicationState::STARTED:
+            setStartButtonVisibility(false);
+            enableButton(false);
+            break;
+
+        case ApplicationState::RUNNING:
+            setStartButtonVisibility(false);
+            enableButton(true);
+            break;
+
+        case ApplicationState::STOPPING:
+            setStartButtonVisibility(false);
+            enableButton(false);
+            break;
+
+        case ApplicationState::STOPPED:
+            setStartButtonVisibility(true);
+            enableButton(true);
+            break;
+    }
+}
+
+void InitialView::enableButton(bool enableIt)
+{
+    if (m_isButtonEnabled != enableIt) {
+        m_isButtonEnabled = enableIt;
+        emit buttonEnabledChanged();
+    }
+}
+
+void InitialView::setStartButtonVisibility(bool isVisible)
+{
+    if (m_isStartButtonVisible != isVisible) {
+        m_isStartButtonVisible = isVisible;
+        emit startButtonVisibilityChanged();
+    }
 }
 
 }
