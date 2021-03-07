@@ -111,7 +111,30 @@ if (${CMAKE_ENABLE_TESTING})
 
   find_package(Qt5 COMPONENTS Test REQUIRED)
 
-  # build framework unittests
+    # build facade unittests
+    add_executable(facade_test
+    $<TARGET_OBJECTS:ui_facade>
+    "ui/facade/testing/TestModbusDataLoggerFacadeUIWrapper.cpp"
+  )
+  target_include_directories(facade_test
+    PRIVATE
+      "${PROJECT_SOURCE_DIR}"
+      "${PROJECT_SOURCE_DIR}/.."
+      "/usr/include/boost_1_72_0/"
+  )
+  target_link_libraries(facade_test
+    PRIVATE
+      Qt5::Core
+      Qt5::Test
+      ${LIBMBDL_LIBDIR}/libmbdl.so.${LIBMBDL_VERSION}
+      gtest
+      gmock
+      gtest_main
+  )
+
+  add_test(NAME facade_test COMMAND $<TARGET_FILE:facade_test>)
+
+  # build views unittests
   add_executable(views_test
     $<TARGET_OBJECTS:ui_views>
     $<TARGET_OBJECTS:ui_facade>
