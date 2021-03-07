@@ -23,7 +23,7 @@ protected:
         return std::make_shared<InitialView>(m_mbDataLoggerSignals);
     }
 
-    std::shared_ptr<Facade::ModbusDataLoggerSignals> m_mbDataLoggerSignals;
+    std::shared_ptr<ModbusDataLoggerSignals> m_mbDataLoggerSignals;
 };
 
 TEST_F(TestInitialView, ctorSuccessful)
@@ -34,7 +34,7 @@ TEST_F(TestInitialView, ctorSuccessful)
 TEST_F(TestInitialView, startModbusApplication)
 {
     auto testObj = createTestObject();
-    QSignalSpy mbApplicationStateChangesSignalSpy(m_mbDataLoggerSignals.get(),
+    QSignalSpy mbApplicationStateChangedSignalSpy(m_mbDataLoggerSignals.get(),
                                                   &ModbusDataLoggerSignals::startListenForApplicationStateChanges);
     QSignalSpy mbStartCommunicationSignalSpy(m_mbDataLoggerSignals.get(),
                                              &ModbusDataLoggerSignals::startModbusCommunication);
@@ -43,7 +43,7 @@ TEST_F(TestInitialView, startModbusApplication)
     testObj->startModbusApplication();
 
     // make sure signals were emitted exactly one time
-    EXPECT_EQ(mbApplicationStateChangesSignalSpy.count(), 1);
+    EXPECT_EQ(mbApplicationStateChangedSignalSpy.count(), 1);
     EXPECT_EQ(mbStartCommunicationSignalSpy.count(), 1);
     EXPECT_EQ(mbRunningSignalSpy.count(), 1);
 }
@@ -53,7 +53,7 @@ TEST_F(TestInitialView, stopModbusApplication)
     auto testObj = createTestObject();
     QSignalSpy mbStopCommunicationSignalSpy(m_mbDataLoggerSignals.get(),
                                             &ModbusDataLoggerSignals::stopModbusCommunication);
-    QSignalSpy mbApplicationStateChangesSignalSpy(m_mbDataLoggerSignals.get(),
+    QSignalSpy mbApplicationStateChangedSignalSpy(m_mbDataLoggerSignals.get(),
                                                   &ModbusDataLoggerSignals::stopListenForApplicationStateChanges);
     QSignalSpy mbRunningSignalSpy(testObj.get(), &InitialView::mbAppRunningChanged);
 
@@ -61,7 +61,7 @@ TEST_F(TestInitialView, stopModbusApplication)
 
     // make sure signals were emitted exactly one time
     EXPECT_EQ(mbStopCommunicationSignalSpy.count(), 1);
-    EXPECT_EQ(mbApplicationStateChangesSignalSpy.count(), 1);
+    EXPECT_EQ(mbApplicationStateChangedSignalSpy.count(), 1);
     EXPECT_EQ(mbRunningSignalSpy.count(), 1);
 }
 
