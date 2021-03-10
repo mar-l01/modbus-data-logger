@@ -1,3 +1,4 @@
+#include "domain/framework/includes/SignalEvent.hpp"
 #include "ui/facade/includes/ModbusDataLoggerSignals.hpp"
 #include "ui/views/includes/InitialView.hpp"
 
@@ -10,6 +11,8 @@ namespace {
 
 using namespace Views;
 using namespace Facade;
+using Application::ApplicationState;
+using Framework::SignalEvent;
 
 class TestInitialView : public ::testing::Test
 {
@@ -63,6 +66,41 @@ TEST_F(TestInitialView, stopModbusApplication)
     EXPECT_EQ(mbStopCommunicationSignalSpy.count(), 1);
     EXPECT_EQ(mbApplicationStateChangedSignalSpy.count(), 1);
     EXPECT_EQ(mbRunningSignalSpy.count(), 1);
+}
+
+TEST_F(TestInitialView, buttonOccurrenceChange)
+{
+    // register domain scoped-enum to make it available in signal slot connections
+    qRegisterMetaType<Application::ApplicationState>("Application::ApplicationState");
+
+    auto testObj = createTestObject();
+    QSignalSpy buttonEnabledChangedSignalSpy(testObj.get(), &InitialView::buttonEnabledChanged);
+    QSignalSpy startButtonVisibilityChangedSignalSpy(testObj.get(), &InitialView::startButtonVisibilityChanged);
+
+    // ----- STARTING -----
+    emit m_mbDataLoggerSignals->applicationStateChanged(ApplicationState::STARTING);
+    EXPECT_EQ(buttonEnabledChangedSignalSpy.count(), 1);
+    EXPECT_EQ(startButtonVisibilityChangedSignalSpy.count(), 0);
+
+    // ----- STARTED -----
+    emit m_mbDataLoggerSignals->applicationStateChanged(ApplicationState::STARTED);
+    EXPECT_EQ(buttonEnabledChangedSignalSpy.count(), 1);
+    EXPECT_EQ(startButtonVisibilityChangedSignalSpy.count(), 1);
+
+    // ----- RUNNING -----
+    emit m_mbDataLoggerSignals->applicationStateChanged(ApplicationState::RUNNING);
+    EXPECT_EQ(buttonEnabledChangedSignalSpy.count(), 2);
+    EXPECT_EQ(startButtonVisibilityChangedSignalSpy.count(), 1);
+
+    // ----- STOPPING -----
+    emit m_mbDataLoggerSignals->applicationStateChanged(ApplicationState::STOPPING);
+    EXPECT_EQ(buttonEnabledChangedSignalSpy.count(), 3);
+    EXPECT_EQ(startButtonVisibilityChangedSignalSpy.count(), 1);
+
+    // ----- STOPPED -----
+    emit m_mbDataLoggerSignals->applicationStateChanged(ApplicationState::STOPPED);
+    EXPECT_EQ(buttonEnabledChangedSignalSpy.count(), 4);
+    EXPECT_EQ(startButtonVisibilityChangedSignalSpy.count(), 2);
 }
 
 }
