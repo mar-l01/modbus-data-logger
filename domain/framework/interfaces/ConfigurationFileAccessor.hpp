@@ -30,6 +30,15 @@ public:
      * @return Entity::ModbusConfiguration A Modbus configuration used for this application.
      */
     virtual Entity::ModbusConfiguration getModbusConfiguration() const = 0;
+
+    /**
+     * @brief Write the given @ref Entity::ModbusConfiguration object to the file defined in 'path' (:= filepath and
+     * filename) variable.
+     *
+     * @param mbConfig Modbus configuration object which should be written to the file
+     * @param path Filepath of the configuration file, e.g. /usr/local/mbdl-config.json
+     */
+    virtual void writeConfigurationFile(const Entity::ModbusConfiguration& mbConfig, const std::string& path) = 0;
 };
 
 }
