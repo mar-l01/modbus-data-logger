@@ -3,7 +3,7 @@
 #include "gtest/gtest.h"
 
 #include <filesystem>
-
+#include <iostream>
 
 namespace {
 
@@ -74,6 +74,49 @@ TEST_F(TestJsonFileAccessor, getModbusConfigurationReturnsEmptyObject)
     const auto& expectedEmptyModbusConfig = testObj->getModbusConfiguration();
 
     EXPECT_EQ(Entity::ModbusConfiguration(), expectedEmptyModbusConfig);
+}
+
+TEST_F(TestJsonFileAccessor, writeModbusConfigurationAndReadIt)
+{
+    auto testObj = createTestObject();
+
+    // make sure directory can be accessed (either from root or scripts directory)
+    std::string fileDir = "../resources"; // from modbus-data-logger/scripts/
+    if (std::filesystem::current_path().filename() == "modbus-data-logger") {
+        fileDir = "resources"; // from modbus-data-logger/
+    }
+    std::string filePath = fileDir + "/mbdl_config_test.json";
+
+    // create ModbusConfiguration which should be written
+    Entity::ModbusConfiguration mbConfigToWrite;
+    mbConfigToWrite.ipAddrIntSlave = "123.456.78.9";
+    mbConfigToWrite.portIntSlave = 5432;
+    mbConfigToWrite.ipAddrExtSlave = "127.0.0.1";
+    mbConfigToWrite.portExtSlave = 21;
+
+    mbConfigToWrite.dataMapping.startAddressCoils = 0;
+    mbConfigToWrite.dataMapping.nbCoils = 10;
+    mbConfigToWrite.dataMapping.startAddressDiscreteInputs = 100;
+    mbConfigToWrite.dataMapping.nbDiscreteInputs = 10;
+    mbConfigToWrite.dataMapping.startAddressHoldingRegisters = 1000;
+    mbConfigToWrite.dataMapping.nbHoldingRegisters = 1000;
+    mbConfigToWrite.dataMapping.startAddressInputRegisters = 255;
+    mbConfigToWrite.dataMapping.nbInputRegisters = 5;
+
+    mbConfigToWrite.modbusTimeout = 100;
+    mbConfigToWrite.applicationTimeout = 100;
+
+    ASSERT_NO_THROW(testObj->writeConfigurationFile(mbConfigToWrite, filePath));
+
+    // read written file and check if configuration can be read-in correctly
+    EXPECT_NO_THROW(testObj->readConfigurationFile(filePath));
+    const auto& mbConfigRead = testObj->getModbusConfiguration();
+
+    // check if configuration object was serialized/deserialized correctly
+    EXPECT_EQ(mbConfigToWrite, mbConfigRead);
+
+    // remove created test-file
+    int result = remove(filePath.c_str());
 }
 
 }
