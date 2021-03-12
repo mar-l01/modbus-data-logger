@@ -42,9 +42,11 @@ target_link_libraries(ui_facade PRIVATE
 add_library(ui_views OBJECT
     # header files
     "ui/views/includes/InitialView.hpp"
+    "ui/views/includes/ConfigurationView.hpp"
 
     # source files
     "ui/views/sources/InitialView.cpp"
+    "ui/views/sources/ConfigurationView.cpp"
 )
 target_compile_options(ui_views PUBLIC -Wall -Wextra)
 target_include_directories(ui_views PRIVATE
@@ -139,6 +141,7 @@ if (${CMAKE_ENABLE_TESTING})
     $<TARGET_OBJECTS:ui_views>
     $<TARGET_OBJECTS:ui_facade>
     "ui/views/testing/TestInitialView.cpp"
+    "ui/views/testing/TestConfigurationView.cpp"
   )
   target_include_directories(views_test
     PRIVATE

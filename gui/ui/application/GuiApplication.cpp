@@ -1,8 +1,10 @@
 #include "domain/application/includes/ModbusDataLoggerFacadeFactory.hpp"
 #include "domain/application/includes/ModbusDataLoggerFrameworks.hpp"
+#include "domain/framework/includes/JsonFileAccessor.hpp"
 #include "ui/facade/includes/ModbusDataLoggerFacadeUIWrapper.hpp"
 #include "ui/facade/includes/ModbusDataLoggerSignals.hpp"
 #include "ui/facade/includes/ModbusDataLoggerThreadController.hpp"
+#include "ui/views/includes/ConfigurationView.hpp"
 #include "ui/views/includes/InitialView.hpp"
 
 #include <QGuiApplication>
@@ -41,11 +43,16 @@ int main(int argc, char* argv[])
     Facade::ModbusDataLoggerThreadController mbDataLoggerThreadController(std::move(mbDataLoggerFacadeUIWrapper),
                                                                           mbDataLoggerSignals);
 
+    auto jsonFileAccessor = std::make_shared<Framework::JsonFileAccessor>();
+    jsonFileAccessor->readConfigurationFile(mbConfigFile);
+
     const auto rootContext = view.rootContext();
 
     // instantiate view models
     Views::InitialView initialView(mbDataLoggerSignals);
+    Views::ConfigurationView configView(jsonFileAccessor);
     rootContext->setContextProperty("initialView", &initialView);
+    rootContext->setContextProperty("configView", &configView);
 
     // show main window
     view.connect(view.engine(), &QQmlEngine::quit, &app, &QCoreApplication::quit);
