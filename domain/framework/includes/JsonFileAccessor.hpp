@@ -44,6 +44,11 @@ public:
      */
     Entity::ModbusConfiguration getModbusConfiguration() const override;
 
+    /**
+     * @see ConfigurationFileAccessor::writeConfigurationFile
+     */
+    void writeConfigurationFile(const Entity::ModbusConfiguration& mbConfig, const std::string& path) override;
+
 private:
     Entity::ModbusConfiguration m_modbusConfiguration;
 };
