@@ -1,10 +1,10 @@
 #pragma once
 
-#include "domain/framework/interfaces/ConfigurationFileReader.hpp"
+#include "domain/framework/interfaces/ConfigurationFileAccessor.hpp"
 
 #include "gmock/gmock.h"
 
-class MockConfigurationFileReader : public Framework::ConfigurationFileReader
+class MockConfigurationFileAccessor : public Framework::ConfigurationFileAccessor
 {
 public:
     MOCK_METHOD(void, readConfigurationFile, (const std::string&), (override));

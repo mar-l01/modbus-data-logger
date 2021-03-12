@@ -27,8 +27,8 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
     # header files
     "domain/framework/includes/LibModbusSlave.hpp"
     "domain/framework/includes/LibModbusMaster.hpp"
-    "domain/framework/interfaces/ConfigurationFileReader.hpp"
-    "domain/framework/includes/JsonFileReader.hpp"
+    "domain/framework/interfaces/ConfigurationFileAccessor.hpp"
+    "domain/framework/includes/JsonFileAccessor.hpp"
     "domain/framework/includes/FileReaderFactory.hpp"
     "domain/framework/includes/SpdlogFileController.hpp"
     "domain/framework/includes/FileLoggerControllerFactory.hpp"
@@ -36,7 +36,7 @@ if (${CMAKE_BUILD_OBJECT} STREQUAL "ConsoleApplication")
     # source files
     "domain/framework/sources/LibModbusSlave.cpp"
     "domain/framework/sources/LibModbusMaster.cpp"
-    "domain/framework/sources/JsonFileReader.cpp"
+    "domain/framework/sources/JsonFileAccessor.cpp"
     "domain/framework/sources/FileReaderFactory.cpp"
     "domain/framework/sources/SpdlogFileController.cpp"
     "domain/framework/sources/FileLoggerControllerFactory.cpp"
@@ -218,7 +218,7 @@ elseif(${CMAKE_BUILD_OBJECT} STREQUAL "SharedLibrary")
     # framework
     "domain/framework/sources/LibModbusSlave.cpp"
     "domain/framework/sources/LibModbusMaster.cpp"
-    "domain/framework/sources/JsonFileReader.cpp"
+    "domain/framework/sources/JsonFileAccessor.cpp"
     "domain/framework/sources/FileReaderFactory.cpp"
     "domain/framework/sources/SpdlogFileController.cpp"
     "domain/framework/sources/FileLoggerControllerFactory.cpp"
@@ -296,7 +296,7 @@ if (${CMAKE_ENABLE_TESTING})
     "domain/framework/testing/TestLibModbusSlave.cpp"
     "domain/framework/testing/TestLibModbusMaster.cpp"
     "domain/framework/testing/TestFileReaderFactory.cpp"
-    "domain/framework/testing/TestJsonFileReader.cpp"
+    "domain/framework/testing/TestJsonFileAccessor.cpp"
     "domain/framework/testing/TestSpdlogFileController.cpp"
     "domain/framework/testing/TestFileLoggerControllerFactory.cpp"
   )
@@ -306,7 +306,7 @@ if (${CMAKE_ENABLE_TESTING})
   )
   target_sources(framework_test
     PRIVATE
-      "domain/framework/testing/gmock/MockConfigurationFileReader.hpp"
+      "domain/framework/testing/gmock/MockConfigurationFileAccessor.hpp"
   )
   target_link_libraries(framework_test
     PRIVATE

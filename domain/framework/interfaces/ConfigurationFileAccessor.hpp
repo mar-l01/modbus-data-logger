@@ -7,11 +7,13 @@
 namespace Framework {
 
 /**
- * @brief This interfaces provides methods to read a Modbus configuration provided in
+ * @brief This interface provides methods to read a Modbus configuration provided in
  * a pre-defined format (currently only json-files are supported) and return the read
  * file in an @ref Entity::ModbusConfiguration object.
+ * It is also possible to write a given @ref Entity::ModbusConfiguration object to
+ * a pre-defined format (currently only json-files are supported).
  */
-class ConfigurationFileReader
+class ConfigurationFileAccessor
 {
 public:
     /**

@@ -1,31 +1,32 @@
-#include "domain/framework/includes/JsonFileReader.hpp"
+#include "domain/framework/includes/JsonFileAccessor.hpp"
 
 #include "gtest/gtest.h"
 
 #include <filesystem>
+
 
 namespace {
 
 using namespace ::testing;
 using namespace Framework;
 
-class TestJsonFileReader : public ::testing::Test
+class TestJsonFileAccessor : public ::testing::Test
 {
 protected:
-    std::shared_ptr<JsonFileReader> createTestObject()
+    std::shared_ptr<JsonFileAccessor> createTestObject()
     {
-        auto testObj = std::make_shared<JsonFileReader>();
+        auto testObj = std::make_shared<JsonFileAccessor>();
 
         return testObj;
     }
 };
 
-TEST_F(TestJsonFileReader, ctorSuccessful)
+TEST_F(TestJsonFileAccessor, ctorSuccessful)
 {
-    EXPECT_NO_THROW(JsonFileReader jFileReader);
+    EXPECT_NO_THROW(JsonFileAccessor jFileReader);
 }
 
-TEST_F(TestJsonFileReader, readConfigurationFileNoThrowWhenUnkownFilepath)
+TEST_F(TestJsonFileAccessor, readConfigurationFileNoThrowWhenUnkownFilepath)
 {
     auto testObj = createTestObject();
     const auto filePath = "unkown";
@@ -33,7 +34,7 @@ TEST_F(TestJsonFileReader, readConfigurationFileNoThrowWhenUnkownFilepath)
     EXPECT_NO_THROW(testObj->readConfigurationFile(filePath));
 }
 
-TEST_F(TestJsonFileReader, getModbusConfigurationReturnsConfigObject)
+TEST_F(TestJsonFileAccessor, getModbusConfigurationReturnsConfigObject)
 {
     auto testObj = createTestObject();
 
@@ -67,7 +68,7 @@ TEST_F(TestJsonFileReader, getModbusConfigurationReturnsConfigObject)
     EXPECT_EQ(expectedModbusConfig, returnedModbusConfig);
 }
 
-TEST_F(TestJsonFileReader, getModbusConfigurationReturnsEmptyObject)
+TEST_F(TestJsonFileAccessor, getModbusConfigurationReturnsEmptyObject)
 {
     auto testObj = createTestObject();
     const auto& expectedEmptyModbusConfig = testObj->getModbusConfiguration();

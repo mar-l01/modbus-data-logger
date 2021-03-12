@@ -1,4 +1,4 @@
-#include "domain/framework/includes/JsonFileReader.hpp"
+#include "domain/framework/includes/JsonFileAccessor.hpp"
 
 #include "spdlog/spdlog.h"
 #include <fstream>
@@ -72,11 +72,11 @@ void from_json(const nlohmann::json& j, ModbusConfiguration& mbConfig) // NOLINT
 
 namespace Framework {
 
-JsonFileReader::JsonFileReader()
+JsonFileAccessor::JsonFileAccessor()
     : m_modbusConfiguration(Entity::ModbusConfiguration())
 {}
 
-void JsonFileReader::readConfigurationFile(const std::string& path)
+void JsonFileAccessor::readConfigurationFile(const std::string& path)
 {
     std::ifstream jsonFs(path);
     if (!jsonFs) {
@@ -94,7 +94,7 @@ void JsonFileReader::readConfigurationFile(const std::string& path)
     }
 }
 
-Entity::ModbusConfiguration JsonFileReader::getModbusConfiguration() const
+Entity::ModbusConfiguration JsonFileAccessor::getModbusConfiguration() const
 {
     return m_modbusConfiguration;
 }

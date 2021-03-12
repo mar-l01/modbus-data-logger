@@ -2,14 +2,15 @@
 
 #include "gtest/gtest.h"
 
+
 namespace {
 
 using namespace Framework;
 
-TEST(TestFileReaderFactory, createFileReaderReturnJsonFileReader)
+TEST(TestFileReaderFactory, createFileReaderReturnJsonFileAccessor)
 {
-    auto jsonFileReader = FileReaderFactory::createFileReader(FileReaderFramework::NLOHMANN_JSON);
-    EXPECT_NE(jsonFileReader, nullptr);
+    auto JsonFileAccessor = FileReaderFactory::createFileReader(FileReaderFramework::NLOHMANN_JSON);
+    EXPECT_NE(JsonFileAccessor, nullptr);
 }
 
 TEST(TestFileReaderFactory, createFileReaderReturnNullptr)

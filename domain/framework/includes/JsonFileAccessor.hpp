@@ -1,6 +1,6 @@
 #pragma once
 
-#include "domain/framework/interfaces/ConfigurationFileReader.hpp"
+#include "domain/framework/interfaces/ConfigurationFileAccessor.hpp"
 
 #include <nlohmann/json.hpp>
 
@@ -25,22 +25,22 @@ namespace Framework {
  * information about our Modbus application. This file is interpreted and a respective
  * @ref Entity::ModbusConfiguration object is created.
  */
-class JsonFileReader : public ConfigurationFileReader
+class JsonFileAccessor : public ConfigurationFileAccessor
 {
 public:
     /**
-     * @brief Construct a new JsonFileReader object.
+     * @brief Construct a new JsonFileAccessor object.
      *
      */
-    JsonFileReader();
+    JsonFileAccessor();
 
     /**
-     * @see ConfigurationFileReader::readConfigurationFile
+     * @see ConfigurationFileAccessor::readConfigurationFile
      */
     void readConfigurationFile(const std::string& path) override;
 
     /**
-     * @see ConfigurationFileReader::getModbusConfiguration
+     * @see ConfigurationFileAccessor::getModbusConfiguration
      */
     Entity::ModbusConfiguration getModbusConfiguration() const override;
 
