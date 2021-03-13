@@ -90,6 +90,13 @@ public:
      * @brief Close established connection.
      */
     virtual void close() = 0;
+
+    /**
+     * @brief Determines if the connection is up, i.e. the internal slave holds a connection with the external master
+     *
+     * @return true, if the connection is still up, false otw.
+     */
+    virtual bool isConnectionUp() = 0;
 };
 
 }

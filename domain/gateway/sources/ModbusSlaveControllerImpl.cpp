@@ -95,4 +95,9 @@ void ModbusSlaveControllerImpl::disconnect()
     m_modbusSlave->close();
 }
 
+bool ModbusSlaveControllerImpl::isExternalMasterConnected()
+{
+    return m_modbusSlave->isConnectionUp();
+}
+
 }

@@ -16,4 +16,5 @@ public:
     MOCK_METHOD(Gateway::ModbusReceiveStatus, replyException, (Entity::ModbusExceptionCode mbExceptionCode),
                 (override));
     MOCK_METHOD(void, close, (), (override));
+    MOCK_METHOD(bool, isConnectionUp, (), (override));
 };

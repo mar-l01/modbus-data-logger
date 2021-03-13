@@ -60,6 +60,11 @@ public:
      */
     void disconnect() override;
 
+    /**
+     * @see ModbusSlaveController::isExternalMasterConnected
+     */
+    bool isExternalMasterConnected() override;
+
 private:
     std::shared_ptr<ModbusSlave> m_modbusSlave;
     std::shared_ptr<ModbusRequestController> m_modbusRequestController;
