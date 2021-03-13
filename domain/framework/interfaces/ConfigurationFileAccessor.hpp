@@ -7,11 +7,13 @@
 namespace Framework {
 
 /**
- * @brief This interfaces provides methods to read a Modbus configuration provided in
+ * @brief This interface provides methods to read a Modbus configuration provided in
  * a pre-defined format (currently only json-files are supported) and return the read
  * file in an @ref Entity::ModbusConfiguration object.
+ * It is also possible to write a given @ref Entity::ModbusConfiguration object to
+ * a pre-defined format (currently only json-files are supported).
  */
-class ConfigurationFileReader
+class ConfigurationFileAccessor
 {
 public:
     /**
@@ -28,6 +30,15 @@ public:
      * @return Entity::ModbusConfiguration A Modbus configuration used for this application.
      */
     virtual Entity::ModbusConfiguration getModbusConfiguration() const = 0;
+
+    /**
+     * @brief Write the given @ref Entity::ModbusConfiguration object to the file defined in 'path' (:= filepath and
+     * filename) variable.
+     *
+     * @param mbConfig Modbus configuration object which should be written to the file
+     * @param path Filepath of the configuration file, e.g. /usr/local/mbdl-config.json
+     */
+    virtual void writeConfigurationFile(const Entity::ModbusConfiguration& mbConfig, const std::string& path) = 0;
 };
 
 }

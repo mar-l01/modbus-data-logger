@@ -1,32 +1,48 @@
-#include "domain/framework/includes/JsonFileReader.hpp"
+#include "domain/framework/includes/JsonFileAccessor.hpp"
 
 #include "spdlog/spdlog.h"
 #include <fstream>
+#include <iomanip>
 #include <nlohmann/json.hpp>
 
 namespace Entity {
 
 void to_json(nlohmann::json& j, const ModbusConfiguration& mbConfig) // NOLINT(readability-identifier-naming)
 {
+    // clang-format off
     j = nlohmann::json{
-      {"internal_modbus_slave", {"ip_address", mbConfig.ipAddrIntSlave}},
-      {"internal_modbus_slave", {"port", mbConfig.portIntSlave}},
+      {"internal_modbus_slave", {
+        {"ip_address", mbConfig.ipAddrIntSlave},
+        {"port", mbConfig.portIntSlave}
+      }},
 
-      {"external_modbus_slave", {"ip_address", mbConfig.ipAddrExtSlave}},
-      {"external_modbus_slave", {"port", mbConfig.portExtSlave}},
+      {"external_modbus_slave", {
+        {"ip_address", mbConfig.ipAddrExtSlave},
+        {"port", mbConfig.portExtSlave},
+      }},
 
-      {"modbus_data_mapping", {"coil", {"start_address", mbConfig.dataMapping.startAddressCoils}}},
-      {"modbus_data_mapping", {"coil", {"number_of_values", mbConfig.dataMapping.nbCoils}}},
-      {"modbus_data_mapping", {"discrete_input", {"start_address", mbConfig.dataMapping.startAddressDiscreteInputs}}},
-      {"modbus_data_mapping", {"discrete_input", {"number_of_values", mbConfig.dataMapping.nbDiscreteInputs}}},
-      {"modbus_data_mapping",
-       {"holding_register", {"start_address", mbConfig.dataMapping.startAddressHoldingRegisters}}},
-      {"modbus_data_mapping", {"holding_register", {"number_of_values", mbConfig.dataMapping.nbHoldingRegisters}}},
-      {"modbus_data_mapping", {"input_register", {"start_address", mbConfig.dataMapping.startAddressInputRegisters}}},
-      {"modbus_data_mapping", {"input_register", {"number_of_values", mbConfig.dataMapping.nbInputRegisters}}},
+      {"modbus_data_mapping", {
+        {"coil", {
+          {"start_address", mbConfig.dataMapping.startAddressCoils},
+          {"number_of_values", mbConfig.dataMapping.nbCoils}
+        }},
+        {"discrete_input", {
+          {"start_address", mbConfig.dataMapping.startAddressDiscreteInputs},
+          {"number_of_values", mbConfig.dataMapping.nbDiscreteInputs}
+        }},
+        {"holding_register", {
+          {"start_address", mbConfig.dataMapping.startAddressHoldingRegisters},
+          {"number_of_values", mbConfig.dataMapping.nbHoldingRegisters}
+        }},
+        {"input_register", {
+          {"start_address", mbConfig.dataMapping.startAddressInputRegisters},
+          {"number_of_values", mbConfig.dataMapping.nbInputRegisters}
+        }}
+      }},
 
       {"modbus_timeout_in_ms", mbConfig.modbusTimeout},
       {"application_timeout_in_ms", mbConfig.applicationTimeout}};
+    // clang-format on
 }
 
 void from_json(const nlohmann::json& j, ModbusConfiguration& mbConfig) // NOLINT(readability-identifier-naming)
@@ -72,15 +88,15 @@ void from_json(const nlohmann::json& j, ModbusConfiguration& mbConfig) // NOLINT
 
 namespace Framework {
 
-JsonFileReader::JsonFileReader()
+JsonFileAccessor::JsonFileAccessor()
     : m_modbusConfiguration(Entity::ModbusConfiguration())
 {}
 
-void JsonFileReader::readConfigurationFile(const std::string& path)
+void JsonFileAccessor::readConfigurationFile(const std::string& path)
 {
     std::ifstream jsonFs(path);
     if (!jsonFs) {
-        SPDLOG_ERROR("Failed to open file: {0}", path);
+        SPDLOG_ERROR("Failed to open file '{0}' for reading", path);
         return;
     }
 
@@ -94,9 +110,25 @@ void JsonFileReader::readConfigurationFile(const std::string& path)
     }
 }
 
-Entity::ModbusConfiguration JsonFileReader::getModbusConfiguration() const
+Entity::ModbusConfiguration JsonFileAccessor::getModbusConfiguration() const
 {
     return m_modbusConfiguration;
+}
+
+void JsonFileAccessor::writeConfigurationFile(const Entity::ModbusConfiguration& mbConfig, const std::string& path)
+{
+    std::ofstream jsonFs(path);
+    if (!jsonFs) {
+        SPDLOG_ERROR("Failed to open file '{0}' for writing", path);
+        return;
+    }
+
+    try {
+        nlohmann::json j = mbConfig;
+        jsonFs << std::setw(4) << j << std::endl;
+    } catch (std::exception& ex) {
+        SPDLOG_ERROR("Error: {0}.", ex.what());
+    }
 }
 
 }
