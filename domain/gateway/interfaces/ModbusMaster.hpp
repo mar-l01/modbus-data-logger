@@ -123,6 +123,13 @@ public:
      * @brief Close the established connection to a Modbus slave.
      */
     virtual void close() = 0;
+
+    /**
+     * @brief Determines if the connection is up, i.e. the internal master is connected to the external slave
+     *
+     * @return true, if the master is still connected, false otw.
+     */
+    virtual bool isConnected() = 0;
 };
 
 }

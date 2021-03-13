@@ -9,4 +9,5 @@ class MockModbusMasterController : public Gateway::ModbusMasterController
 public:
     MOCK_METHOD(void, connect, (), (override));
     MOCK_METHOD(void, disconnect, (), (override));
+    MOCK_METHOD(bool, isConnectedToExternalSlave, (), (override));
 };

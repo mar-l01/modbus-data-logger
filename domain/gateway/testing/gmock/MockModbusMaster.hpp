@@ -25,6 +25,6 @@ public:
                 (int startAddress, const std::vector<uint8_t>& coilValues), (override));
     MOCK_METHOD(Entity::ModbusOperationStatus, writeMultipleHoldingRegisterValues,
                 (int startAddress, const std::vector<uint16_t>& registerValues), (override));
-
     MOCK_METHOD(void, close, (), (override));
+    MOCK_METHOD(bool, isConnected, (), (override));
 };

@@ -32,7 +32,7 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterControllerImpl::getExtern
         // reconnect, but do not re-send request
         tryReconnecting();
 
-        // TODO(Markus2101, 08.06.2020): Re-sending request would require to adjust transaction
+        // TODO(mar-l01, 08.06.2020): Re-sending request would require to adjust transaction
         //      identifier for all following request/response pairs
         //      --> further discussion needed!
     }
@@ -43,6 +43,11 @@ std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterControllerImpl::getExtern
 void ModbusMasterControllerImpl::disconnect()
 {
     m_modbusMaster->close();
+}
+
+bool ModbusMasterControllerImpl::isConnectedToExternalSlave()
+{
+    return m_modbusMaster->isConnected();
 }
 
 std::shared_ptr<Entity::ModbusTcpResponse> ModbusMasterControllerImpl::callModbusMasterMethod(
