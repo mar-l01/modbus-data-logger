@@ -13,4 +13,10 @@ TEST(TestLibModbusMaster, ctor)
     EXPECT_NO_THROW(LibModbusMaster tstObj);
 }
 
+TEST(TestLibModbusSlave, isConnectedReturnsFalseByDefault)
+{
+    LibModbusMaster tstObj;
+    EXPECT_FALSE(tstObj.isConnected());
+}
+
 }

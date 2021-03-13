@@ -13,4 +13,10 @@ TEST(TestLibModbusSlave, ctor)
     EXPECT_NO_THROW(LibModbusSlave tstObj);
 }
 
+TEST(TestLibModbusSlave, isConnectionUpReturnsFalseByDefault)
+{
+    LibModbusSlave tstObj;
+    EXPECT_FALSE(tstObj.isConnectionUp());
+}
+
 }
