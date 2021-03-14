@@ -179,4 +179,20 @@ TEST_F(TestModbusSlaveControllerImpl, closeConnection)
     testObj->disconnect();
 }
 
+TEST_F(TestModbusSlaveControllerImpl, isExternalMasterConnected_true)
+{
+    auto testObj = createTestObject();
+
+    EXPECT_CALL(*m_modbusSlaveMock, isConnectionUp()).WillOnce(Return(true));
+    EXPECT_TRUE(testObj->isExternalMasterConnected());
+}
+
+TEST_F(TestModbusSlaveControllerImpl, isExternalMasterConnected_false)
+{
+    auto testObj = createTestObject();
+
+    EXPECT_CALL(*m_modbusSlaveMock, isConnectionUp()).WillOnce(Return(false));
+    EXPECT_FALSE(testObj->isExternalMasterConnected());
+}
+
 }

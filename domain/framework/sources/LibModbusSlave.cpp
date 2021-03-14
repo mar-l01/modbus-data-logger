@@ -10,6 +10,7 @@ namespace Framework {
 
 LibModbusSlave::LibModbusSlave()
     : m_messageLength(-1)
+    , m_isConnectionUp(-1)
 {}
 
 void LibModbusSlave::setModbusDataMapping(const Entity::ModbusDataMapping& mbMapping)
@@ -67,7 +68,7 @@ int LibModbusSlave::listen(const int nbConns)
 
 void LibModbusSlave::accept(int& socket)
 {
-    modbus_tcp_accept(m_modbusContext.get(), &socket);
+    m_isConnectionUp = modbus_tcp_accept(m_modbusContext.get(), &socket);
 
     SPDLOG_DEBUG("Accepted incoming connection");
 }
@@ -108,6 +109,12 @@ Gateway::ModbusReceiveStatus LibModbusSlave::replyException(Entity::ModbusExcept
 void LibModbusSlave::close()
 {
     modbus_close(m_modbusContext.get());
+    m_isConnectionUp = -1; // assume connection was closed
+}
+
+bool LibModbusSlave::isConnectionUp()
+{
+    return (m_isConnectionUp != -1);
 }
 
 Gateway::ModbusReceiveStatus LibModbusSlave::getModbusReceiveStatus(int requestLength) const

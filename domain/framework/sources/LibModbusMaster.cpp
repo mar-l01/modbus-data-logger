@@ -4,7 +4,9 @@
 
 namespace Framework {
 
-LibModbusMaster::LibModbusMaster() {}
+LibModbusMaster::LibModbusMaster()
+    : m_isConnected(-1)
+{}
 
 void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 {
@@ -30,10 +32,10 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 #endif
 
     // connect
-    auto connSuccessful = modbus_connect(m_modbusContext.get());
+    m_isConnected = modbus_connect(m_modbusContext.get());
 
     // error handling
-    if (connSuccessful == -1) {
+    if (m_isConnected == -1) {
         SPDLOG_ERROR("Failed to connect to slave");
     }
 }
@@ -41,10 +43,10 @@ void LibModbusMaster::connect(const std::string& ipAddr, const int port)
 void LibModbusMaster::reconnect()
 {
     // connect
-    auto connSuccessful = modbus_connect(m_modbusContext.get());
+    m_isConnected = modbus_connect(m_modbusContext.get());
 
     // error handling
-    if (connSuccessful == -1) {
+    if (m_isConnected == -1) {
         SPDLOG_ERROR("Failed to re-connect to slave");
     }
 }
@@ -101,6 +103,12 @@ Entity::ModbusOperationStatus LibModbusMaster::writeMultipleHoldingRegisterValue
 void LibModbusMaster::close()
 {
     modbus_close(m_modbusContext.get());
+    m_isConnected = -1; // assume connection was closed
+}
+
+bool LibModbusMaster::isConnected()
+{
+    return (m_isConnected == 0);
 }
 
 template<typename T>

@@ -50,6 +50,11 @@ public:
      */
     void disconnect() override;
 
+    /**
+     * @see ModbusMasterController::isConnectedToExternalSlave
+     */
+    bool isConnectedToExternalSlave() override;
+
 private:
     std::shared_ptr<ModbusMaster> m_modbusMaster;
     std::string m_ipAddress;

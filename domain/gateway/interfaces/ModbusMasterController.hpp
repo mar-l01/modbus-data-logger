@@ -17,6 +17,13 @@ public:
      * @brief Close connection to the external Modbus slave.
      */
     virtual void disconnect() = 0;
+
+    /**
+     * @brief Determines if the connection is up, i.e. the internal master is connected to the external slave
+     *
+     * @return true, if the master is still connected, false otw.
+     */
+    virtual bool isConnectedToExternalSlave() = 0;
 };
 
 }

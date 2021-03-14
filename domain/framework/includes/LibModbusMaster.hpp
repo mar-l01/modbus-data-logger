@@ -88,8 +88,14 @@ public:
      */
     void close() override;
 
+    /**
+     * @see ModbusMaster::isConnected
+     */
+    bool isConnected() override;
+
 private:
     std::unique_ptr<modbus_t, std::function<void(modbus_t*)>> m_modbusContext;
+    int m_isConnected;
 
     template<typename T>
     Entity::ModbusReadOperationResult<T> readValues(int (*libmodbusReadFunction)(modbus_t*, int, int, T*), int sAddr,
