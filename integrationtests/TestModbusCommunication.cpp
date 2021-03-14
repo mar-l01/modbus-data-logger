@@ -21,8 +21,10 @@ TEST(TestModbusCommunication, checkWriteReadOperation)
     // run external Modbus slave in extra thread
     std::thread mbExtSlaveThread(&FixtureExternalModbusSlave::setUp, &mbExtSlave);
 
-    // wait some ms to make sure external slave is up and running
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // next component connects to this external slave -> wait until it is up
+    while (!mbExtSlave.isConnectionPossible()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
 
     // create Modbus gateway fixture
     FixtureModbusGateway mbGateway;
@@ -30,8 +32,10 @@ TEST(TestModbusCommunication, checkWriteReadOperation)
     // run gateway in extra thread -> no reconnection needed
     std::thread mbGatewayThread(&FixtureModbusGateway::setUp, &mbGateway, 0);
 
-    // wait some ms to make sure internal slave is up and running
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // next component connects to this internal slave -> wait until it is up
+    while (!mbGateway.isConnectionPossible()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
 
     // connect to internal Modbus slave
     mbExtMaster.setUp();
@@ -40,9 +44,6 @@ TEST(TestModbusCommunication, checkWriteReadOperation)
     mbExtMaster.checkWriteReadRequestBits();
     mbExtMaster.checkWriteReadRequestRegisters();
     mbExtMaster.checkUnsupportedFunctionCode();
-
-    // wait some ms to make sure internal slave is up and running
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     // close connection
     mbExtMaster.tearDown();
@@ -64,8 +65,10 @@ TEST(TestModbusCommunication, checkResponseTimeout_IntMasterExtSlave)
     // run external Modbus slave in extra thread
     std::thread mbExtSlaveThread(&FixtureExternalModbusSlave::setUp, &mbExtSlave);
 
-    // wait some ms to make sure external slave is up and running
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // next component connects to this external slave -> wait until it is up
+    while (!mbExtSlave.isConnectionPossible()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
 
     // create Modbus gateway fixture
     FixtureModbusGateway mbGateway;
@@ -73,17 +76,16 @@ TEST(TestModbusCommunication, checkResponseTimeout_IntMasterExtSlave)
     // run gateway in extra thread -> no reconnection needed
     std::thread mbGatewayThread(&FixtureModbusGateway::setUp, &mbGateway, 0);
 
-    // wait some ms to make sure internal slave is up and running
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // next component connects to this internal slave -> wait until it is up
+    while (!mbGateway.isConnectionPossible()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
 
     // connect to internal Modbus slave
     mbExtMaster.setUp();
 
     // check one timeout
     mbExtMaster.checkResponseTimeoutReadHoldingRegisters();
-
-    // wait some ms to make sure internal slave is up and running
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     // close connection
     mbExtMaster.tearDown();
@@ -102,8 +104,10 @@ TEST(TestModbusCommunication, checkApplicationTimeout)
     // run external Modbus slave in extra thread
     std::thread mbExtSlaveThread(&FixtureExternalModbusSlave::setUp, &mbExtSlave);
 
-    // wait some ms to make sure external slave is up and running
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // next component connects to this external slave -> wait until it is up
+    while (!mbExtSlave.isConnectionPossible()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
 
     // create Modbus gateway fixture
     FixtureModbusGateway mbGateway;
@@ -111,8 +115,10 @@ TEST(TestModbusCommunication, checkApplicationTimeout)
     // run gateway in extra thread -> no reconnection needed
     std::thread mbGatewayThread(&FixtureModbusGateway::setUp, &mbGateway, 1);
 
-    // wait some ms to make sure internal slave is up and running
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // next component connects to this internal slave -> wait until it is up
+    while (!mbGateway.isConnectionPossible()) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
 
     // connect to internal Modbus slave
     mbExtMaster.setUp();
@@ -120,13 +126,13 @@ TEST(TestModbusCommunication, checkApplicationTimeout)
     // wait until timeout (add some offset to make sure timeout occurs)
     std::this_thread::sleep_for(std::chrono::milliseconds(FixtureTestConstants::APPLICATION_TIMEOUT_IN_MS + 50));
 
-    // timeout occurred here
+    // ----- timeout occurred here -----
 
     // close connection
     mbExtMaster.tearDown();
 
-    // wait some ms to make sure internal slave might be up, and try reconnect once
-    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    // internal slave connection not possible, but try reconnect once
+    EXPECT_FALSE(mbExtSlave.isConnectionPossible());
     bool expectConnectionFailure = true;
     mbExtMaster.setUp(expectConnectionFailure);
 
