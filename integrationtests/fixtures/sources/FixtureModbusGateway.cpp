@@ -11,10 +11,12 @@
 
 #include "spdlog/spdlog.h"
 
+
 namespace Fixture {
 
 FixtureModbusGateway::FixtureModbusGateway(bool logOutputToConsole)
     : m_logOutputToConsole(logOutputToConsole)
+    , m_isConnectionPossible(false)
 {}
 
 void FixtureModbusGateway::setUp(const int nbReconnections)
@@ -67,7 +69,10 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     // run Modbus slave until 'stop' was received (no reconnection will be triggered then)
     int currentReconnections = 0;
     for (;;) {
+        m_isConnectionPossible = true;
         mbSlaveController->waitForIncomingConnection();
+        m_isConnectionPossible = false;
+
         mbSlaveController->run();
 
         if (currentReconnections == nbReconnections || timeoutStop) {
@@ -82,6 +87,11 @@ void FixtureModbusGateway::setUp(const int nbReconnections)
     // close external connection in the end
     mbSlaveController->disconnect();
     mbMasterController->disconnect();
+}
+
+bool FixtureModbusGateway::isConnectionPossible() const
+{
+    return m_isConnectionPossible;
 }
 
 }
