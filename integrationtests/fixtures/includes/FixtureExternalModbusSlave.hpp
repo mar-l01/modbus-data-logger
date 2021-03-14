@@ -26,13 +26,13 @@ public:
     FixtureExternalModbusSlave(const timeoutTuple& toTuple);
 
     void setUp();
-    bool isRunning();
+    bool isConnectionPossible() const;
 
 private:
     std::unique_ptr<modbus_t, std::function<void(modbus_t*)>> m_modbusContext;
     std::unique_ptr<modbus_mapping_t, std::function<void(modbus_mapping_t*)>> m_modbusMapping;
     int m_socket;
-    bool m_isRunning;
+    bool m_isConnectionPossible;
 
     // {(fc, timeout, n)}
     // helper-tuple to delay a response n-times if function code fc is called for ms second

@@ -12,14 +12,14 @@ namespace Fixture {
 
 FixtureExternalModbusSlave::FixtureExternalModbusSlave()
     : m_socket(-1)
-    , m_isRunning(false)
+    , m_isConnectionPossible(false)
     , m_timeoutHelperActive(false)
     , m_curNbTimeouts(0)
 {}
 
 FixtureExternalModbusSlave::FixtureExternalModbusSlave(const timeoutTuple& toTuple)
     : m_socket(-1)
-    , m_isRunning(false)
+    , m_isConnectionPossible(false)
     , m_timeoutHelper(toTuple)
     , m_timeoutHelperActive(true)
     , m_curNbTimeouts(0)
@@ -43,9 +43,9 @@ void FixtureExternalModbusSlave::setUp()
     modbus_close(m_modbusContext.get());
 }
 
-bool FixtureExternalModbusSlave::isRunning()
+bool FixtureExternalModbusSlave::isConnectionPossible() const
 {
-    return m_isRunning;
+    return m_isConnectionPossible;
 }
 
 void FixtureExternalModbusSlave::setupModbusContext()
@@ -72,16 +72,18 @@ void FixtureExternalModbusSlave::bind()
     // make sure context is not null
     ASSERT_NE(m_socket, -1);
 
+    m_isConnectionPossible = true;
+
     // accept incoming connection
     modbus_tcp_accept(m_modbusContext.get(), &m_socket);
+
+    m_isConnectionPossible = false;
 }
 
 void FixtureExternalModbusSlave::run()
 {
     int reqLen = 0;
     auto modbusRequest = std::vector<uint8_t>(MODBUS_TCP_MAX_ADU_LENGTH);
-
-    m_isRunning = true;
 
     // infinite request loop
     for (;;) {
@@ -124,8 +126,6 @@ void FixtureExternalModbusSlave::run()
             break;
         }
     }
-
-    m_isRunning = false;
 
     // close socket after connection (necessary to close file descriptor)
     if (close(m_socket) == 0) {
