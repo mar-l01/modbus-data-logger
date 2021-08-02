@@ -12,12 +12,14 @@ namespace Fixture {
 
 FixtureExternalModbusSlave::FixtureExternalModbusSlave()
     : m_socket(-1)
+    , m_isConnectionPossible(false)
     , m_timeoutHelperActive(false)
     , m_curNbTimeouts(0)
 {}
 
 FixtureExternalModbusSlave::FixtureExternalModbusSlave(const timeoutTuple& toTuple)
     : m_socket(-1)
+    , m_isConnectionPossible(false)
     , m_timeoutHelper(toTuple)
     , m_timeoutHelperActive(true)
     , m_curNbTimeouts(0)
@@ -39,6 +41,11 @@ void FixtureExternalModbusSlave::setUp()
 
     // close connection
     modbus_close(m_modbusContext.get());
+}
+
+bool FixtureExternalModbusSlave::isConnectionPossible() const
+{
+    return m_isConnectionPossible;
 }
 
 void FixtureExternalModbusSlave::setupModbusContext()
@@ -65,8 +72,12 @@ void FixtureExternalModbusSlave::bind()
     // make sure context is not null
     ASSERT_NE(m_socket, -1);
 
+    m_isConnectionPossible = true;
+
     // accept incoming connection
     modbus_tcp_accept(m_modbusContext.get(), &m_socket);
+
+    m_isConnectionPossible = false;
 }
 
 void FixtureExternalModbusSlave::run()
