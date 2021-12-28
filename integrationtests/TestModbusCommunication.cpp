@@ -138,7 +138,7 @@ TEST(TestModbusCommunication, checkApplicationTimeout)
     mbExtMaster.tearDown();
 
     // internal slave connection not possible, but try reconnect once
-    EXPECT_FALSE(mbExtSlave.isConnectionPossible());
+    EXPECT_FALSE(mbGateway.isConnectionPossible());
     bool expectConnectionFailure = true;
     mbExtMaster.setUp(expectConnectionFailure);
 
