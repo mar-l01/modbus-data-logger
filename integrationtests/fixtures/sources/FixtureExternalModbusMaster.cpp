@@ -40,13 +40,6 @@ void FixtureExternalModbusMaster::setUp(bool expectConnectionFailure)
     } else {
         // make sure connection is set up
         ASSERT_NE(ec, -1);
-
-        // try to re-connect once after 100ms, if a connection couldn't have been established
-        if (ec == -1) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            auto ec = modbus_connect(m_modbusContext.get());
-            ASSERT_NE(ec, -1);
-        }
     }
 }
 
