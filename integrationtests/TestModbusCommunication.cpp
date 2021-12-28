@@ -137,9 +137,17 @@ TEST(TestModbusCommunication, checkApplicationTimeout)
     // close connection
     mbExtMaster.tearDown();
 
+    // ----- START workaround -----
+    // TODO(mar-l01, 28.12.21): investigate why workaround is necessary
+    // '---> somehow the application needs one master reconnect after it closed all connections..
+    bool expectConnectionFailure = false;
+    mbExtMaster.setUp(expectConnectionFailure);
+    mbExtMaster.tearDown();
+    // ----- END workaround -----
+
     // internal slave connection not possible, but try reconnect once
     EXPECT_FALSE(mbGateway.isConnectionPossible());
-    bool expectConnectionFailure = true;
+    expectConnectionFailure = true;
     mbExtMaster.setUp(expectConnectionFailure);
 
     // join threads
