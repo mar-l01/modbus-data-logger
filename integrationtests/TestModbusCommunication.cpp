@@ -45,6 +45,9 @@ TEST(TestModbusCommunication, checkWriteReadOperation)
     mbExtMaster.checkWriteReadRequestRegisters();
     mbExtMaster.checkUnsupportedFunctionCode();
 
+    // wait some ms to make sure internal slave is up and running
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
     // close connection
     mbExtMaster.tearDown();
 
@@ -86,6 +89,9 @@ TEST(TestModbusCommunication, checkResponseTimeout_IntMasterExtSlave)
 
     // check one timeout
     mbExtMaster.checkResponseTimeoutReadHoldingRegisters();
+
+    // wait some ms to make sure internal slave is up and running
+    std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     // close connection
     mbExtMaster.tearDown();
@@ -132,7 +138,7 @@ TEST(TestModbusCommunication, checkApplicationTimeout)
     mbExtMaster.tearDown();
 
     // internal slave connection not possible, but try reconnect once
-    EXPECT_FALSE(mbExtSlave.isConnectionPossible());
+    EXPECT_FALSE(mbGateway.isConnectionPossible());
     bool expectConnectionFailure = true;
     mbExtMaster.setUp(expectConnectionFailure);
 

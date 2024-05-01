@@ -5,6 +5,8 @@
 
 #include "gtest/gtest.h"
 
+#include <thread>
+
 namespace Fixture {
 
 FixtureExternalModbusMaster::FixtureExternalModbusMaster() {}
@@ -30,6 +32,11 @@ void FixtureExternalModbusMaster::setUp(bool expectConnectionFailure)
     if (expectConnectionFailure) {
         // connection should not have been established (e.g. due to timeout)
         ASSERT_EQ(ec, -1);
+
+        // in case the connection was established somehow, make sure to disconnect again
+        if (ec == 0) {
+            tearDown();
+        }
     } else {
         // make sure connection is set up
         ASSERT_NE(ec, -1);
